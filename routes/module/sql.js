@@ -1,11 +1,32 @@
 const async = require('async');
 const moment = require('moment');
 
-const pool = require('../config/dbPool.js');
+const pool = require('../../config/dbPool.js');
 const db = require('./pool.js');
 
 
 module.exports = {
+
+  getLectureCntInCourese : async (...args) => {
+    // const selectQuery = `
+    // select count(*) as cnt from lecture A 
+    // left join (select B.id as chapter_id from course A inner join chapter B on A.id = B.course_id) B 
+    // on (select chapter_id from lecture where id= ? ) = B.chapter_id
+    // `
+
+    const selectQuery = `
+    select * from lecture
+    `
+    const data = args[0]; // lecture ID
+    let result = await db.queryParamCnt_Arr(selectQuery, [data]);
+    return result;
+  },
+
+
+
+
+
+
   makeNewChatRoomTable : async (...args) => {
     const name = args[0];
     var ctrl_name = name + '_' + moment().format('YYMMDDHHmmss');
