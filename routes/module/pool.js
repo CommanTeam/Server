@@ -1,7 +1,16 @@
+/*
+ Default module
+*/
 const async = require('async');
 
+/*
+ Custom module
+*/
 const pool = require('../config/dbPool.js');
 
+/*
+ Modularize DB Connection
+*/
 module.exports = {
   queryParamCnt_None : async (...args) => {
     const query = args[0];

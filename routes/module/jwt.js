@@ -1,8 +1,16 @@
+/*
+ Default module
+*/
 const jwt = require('jsonwebtoken');
 
+/*
+ Custom module
+*/
 const secretKey = require('../../config/secretKey').key;
 
-
+/*
+ Modularize DB Connection
+*/
 module.exports = {
     // Issue jwt Token
     sign : function(id,nickname) {
