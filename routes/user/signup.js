@@ -5,7 +5,6 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto-promise');
 const async = require('async');
-const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 /*
@@ -17,10 +16,9 @@ router.use(bodyParser.urlencoded({ extended: false }));
 /*
  Custom module
 */
-const hash = require('../module/hash.js');
 const jwt = require('../module/jwt.js');
 const db = require('../module/pool.js');
-
+const sql = require('../module/sql.js');
 
 /*
  Variable declaration
@@ -33,6 +31,18 @@ const db = require('../module/pool.js');
 /*
  Method : Get
 */
+router.get('/', async(req, res, next) => {
+    // let result = await sql.getLectureCntInCourese(1);
+    let selectQuery =
+    `
+        select * from lecture
+    `;
+    let result = await db.queryParamCnt_None(selectQuery);
+    res.status(200).send({
+        data : result
+    });
+});
+
 
 /*
  Method : Post
@@ -47,7 +57,7 @@ router.post('/', async(req, res, next) => {
         select * from users
         where id = ?
     `;
-    let checkID = await db.queryParamCnt_1(selectQuery,id);
+    let checkID = await db.queryParamCnt_Arr(selectQuery,[id]);
     if(checkID.length == 0){
         let insertQuery =
         `

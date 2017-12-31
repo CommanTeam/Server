@@ -17,10 +17,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 /*
  Custom module
 */
-const hash = require('../module/hash.js');
 const jwt = require('../module/jwt.js');
 const db = require('../module/pool.js');
-const secretKey = require('../../config/secretKey').key;
 
 /*
  Variable declaration
