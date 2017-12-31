@@ -32,15 +32,10 @@ const sql = require('../module/sql.js');
  Method : Get
 */
 router.get('/', async(req, res, next) => {
-    // let result = await sql.getLectureCntInCourese(1);
-    let selectQuery =
-    `
-        select * from lecture
-    `;
-    let result = await db.queryParamCnt_None(selectQuery);
-    res.status(200).send({
-        data : result
-    });
+    let result = await sql.getLectureCntInCourese(1);
+    res.status(200).send(
+        result
+    );
 });
 
 
