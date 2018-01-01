@@ -78,9 +78,44 @@ module.exports = {
     return result;
   },
   
+  // User ID로 수강하는 중이거나 수강한 Course 찾기
+  getCourseInProgressByUserID : async (...args) =>{
+    const data = args[0]; // lecture ID
+    let selectQuery =`
+   SELECT user_id, lecture_id 
+   FROM all_user_info 
+   WHERE flag =1 or flag =2 and user_id = ?;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
 
-  
+  // Lecture ID로 Chapter title 뽑기
+  getChaptertitleByLectureID : async (...args) =>{
+    const data = args[0]; // lecture ID
+    let selectQuery =`
+   SELECT B.title  
+   FROM comman.all_user_info A join chapter B 
+   WHERE A.chapter_id = B.id and lecture_id= ?;
 
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+
+  // Lecture ID로 Course title 뽑기
+  getCoursetitleByLectureID : async (...args) =>{
+    const data = args[0]; // lecture ID
+    let selectQuery =`
+   SELECT B.title 
+  FROM comman.all_user_info A join course B 
+  WHERE A.course_id = B.id and lecture_id= ?;
+
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
 
 
 
