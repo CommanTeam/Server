@@ -12,7 +12,7 @@ module.exports = {
     const data = args[0]; // User ID
     let selectQuery =`
     select distinct a.course_id 
-    from all_course_info as a, user_history as u 
+    from all_user_info as a, user_history as u 
     where u.user_id = ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
@@ -23,8 +23,8 @@ module.exports = {
   getCourseByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select a.course_id 
-    from all_course_info as a, user_history as u 
+    select distinct a.course_id 
+    from all_user_info as a, user_history as u 
     where u.lecture_id = ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
@@ -35,9 +35,21 @@ module.exports = {
   getChapterByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select a.chapter_id 
-    from all_course_info as a, user_history as u 
+    select distinct a.chapter_id 
+    from all_user_info as a, user_history as u 
     where u.lecture_id = ?;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+  // Course가 갖고 있는 Lecture Total Cnt
+  getTotalLectureCntInCourse : async (...args) =>{
+    const data = args[0]; // course ID
+    let selectQuery =`
+    SELECT count(*) as cnt 
+    FROM comman.all_course_info 
+    where course_id=?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -45,24 +57,23 @@ module.exports = {
 
   // User가 특정 Course에서 몇 개의 Lecture를 듣는지 찾기
   getLectureCntOfUserInCourse : async (...args) => {
-    const data = []; // Array of course ID 
-    data.push(args[0]);
+    const data = []; 
+    data.push(args[0]); // user ID
 
     let selectQuery_1 = `
     select distinct a.course_id
-    from all_course_info as a, user_history as u
+    from all_user_info as a, user_history as u
     where u.user_id = ?
     `
     let course_id = await db.queryParamCnt_Arr(selectQuery_1,args[0]);
-
-    data.push(course_id);
+    data.push(course_id[0].course_id);
 
     let selectQuery_2 = `
-    select count(*) 
-    from all_course_info 
+    select count(*) as count
+    from all_user_info 
     where user_id=? and course_id=?;
     `
-    let result = await db.queryParamCnt_Arr(selectQuery_2,data);
+    let result = await db.queryParamCnt_Arr(selectQuery_2,[1,1]);
     return result;
   },
 
@@ -71,7 +82,7 @@ module.exports = {
     const data = args[0];// user ID
     let selectQuery = `
     select distinct a.course_id
-    from all_course_info as a, user_history as u
+    from all_user_info as a, user_history as u
     where u.user_id = ?
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);

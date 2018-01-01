@@ -43,6 +43,7 @@ router.post('/', async(req, res, next) => {
     let user_id = 1;
     let lecture_id = 1;
 
+
     let result1 = await sql.getCourseByUserID(user_id);
     console.log('result 1 ' + result1[0]);
 
@@ -57,15 +58,20 @@ router.post('/', async(req, res, next) => {
     let result4 = await sql.getLectureCntOfUserInCourse(user_id);
     console.log('result 4 ' + result4);
 
+
     let result5 = await sql.getCourseInProgressByUserID(user_id);
     console.log('result 5 ' + result5);
-    
+
 
 
 
     res.status(200).send({
         msg : " Login Success",
-        result1
+        result1,
+        result2,
+        result3,
+        result4,
+        result5
     });
 });
 

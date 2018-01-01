@@ -33,7 +33,7 @@ module.exports = {
     let result;
     try {
       var connection = await pool.getConnection();
-      result = await connection.query(query, [data]) || null;
+      result = await connection.query(query, data) || null;
     }
     catch(err) {
       next(err);
