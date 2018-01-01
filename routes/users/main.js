@@ -69,19 +69,31 @@ router.post('/lastWatchedLecture', async(req, res, next) => {
 
 
 router.post('/progressLecture', async(req, res, next) => {
-
     let userID = req.body.userID;
     let lectureID = req.body.lectureID;
 
-    
+    let listOfCourse = [];
+    let result = [];
 
-    // 분모
-    getTotalLectureCntInCourse
+    // User가 듣고 있는 모든 강좌 출력
+    let allCourseList = await sql.getCourseByUserID(userID);
+    for(var i; i < allCourseList.length; i++){
+        listOfCourse.push(allCourseList[i].course_id);
+    }
 
+    // Course에서 User가 수강했거나, 수강 중인 Lecture Count
+    for(var i; i < listOfCourse.length; i++){
+    var params = [userID, allCourseList[i].course_id];    
 
-    // 분자
-    getCourseInProgressByUserID
+    // User가 Course에서 몇개의 Lecutre를 들었는지 Count
+    let molecule = await sql.getCourseInProgressByUserIDandCourseID(params); 
+    let denominator = await sql.getTotalLectureCntInCourse(allCourseList[i]);
+        result.push(molecule[i].cnt / denominator[i].cnt);
+    }
 
+    res.status(200).send(
+        result 
+    );
 
 });
 

@@ -97,12 +97,12 @@ module.exports = {
   
   // Course에서 User가 수강했거나, 수강 중인 Lecture의 Count
   // writtend by 탁형민
-  getCourseInProgressByUserID : async (...args) =>{
-    const data = args[0]; // lecture ID
+  getCourseInProgressByUserIDandCourseID : async (...args) =>{
+    const data = args[0]; // userID and courseID
     let selectQuery =`
-    SELECT count(*)
+    SELECT count(*) as cnt
     FROM all_user_info 
-    WHERE flag = 1 or flag = 2 and user_id = ?;
+    WHERE flag = 1 or flag = 2 and user_id = ? and course_id = ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -148,13 +148,12 @@ module.exports = {
   // 나중에 비슷한 View 생성or수정시 쿼리문 수정
   createAllCourseInfoViewQuery : async (...args) =>{
     let createQuery = `
-    CREATE VIEW  comman.all_course_info AS 
-    SELECT A.user_id, B.course_id, B.chapter_id, A.lecture_id 
-    FROM user_history A LEFT JOIN 
-    (SELECT A.id as course_id, B.chapter_id, B.lecture_id FROM course A 
-      inner join (SELECT A.id as chapter_id, B.id as lecture_id 
-        FROM chapter A inner join lecture B ON A.id = B.chapter_id) B) B 
-        ON A.lecture_id = B.lecture_id
+    create view comman_db.all_course_info
+    as select c.id as course_id, ch.id as chapter_id, l.id as lecture_id
+    from course as c, chapter as ch, lecture as l
+    where
+    l.chapter_id = ch.id
+    and ch.course_id = c.id;
     `
   },
 
