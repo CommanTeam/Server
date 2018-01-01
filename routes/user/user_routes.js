@@ -14,4 +14,7 @@ router.use('/signup', require('./signup'));
 // Return Token
 router.use('/return_token', require('./return_token'));
 
+// SQL Test
+router.use('/sql_test', require('./sql_test'));
+
 module.exports = router;
