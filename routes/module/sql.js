@@ -18,6 +18,17 @@ module.exports = {
     return result;
   },
 
+  findChapterByLectureID : async (...args) =>{
+    const data = args[0]; // lecture ID
+    let selectQuery =`
+    select a.chapter_id 
+    from all_course_info as a, user_history as u 
+    where u.lecture_id = ?;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+  
     makeNewChatRoomTable : async (...args) => {
     const name = args[0];
     var ctrl_name = name + '_' + moment().format('YYMMDDHHmmss');
