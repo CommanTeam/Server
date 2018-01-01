@@ -7,7 +7,7 @@ const db = require('./pool.js');
 
 module.exports = {
 
-  findCouresByLectureID : async (...args) =>{
+  findCourseByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
     select a.course_id 
@@ -16,6 +16,30 @@ module.exports = {
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
+  },
+
+  getLectureCntOfUserInCourse : async (...args) => {
+    let selectQuery = `
+    select count(*) 
+    from all_course_info 
+    where user_id=1 and course_id=1;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+
+  // 나중에 비슷한 View 생성or수정시 쿼리문 수정
+  createAllCourseInfoViewQuery : async (...args) =>{
+    let createQuery = `
+    CREATE VIEW  comman.all_course_info AS 
+    SELECT A.user_id, B.course_id, B.chapter_id, A.lecture_id 
+    FROM user_history A LEFT JOIN 
+    (SELECT A.id as course_id, B.chapter_id, B.lecture_id FROM course A 
+      inner join (SELECT A.id as chapter_id, B.id as lecture_id 
+        FROM chapter A inner join lecture B ON A.id = B.chapter_id) B) B 
+        ON A.lecture_id = B.lecture_id
+    `
   },
 
     makeNewChatRoomTable : async (...args) => {
