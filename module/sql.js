@@ -8,6 +8,7 @@ const db = require('./pool.js');
 
 module.exports = {
   // User ID로 수강중인 강좌 찾기
+  // writtend by 신기용
   getCourseByUserID : async (...args) =>{
     const data = args[0]; // User ID
     let selectQuery =`
@@ -20,6 +21,7 @@ module.exports = {
   },
 
   // Lecture ID로 소속된 Course 찾기
+  // writtend by 신기용
   getCourseByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
@@ -32,6 +34,7 @@ module.exports = {
   },
 
   // Lecture ID로 소속된 Chapter 찾기
+  // writtend by 신기용
   getChapterByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
@@ -44,6 +47,7 @@ module.exports = {
   },
 
   // Course가 갖고 있는 Lecture Total Cnt
+  // writtend by 신기용
   getTotalLectureCntInCourse : async (...args) =>{
     const data = args[0]; // course ID
     let selectQuery =`
@@ -56,6 +60,7 @@ module.exports = {
   },
 
   // User가 특정 Course에서 몇 개의 Lecture를 듣는지 찾기
+  // writtend by 신기용
   getLectureCntOfUserInCourse : async (...args) => {
     const data = []; 
     data.push(args[0]); // user ID
@@ -78,6 +83,7 @@ module.exports = {
   },
 
   // User ID로 수강중인 Course 찾기 
+  // writtend by 신기용
   getCourseInProgressByUserID : async (...args) => {
     const data = args[0];// user ID
     let selectQuery = `
@@ -89,25 +95,27 @@ module.exports = {
     return result;
   },
   
-  // User ID로 수강하는 중이거나 수강한 Course 찾기
+  // Course에서 User가 수강했거나, 수강 중인 Lecture의 Count
+  // writtend by 탁형민
   getCourseInProgressByUserID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-   SELECT user_id, lecture_id 
-   FROM all_user_info 
-   WHERE flag =1 or flag =2 and user_id = ?;
+    SELECT count(*)
+    FROM all_user_info 
+    WHERE flag = 1 or flag = 2 and user_id = ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
 
   // Lecture ID로 Chapter title 뽑기
-  getChaptertitleByLectureID : async (...args) =>{
+  // writtend by 탁형민
+  getChapterTitleByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-   SELECT B.title  
-   FROM comman.all_user_info A join chapter B 
-   WHERE A.chapter_id = B.id and lecture_id= ?;
+    SELECT B.title  
+    FROM comman.all_user_info A join chapter B 
+    WHERE A.chapter_id = B.id and lecture_id= ?;
 
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
@@ -116,13 +124,13 @@ module.exports = {
 
 
   // Lecture ID로 Course title 뽑기
-  getCoursetitleByLectureID : async (...args) =>{
+  // writtend by 탁형민
+  getCourseTitleByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-   SELECT B.title 
-  FROM comman.all_user_info A join course B 
-  WHERE A.course_id = B.id and lecture_id= ?;
-
+    SELECT B.title 
+    FROM comman.all_user_info A join course B 
+    WHERE A.course_id = B.id and lecture_id= ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
