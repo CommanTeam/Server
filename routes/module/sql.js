@@ -5,9 +5,22 @@ const pool = require('../../config/dbPool.js');
 const db = require('./pool.js');
 
 
-module.exports = {
 
-  findCouresByLectureID : async (...args) =>{
+module.exports = {
+  // User ID로 수강중인 강좌 찾기
+  getCourseByUserID : async (...args) =>{
+    const data = args[0]; // User ID
+    let selectQuery =`
+    select distinct a.course_id 
+    from all_course_info as a, user_history as u 
+    where u.user_id = ?;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+  // Lecture ID로 소속된 Course 찾기
+  getCourseByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
     select a.course_id 
@@ -18,7 +31,8 @@ module.exports = {
     return result;
   },
 
-  findChapterByLectureID : async (...args) =>{
+  // Lecture ID로 소속된 Chapter 찾기
+  getChapterByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
     select a.chapter_id 
@@ -28,7 +42,68 @@ module.exports = {
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
+
+  // User가 특정 Course에서 몇 개의 Lecture를 듣는지 찾기
+  getLectureCntOfUserInCourse : async (...args) => {
+    const data = []; // Array of course ID 
+    data.push(args[0]);
+
+    let selectQuery_1 = `
+    select distinct a.course_id
+    from all_course_info as a, user_history as u
+    where u.user_id = ?
+    `
+    let course_id = await db.queryParamCnt_Arr(selectQuery_1,args[0]);
+
+    data.push(course_id);
+
+    let selectQuery_2 = `
+    select count(*) 
+    from all_course_info 
+    where user_id=? and course_id=?;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery_2,data);
+    return result;
+  },
+
+  // User ID로 수강중인 Course 찾기 
+  getCourseInProgressByUserID : async (...args) => {
+    const data = args[0];// user ID
+    let selectQuery = `
+    select distinct a.course_id
+    from all_course_info as a, user_history as u
+    where u.user_id = ?
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
   
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  // 나중에 비슷한 View 생성or수정시 쿼리문 수정
+  createAllCourseInfoViewQuery : async (...args) =>{
+    let createQuery = `
+    CREATE VIEW  comman.all_course_info AS 
+    SELECT A.user_id, B.course_id, B.chapter_id, A.lecture_id 
+    FROM user_history A LEFT JOIN 
+    (SELECT A.id as course_id, B.chapter_id, B.lecture_id FROM course A 
+      inner join (SELECT A.id as chapter_id, B.id as lecture_id 
+        FROM chapter A inner join lecture B ON A.id = B.chapter_id) B) B 
+        ON A.lecture_id = B.lecture_id
+    `
+  },
+
     makeNewChatRoomTable : async (...args) => {
     const name = args[0];
     var ctrl_name = name + '_' + moment().format('YYMMDDHHmmss');
