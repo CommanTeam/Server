@@ -7,24 +7,18 @@ const db = require('./pool.js');
 
 module.exports = {
 
-  getLectureCntInCourese : async (...args) => {
-    const selectQuery = `
-    select count(*) as cnt from lecture A 
-    left join (select B.id as chapter_id from course A inner join chapter B on A.id = B.course_id) B 
-    on (select chapter_id from lecture where id= ? ) = B.chapter_id
-    `
-
+  findCouresByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
-    let result = await db.queryParamCnt_Arr(selectQuery, data);
+    let selectQuery =`
+    select a.course_id 
+    from all_course_info as a, user_history as u 
+    where u.lecture_id = ?;
+    `
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
 
-
-
-
-
-
-  makeNewChatRoomTable : async (...args) => {
+    makeNewChatRoomTable : async (...args) => {
     const name = args[0];
     var ctrl_name = name + '_' + moment().format('YYMMDDHHmmss');
     console.log(ctrl_name);
