@@ -17,6 +17,14 @@ const sql = require('../../module/sql.js');
 
 
 router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
+    /*
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    */
     let lectureID = req.body.lectureID;
     let selectQuery = `
     select title
@@ -24,27 +32,34 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
     where lecture.id = ?
     `
 
-    let data = {};         
-    data.courseTitle = await sql.getCourseTitleByLectureID(lectureID);
-    data.chapterTitle = await sql.getChapterTitleByLectureID(lectureID);
-    let tmpResult = await db.queryParamCnt_Arr(selectQuery,lectureID);
-    data.lectureTitle = tmpResult[0].title;
+    let result = {};         
+    result.courseTitle = await sql.getCourseTitleByLectureID(lectureID);
+    result.chapterTitle = await sql.getChapterTitleByLectureID(lectureID);
+    let lectureTitle = await db.queryParamCnt_Arr(selectQuery,lectureID);
+    result.lectureTitle = lectureTitle[0].title;
 
-    if(JSON.stringify(data) != '{}'){
+    if(result != undefined) {
         res.status(200).send({
-            "result" : data 
+            "result" : result 
         });
     }else{
         res.status(500).send({
-            "msg" : "Error lastWatchedLecture "
+            "msg" : "Error /users/main/lastWatchedLecture/:lectureID "
         });
     }    
 });
 
 
 router.get('/progressLecture/:userID', async(req, res, next) => {
+    /*
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    */
     let userID = req.params.userID;
-
     let listOfCourse = [];
     let result = [];
 
@@ -75,9 +90,16 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
         result.push(molecule[0].cnt / denominator[0].cnt * 100 + "%");
     }
 
-    res.status(200).send({
-        "result" : result
-    });
+    if(result != undefined) {
+        res.status(200).send({
+            "result" : result 
+        });
+    }else{
+        res.status(500).send({
+            "msg" : "Error /users/main/progressLecture/:userID "
+        });
+    }    
+    
 
 });
 
