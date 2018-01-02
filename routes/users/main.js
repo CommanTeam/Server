@@ -14,8 +14,6 @@ const sql = require('../../module/sql.js');
 /*
  Method : Get
 */
-
-
 router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
     /*
     const chkToken = jwt.verify(req.headers.authorization);
@@ -49,7 +47,12 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
     }    
 });
 
-
+/*
+  Req : user ID 
+  Res : Progress rate for each course
+  Dec : Progress rate
+  writtend by 신기용
+  */
 router.get('/progressLecture/:userID', async(req, res, next) => {
     /*
     const chkToken = jwt.verify(req.headers.authorization);
@@ -69,24 +72,17 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     for(var i=0; i < allCourseList.length; i++){
         listOfCourse.push(allCourseList[i].course_id);
     }
-    console.log('listOfCouser.length : ' + listOfCourse.length);
 
     // Course에서 User가 수강했거나, 수강 중인 Lecture Count
     for(var i=0; i < listOfCourse.length; i++){
         let params = [];
         params.push(userID);
         params.push(listOfCourse[i]);
-    console.log('params[0]  : ' + params[0]);
-    console.log('params[1]  : ' + params[1]);
-
+    
     // User가 Course에서 몇개의 Lecutre를 들었는지 Count
     let molecule = await sql.getCourseInProgressByUserIDandCourseID(params); 
-    console.log('molecule : ' + molecule[0].cnt);
-
+    
     let denominator = await sql.getTotalLectureCntInCourse(listOfCourse[i]);
-    console.log('denominator : ' + denominator[0].cnt);
-    console.log('percentage : ' + molecule[0].cnt / denominator[0].cnt * 100);
-    console.log('---------------------');
         result.push(molecule[0].cnt / denominator[0].cnt * 100 + "%");
     }
 

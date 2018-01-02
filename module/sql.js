@@ -5,8 +5,13 @@ const db = require('./pool.js');
 
 
 module.exports = {
-  // User ID로 수강중인 강좌 찾기
-  // writtend by 신기용
+
+  /*
+  Req : User ID 
+  Res : Finding the course you are taking with user ID
+  Dec : User ID로 소속된 Course 찾기
+  writtend by 신기용
+  */
   getCourseByUserID : async (...args) =>{
     const data = args[0]; // User ID
     let selectQuery =`
@@ -19,8 +24,15 @@ module.exports = {
     return result;
   },
 
-  // Lecture ID로 소속된 Course 찾기
-  // writtend by 신기용
+
+  
+  /*
+  Req : Lecutre ID 
+  Res : Course ID List
+  Dec : List of lectures belonging to Chapters
+        Chapter에 속한 Lectures List
+  writtend by 신기용
+  */
   getCourseByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
@@ -32,8 +44,14 @@ module.exports = {
     return result;
   },
 
-  // Lecture ID로 소속된 Chapter 찾기
-  // writtend by 신기용
+
+  /*
+  Req : Lecutre ID 
+  Res : Chapter ID List
+  Dec : Find a Chapter with a lecture ID
+        Lecture ID로 소속된 Chapter 찾기
+  writtend by 신기용
+  */
   getChapterByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
@@ -45,8 +63,12 @@ module.exports = {
     return result;
   },
 
-  // Course가 갖고 있는 Lecture Total Cnt
-  // writtend by 신기용
+  /*
+  Req : Course ID 
+  Res : Number of lectures belonging to Course
+  Dec : Course가 갖고 있는 Lecture Total Cnt
+  writtend by 신기용
+  */
   getTotalLectureCntInCourse : async (...args) =>{
     const data = args[0]; // course ID
     let selectQuery =`
@@ -58,8 +80,15 @@ module.exports = {
     return result;
   },
 
-  // User가 특정 Course에서 몇 개의 Lecture를 듣는지 찾기
-  // writtend by 신기용
+  
+
+  /*
+  Req : User ID 
+  Res : Lecture Cnt
+  Dec : Check how many lectures the user is listening to in the course
+        User가 특정 Course에서 몇 개의 Lecture를 듣는지 찾기
+  writtend by 신기용
+  */
   getLectureCntOfUserInCourse : async (...args) => {
     const data = []; 
     data.push(args[0]); // user ID
@@ -144,10 +173,8 @@ module.exports = {
     where aui.course_id = ?;
     `;
 
-    
     let chapterCnt = await db.queryParamCnt_Arr(selectQuery,data);
-    console.log('chapterCnt : ' + chapterCnt.length);
-    
+
     for(var i=0; i<chapterCnt.length; i++){
       let object = {};
   
@@ -157,7 +184,6 @@ module.exports = {
       where ch.id = ?;
       `;
       let chapterTitle = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
-      console.log('chapterTitle : ' + chapterTitle[0].title);
 
       selectQuery =`
       select count(*) as cnt
@@ -165,9 +191,8 @@ module.exports = {
       where l.chapter_id = ?;
       `;
       let lectureCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
-      console.log('lectureCnt : ' + lectureCnt.length);
 
-      object.chapterOrder = i+1;
+      object.chapterOrder = i+1 + "장";
       object.chapterTitle = chapterTitle[0].title;
       object.lectureCnt = lectureCnt[0].cnt;
 
@@ -193,13 +218,15 @@ module.exports = {
     and c.id = ?;
     `;
 
+
     let courseInfoObj = {};
     let courseInfo = await db.queryParamCnt_Arr(selectQuery,data);
-    courseInfoObj.title = courseInfo[0].title;
-    courseInfoObj.img = courseInfo[0].img;
-    courseInfoObj.name = courseInfo[0].name;
+    if( courseInfo.length == 1){
+      courseInfoObj.title = courseInfo[0].title;
+      courseInfoObj.img = courseInfo[0].img;
+      courseInfoObj.name = courseInfo[0].name;
+    }
     result.courseInfo = courseInfoObj;
-
 
     selectQuery =`
     select ch.title, ch.info
