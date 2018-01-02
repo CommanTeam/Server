@@ -81,18 +81,7 @@ module.exports = {
     return result;
   },
 
-  // User ID로 수강중인 Course 찾기 
-  // writtend by 신기용
-  getCourseInProgressByUserID : async (...args) => {
-    const data = args[0];// user ID
-    let selectQuery = `
-    select distinct a.course_id
-    from all_user_info as a, user_history as u
-    where u.user_id = ?
-    `
-    let result = await db.queryParamCnt_Arr(selectQuery,data);
-    return result;
-  },
+ 
   
   // Course에서 User가 수강했거나, 수강 중인 Lecture의 Count
   // writtend by 탁형민
@@ -137,6 +126,8 @@ module.exports = {
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result[0].title;
   },
+
+  
 
 
 
