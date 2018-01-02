@@ -1,7 +1,5 @@
 const async = require('async');
 const moment = require('moment');
-
-const pool = require('../../config/dbPool.js');
 const db = require('./pool.js');
 
 
@@ -12,9 +10,10 @@ module.exports = {
   getCourseByUserID : async (...args) =>{
     const data = args[0]; // User ID
     let selectQuery =`
-    select distinct a.course_id 
-    from all_user_info as a, user_history as u 
-    where u.user_id = ?;
+    select distinct aui.course_id 
+    from all_user_info as aui, user_history as uh
+    where uh.user_id = aui.user_id
+    and uh.user_id = ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -52,7 +51,7 @@ module.exports = {
     const data = args[0]; // course ID
     let selectQuery =`
     SELECT count(*) as cnt 
-    FROM comman.all_course_info 
+    FROM all_course_info 
     where course_id=?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
@@ -100,9 +99,13 @@ module.exports = {
   getCourseInProgressByUserIDandCourseID : async (...args) =>{
     const data = args[0]; // userID and courseID
     let selectQuery =`
-    SELECT count(*) as cnt
-    FROM all_user_info 
-    WHERE flag = 1 or flag = 2 and user_id = ? and course_id = ?;
+    select count(*) as cnt
+    from user_history as uh, all_user_info as aui
+    where aui.user_id = uh.user_id
+    and aui.lecture_id = uh.lecture_id
+    and uh.user_id = ?
+    and aui.course_id = ?
+    and ( uh.watched_flag = 1 or uh.watched_flag = 2 );
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -113,13 +116,12 @@ module.exports = {
   getChapterTitleByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    SELECT B.title  
-    FROM comman.all_user_info A join chapter B 
-    WHERE A.chapter_id = B.id and lecture_id= ?;
-
+    select ch.title
+    from all_course_info as aci, chapter as ch
+    where aci.lecture_id = ? and aci.chapter_id = ch.id ;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
-    return result;
+    return result[0].title;
   },
 
 
@@ -128,12 +130,12 @@ module.exports = {
   getCourseTitleByLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    SELECT B.title 
-    FROM comman.all_user_info A join course B 
+    SELECT distinct B.title
+    FROM all_user_info A join course B 
     WHERE A.course_id = B.id and lecture_id= ?;
     `
     let result = await db.queryParamCnt_Arr(selectQuery,data);
-    return result;
+    return result[0].title;
   },
 
 
