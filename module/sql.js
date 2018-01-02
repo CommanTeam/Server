@@ -14,7 +14,7 @@ module.exports = {
     from all_user_info as aui, user_history as uh
     where uh.user_id = aui.user_id
     and uh.user_id = ?;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
@@ -27,7 +27,7 @@ module.exports = {
     select distinct a.course_id 
     from all_user_info as a, user_history as u 
     where u.lecture_id = ?;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
@@ -40,7 +40,7 @@ module.exports = {
     select distinct a.chapter_id 
     from all_user_info as a, user_history as u 
     where u.lecture_id = ?;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
@@ -53,7 +53,7 @@ module.exports = {
     SELECT count(*) as cnt 
     FROM all_course_info 
     where course_id=?;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
@@ -68,7 +68,7 @@ module.exports = {
     select distinct a.course_id
     from all_user_info as a, user_history as u
     where u.user_id = ?
-    `
+    `;
     let course_id = await db.queryParamCnt_Arr(selectQuery_1,args[0]);
     data.push(course_id[0].course_id);
 
@@ -76,7 +76,7 @@ module.exports = {
     select count(*) as count
     from all_user_info 
     where user_id=? and course_id=?;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery_2,[1,1]);
     return result;
   },
@@ -95,7 +95,7 @@ module.exports = {
     and uh.user_id = ?
     and aui.course_id = ?
     and ( uh.watched_flag = 1 or uh.watched_flag = 2 );
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
   },
@@ -108,7 +108,7 @@ module.exports = {
     select ch.title
     from all_course_info as aci, chapter as ch
     where aci.lecture_id = ? and aci.chapter_id = ch.id ;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result[0].title;
   },
@@ -122,12 +122,112 @@ module.exports = {
     SELECT distinct B.title
     FROM all_user_info A join course B 
     WHERE A.course_id = B.id and lecture_id= ?;
-    `
+    `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result[0].title;
   },
 
   
+  /*
+  Req : Course ID 
+  Res : Belonging Chapter List
+  Dec : Each Title, Number of lectures included
+  writtend by 신기용
+  */
+  getCourseInfoByCourseID : async (...args) =>{
+    const data = args[0]; // course ID
+    let result = [];
+  
+    var selectQuery =`
+    select distinct aui.chapter_id
+    from all_user_info as aui
+    where aui.course_id = ?;
+    `;
+
+    
+    let chapterCnt = await db.queryParamCnt_Arr(selectQuery,data);
+    console.log('chapterCnt : ' + chapterCnt.length);
+    
+    for(var i=0; i<chapterCnt.length; i++){
+      let object = {};
+  
+      selectQuery =`
+      select title
+      from chapter as ch
+      where ch.id = ?;
+      `;
+      let chapterTitle = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
+      console.log('chapterTitle : ' + chapterTitle[0].title);
+
+      selectQuery =`
+      select count(*) as cnt
+      from lecture as l
+      where l.chapter_id = ?;
+      `;
+      let lectureCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
+      console.log('lectureCnt : ' + lectureCnt.length);
+
+      object.chapterOrder = i+1;
+      object.chapterTitle = chapterTitle[0].title;
+      object.lectureCnt = lectureCnt[0].cnt;
+
+      result.push(object);
+    }
+    return result;
+  },
+
+  /*
+  Req : Course ID 
+  Res : Course Info
+  Dec : Teacher Profile, Teacher Name, Course Title, Each Chapter Info
+  writtend by 신기용
+  */
+  getExplainPopUpByCourseID : async (...args) =>{
+    const data = args[0]; // course ID
+    let result = {};
+  
+    var selectQuery =`
+    select c.title, s.thumbnail_path as img, s.name
+    from course as c, supplier as s
+    where c.supplier_id = s.id
+    and c.id = ?;
+    `;
+
+    let courseInfoObj = {};
+    let courseInfo = await db.queryParamCnt_Arr(selectQuery,data);
+    courseInfoObj.title = courseInfo[0].title;
+    courseInfoObj.img = courseInfo[0].img;
+    courseInfoObj.name = courseInfo[0].name;
+    result.courseInfo = courseInfoObj;
+
+
+    selectQuery =`
+    select c.title, s.thumbnail_path as img, s.name
+    from course as c, supplier as s
+    where c.supplier_id = s.id
+    and c.id = ?;
+    `;
+    
+    let chapterInfoObj = {};
+    let chapterInfo = await db.queryParamCnt_Arr(selectQuery,data);
+    courseInfoObj.title = courseInfo[0].title;
+    courseInfoObj.img = courseInfo[0].img;
+    courseInfoObj.name = courseInfo[0].name;
+
+
+
+    result.chapterInfo = 
+    // result.push(courseInfo);
+
+
+    // courseInfo = await db.queryParamCnt_Arr(selectQuery,data);
+    // console.log('courseInfo title : ' + courseInfo[0].title);
+    // console.log('courseInfo img : ' + courseInfo[0].img);
+    // console.log('courseInfo name : ' + courseInfo[0].name);
+
+    return result;
+  },
+
 
 
 
