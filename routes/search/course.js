@@ -30,10 +30,17 @@ const sql = require('../../module/sql.js');
 */
 
 /*
- Method : Get
+ Method : Post
 */
 
 
+
+
+
+
+
+//written by 성찬
+//강좌 검색
 router.post('/', async(req, res, next) => {
 
     let searchWord = req.body.search;
@@ -42,7 +49,7 @@ router.post('/', async(req, res, next) => {
     
     let selectAllCourse =
     `
-        SELECT id, title, info, image_path FROM comman_db.course;
+        select id, title, info, image_path, hit FROM comman_db.course;
     `;
 
 
@@ -64,8 +71,6 @@ router.post('/', async(req, res, next) => {
     res.status(200).send(
         result
     );
-    
-
 });
 
 
