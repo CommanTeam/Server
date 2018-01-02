@@ -1,11 +1,5 @@
-/*
- Default module
-*/
-const jwt = require('jsonwebtoken');
 
-/*
- Custom module
-*/
+const jwt = require('jsonwebtoken');
 
 /*
  Modularize DB Connection

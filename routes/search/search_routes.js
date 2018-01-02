@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 // Signin
-router.use('/signin', require('./signin'));
+// router.use('/signin', require('./signin'));
 
 
 module.exports = router;

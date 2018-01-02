@@ -16,9 +16,9 @@ router.use(bodyParser.urlencoded({ extended: false }));
 /*
  Custom module
 */
-const jwt = require('../module/jwt.js');
-const db = require('../module/pool.js');
-const sql = require('../module/sql.js');
+const jwt = require('../../module/jwt.js');
+const db = require('../../module/pool.js');
+const sql = require('../../module/sql.js');
 
 /*
  Variable declaration
