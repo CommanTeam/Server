@@ -11,13 +11,16 @@ const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 const sql = require('../../module/sql.js');
 
+
 /*
  Method : Get
 */
 
 
-router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
-    let lectureID = req.body.lectureID;
+router.get('/:courseID', async(req, res, next) => {
+    let courseID = req.params.courseID;
+
+    
     let selectQuery = `
     select title
     from lecture
@@ -42,8 +45,8 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
 });
 
 
-router.get('/progressLecture/:userID', async(req, res, next) => {
-    let userID = req.params.userID;
+router.post('/progressLecture', async(req, res, next) => {
+    let userID = req.body.userID;
 
     let listOfCourse = [];
     let result = [];
@@ -72,7 +75,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     console.log('denominator : ' + denominator[0].cnt);
     console.log('percentage : ' + molecule[0].cnt / denominator[0].cnt * 100);
     console.log('---------------------');
-        result.push(molecule[0].cnt / denominator[0].cnt * 100 + "%");
+        result.push(molecule[0].cnt / denominator[0].cnt * 100);
     }
 
     res.status(200).send({
@@ -82,9 +85,9 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 });
 
 
+
 /*
  Method : Post
 */
-
 
 module.exports = router;
