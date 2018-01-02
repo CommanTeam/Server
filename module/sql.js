@@ -202,29 +202,23 @@ module.exports = {
 
 
     selectQuery =`
-    select c.title, s.thumbnail_path as img, s.name
-    from course as c, supplier as s
-    where c.supplier_id = s.id
-    and c.id = ?;
+    select ch.title, ch.info
+    from chapter as ch
+    where ch.course_id = ?
+    order by priority;
     `;
     
-    let chapterInfoObj = {};
+    let chapterInfoArr = [];
     let chapterInfo = await db.queryParamCnt_Arr(selectQuery,data);
-    courseInfoObj.title = courseInfo[0].title;
-    courseInfoObj.img = courseInfo[0].img;
-    courseInfoObj.name = courseInfo[0].name;
+    for(var i=0; i<chapterInfo.length; i++){
+      let tmpChapterInfoObj = {};
+      tmpChapterInfoObj.title = i+1 + "장. " + chapterInfo[i].title;
+      tmpChapterInfoObj.info = chapterInfo[i].info;
+      chapterInfoArr.push(tmpChapterInfoObj);
+    }
 
-
-
-    result.chapterInfo = 
-    // result.push(courseInfo);
-
-
-    // courseInfo = await db.queryParamCnt_Arr(selectQuery,data);
-    // console.log('courseInfo title : ' + courseInfo[0].title);
-    // console.log('courseInfo img : ' + courseInfo[0].img);
-    // console.log('courseInfo name : ' + courseInfo[0].name);
-
+    result.chapterInfo = chapterInfoArr;
+    
     return result;
   },
 
