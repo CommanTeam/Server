@@ -5,8 +5,8 @@ const express = require('express');
 const router = express.Router();
 
 
-// Signin
-// router.use('/signin', require('./signin'));
+// Lecture Page
+router.use('/coursepage', require('./course_page'));
 
 
 module.exports = router;
