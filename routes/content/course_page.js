@@ -60,7 +60,7 @@ router.get('/popup/:courseID', async(req, res, next) => {
         });
     }else{
         res.status(500).send({
-            "msg" : "Error /content/coursepage/:courseID "
+            "msg" : "Error /content/coursepage/popup/:courseID "
         });
     }    
 });
