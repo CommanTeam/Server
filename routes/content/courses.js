@@ -54,9 +54,7 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 	}
 	
 
-	res.status(200).send(
-		result
-		);
+	res.status(200).send({result});
 
 });
 
