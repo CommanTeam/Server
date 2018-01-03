@@ -16,7 +16,7 @@
  */
 //written by 성찬
 //등록된 강좌인지 체크  return 0: 등록안됨, return 1: 등록됨
-//http://ip/content/registers/{courseID}?userID=###
+//localhost:3000/users/register/{courseID}?userID={userID}
 router.get('/:courseID', async(req, res, next) => {
 
     let userID = req.query.userID;
@@ -25,7 +25,7 @@ router.get('/:courseID', async(req, res, next) => {
 
     let checkRegisterByUserIDAndCourseID =
     `
-        select id from user_register where user_id = ? and course_id=?
+    select id from user_register where user_id = ? and course_id=?
     `;
 
 
@@ -50,7 +50,10 @@ router.get('/:courseID', async(req, res, next) => {
 /*
  Method : Post
  */
- router.post('/', async(req, res, next) => {
+//written by 성찬
+//강좌 등록
+//localhost:3000/users/register
+router.post('/', async(req, res, next) => {
     let courseID = req.body.courseID;
     let userID = req.body.userID;
 
