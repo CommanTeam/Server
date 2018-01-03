@@ -83,6 +83,26 @@ module.exports = {
     return result;
   },
 
+  /*
+  Req : {chapterID}
+  Res : Number of lectures belonging to Chapter
+  Dec : Chapter가 갖고 있는 Lecture Total Cnt
+  writtend by 신기용
+  */
+  getTotalLectureCntInChapter : async (...args) =>{
+    const data = args[0]; // chapter ID
+    let selectQuery =`
+
+    SELECT aci.lecture_id
+    FROM all_course_info as aci 
+    where aci.chapter_id=?;
+    `;
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+
+  
   
 
   /*
@@ -195,6 +215,17 @@ module.exports = {
       `;
       let lectureCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
 
+
+      selectQuery =`
+      select c.opened_chapter
+      from course as c
+      where c.id = ?;
+      `;
+
+      let openedChapterCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
+
+      object.chapterID = chapterCnt[i].chapter_id;
+      object.openedChapterCnt = openedChapterCnt[0].opened_chapter;
       object.chapterOrder = i+1 + "장";
       object.chapterTitle = chapterTitle[0].title;
       object.lectureCnt = lectureCnt[0].cnt;
@@ -254,11 +285,26 @@ module.exports = {
 
 
 
+  /*
+  Req : {lecutreID}
+  Res : Quiz Cnt Belonging to Lecutre
+  Dec : Number of quizzes belonging to the lecture
+        각 강의에 속해있는 퀴즈 Count
+  writtend by 신기용
+  */
+  getQuizCntBelong2Lecture : async (...args) =>{
+    const data = args[0]; // lecture ID
+    var selectQuery =`
+    select count(*) as cnt
+    from lecture as l, quiz_title as qt, quiz_question as qq
+    where l.id = qt.lecture_id
+    and qt.id = qq.quiz_id
+    and l.id = ?;
+    `;
 
-
-
-
-
+    let quizCnt = await db.queryParamCnt_Arr(selectQuery,data);    
+    return quizCnt[0].cnt;
+  },
 
 
 
