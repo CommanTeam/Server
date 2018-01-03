@@ -7,9 +7,10 @@ const db = require('./pool.js');
 module.exports = {
 
   /*
-  Req : User ID 
-  Res : Finding the course you are taking with user ID
-  Dec : User ID로 소속된 Course 찾기
+  Req : {userID}
+  Res : Course List
+  Dec : Finding the course you are taking with user ID
+        User ID로 소속된 Course List 찾기
   writtend by 신기용
   */
   getCourseByUserID : async (...args) =>{
@@ -27,18 +28,19 @@ module.exports = {
 
   
   /*
-  Req : Lecutre ID 
-  Res : Course ID List
+  Req : {courseID}
+  Res : Lecture [ ID,title ] List
   Dec : List of lectures belonging to Chapters
         Chapter에 속한 Lectures List
   writtend by 신기용
   */
-  getCourseByLectureID : async (...args) =>{
+  getLectureListBelong2Chapter : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select distinct a.course_id 
-    from all_user_info as a, user_history as u 
-    where u.lecture_id = ?;
+    select l.id as l_id, l.title as l_title
+    from chapter as ch, lecture as l
+    where ch.id = l.chapter_id
+    and l.chapter_id = ?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -46,18 +48,19 @@ module.exports = {
 
 
   /*
-  Req : Lecutre ID 
-  Res : Chapter ID List
+  Req : {lecutreID}
+  Res : Chapter [ ID, title ]
   Dec : Find a Chapter with a lecture ID
         Lecture ID로 소속된 Chapter 찾기
   writtend by 신기용
   */
-  getChapterByLectureID : async (...args) =>{
+  getChapterUsingLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select distinct a.chapter_id 
-    from all_user_info as a, user_history as u 
-    where u.lecture_id = ?;
+    select ch.id as ch_id, ch.title as ch_title
+    from chapter as ch, lecture as l
+    where ch.id = l.chapter_id
+    and l.id = ?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -160,7 +163,7 @@ module.exports = {
   /*
   Req : Course ID 
   Res : Belonging Chapter List
-  Dec : Each Title, Number of lectures included
+  Dec : Each ( Title, Number of lectures included )
   writtend by 신기용
   */
   getCourseInfoByCourseID : async (...args) =>{
