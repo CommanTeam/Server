@@ -41,6 +41,8 @@ const sql = require('../../module/sql.js');
 
 //written by 성찬
 //강좌 검색
+//http://ip/search/courses
+//reqBody : search
 router.post('/', async(req, res, next) => {
 
     let searchWord = req.body.search;
@@ -49,7 +51,9 @@ router.post('/', async(req, res, next) => {
     
     let selectAllCourse =
     `
-        select id, title, info, image_path, hit FROM comman_db.course;
+        SELECT id, title, info, image_path, hit 
+        FROM course 
+        ORDER BY hit DESC;
     `;
 
 
@@ -63,6 +67,7 @@ router.post('/', async(req, res, next) => {
             course.title = data[i].title;
             course.info = data[i].info;
             course.image_path = data[i].image_path;
+            course.hit = data[i].hit;
 
             result.push(course);
         }
