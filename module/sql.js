@@ -25,22 +25,20 @@ module.exports = {
     return result;
   },
 
-
-  
   /*
-  Req : {courseID}
+  Req : {chapterID}
   Res : Lecture [ ID,title ] List
   Dec : List of lectures belonging to Chapters
         Chapter에 속한 Lectures List
   writtend by 신기용
   */
   getLectureListBelong2Chapter : async (...args) =>{
-    const data = args[0]; // lecture ID
+    const data = args[0]; // chapter ID
     let selectQuery =`
-    select l.id as l_id, l.title as l_title
-    from chapter as ch, lecture as l
-    where ch.id = l.chapter_id
-    and l.chapter_id = ?;
+    select l.id as lecture_id, l.title as lecture_title
+    from lecture as l, chapter as ch
+    where l.chapter_id = ch.id
+    and ch.id = ?
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -287,9 +285,10 @@ module.exports = {
 
   /*
   Req : {lecutreID}
-  Res : Quiz Cnt Belonging to Lecutre
+  Res : Lecutre Count
   Dec : Number of quizzes belonging to the lecture
-        각 강의에 속해있는 퀴즈 Count
+        각 강의에 갖고 있는 퀴즈의 수
+        ( 강의에 종속된 각각의 퀴즈가 갖고 있는 보기의 수를 합한 값 )
   writtend by 신기용
   */
   getQuizCntBelong2Lecture : async (...args) =>{
@@ -318,64 +317,6 @@ module.exports = {
     l.chapter_id = ch.id
     and ch.course_id = c.id;
     `
-  },
-
-    makeNewChatRoomTable : async (...args) => {
-    const name = args[0];
-    var ctrl_name = name + '_' + moment().format('YYMMDDHHmmss');
-    console.log(ctrl_name);
-    let createAllTableQuery =
-    `
-    CREATE TABLE IF NOT EXISTS chat.` + ctrl_name + ` (
-      chat_idx INT(11) NOT NULL AUTO_INCREMENT,
-      content TEXT NULL DEFAULT NULL,
-      write_time VARCHAR(45) NULL DEFAULT NULL,
-      count INT(11) NULL DEFAULT NULL,
-      u_idx INT(11) NULL DEFAULT NULL,
-      user_photo TEXT NULL DEFAULT NULL,
-      PRIMARY KEY (chat_idx))
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8;
-    `;
-
-    let checkAllTable = await db.queryParamCnt_0(createAllTableQuery);
-    console.log("checkAllTable", checkAllTable);
-    let insertGroupQuery = 'INSERT INTO chat.group (real_name, ctrl_name) VALUES (?,?)';
-    let insertGroup = await db.queryParamCnt_Arr(insertGroupQuery, [name, ctrl_name]);
-    console.log("insertGroup", insertGroup);
-
-    //let insertJoinedQuery = 'INSERT INTO admin.joined (u_idx, g_idx) VALUES (?,?)';
-    //let insertJoined = await db.queryParamCnt_Arr(insertJoinedQuery, [])
-  },
-  
-  joinNewPerson : async (...args) => {
-    const name = args[0];
-    const user_name = args[1];
-    let searchAllInfoQuery = 'SELECT * FROM A.user WHERE name = ?';
-    let searchAllInfo = await db.queryParamCnt_Arr(searchAllInfoQuery, [user_name]);
-
-    let insertUserInfoQuery = 'INSERT INTO C.`' + name + '` (idx, name, bio, photo) VALUES (?,?,?,?)';
-    let object = [searchAllInfo.idx, searchAllInfo.name, searchAllInfo.bio, searchAllInfo.photo];
-    let insertUserInfo = await db.queryParamCnt_Arr(insertUserInfoQuery, object);
-  },
-  findUserIndex : async (...args) => {
-    let user_name = args[0];
-    let searchUserIdxQuery = 'SELECT idx FROM A.user WHERE name = ?';
-    let result = await db.queryParamCnt_Arr(searchUserIdxQuery, [user_name]);
-    return result.user_idx;
-  },
-  findRestResLights : async (...args) => {
-    let user_idx = args[0];
-    let findUserJoinedQuery = 'SELECT * FROM A.joined WHERE user_idx = ?';
-    let tables = await db.queryParamCnt_Arr(findUserJoinedQuery, [user_idx]);
-    if(result.length === 0) {
-      res.status(400).send({
-        message : "wrong input"
-      });
-    } else {
-      for(let i = 0 ; i < result.length ; i++) {
-        let findSpecificQuery = 'SELECT * FROM ';
-      }
-    }
   }
+
 };
