@@ -83,7 +83,8 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     let molecule = await sql.getCourseInProgressByUserIDandCourseID(params); 
     
     let denominator = await sql.getTotalLectureCntInCourse(listOfCourse[i]);
-        result.push(molecule[0].cnt / denominator[0].cnt * 100 + "%");
+
+        result.push(parseInt(molecule[0].cnt / denominator[0].cnt * 100));
     }
 
     if(result != undefined) {

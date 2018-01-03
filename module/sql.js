@@ -7,9 +7,10 @@ const db = require('./pool.js');
 module.exports = {
 
   /*
-  Req : User ID 
-  Res : Finding the course you are taking with user ID
-  Dec : User ID로 소속된 Course 찾기
+  Req : {userID}
+  Res : Course List
+  Dec : Finding the course you are taking with user ID
+        User ID로 소속된 Course List 찾기
   writtend by 신기용
   */
   getCourseByUserID : async (...args) =>{
@@ -27,18 +28,19 @@ module.exports = {
 
   
   /*
-  Req : Lecutre ID 
-  Res : Course ID List
+  Req : {courseID}
+  Res : Lecture [ ID,title ] List
   Dec : List of lectures belonging to Chapters
         Chapter에 속한 Lectures List
   writtend by 신기용
   */
-  getCourseByLectureID : async (...args) =>{
+  getLectureListBelong2Chapter : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select distinct a.course_id 
-    from all_user_info as a, user_history as u 
-    where u.lecture_id = ?;
+    select l.id as l_id, l.title as l_title
+    from chapter as ch, lecture as l
+    where ch.id = l.chapter_id
+    and l.chapter_id = ?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -46,18 +48,19 @@ module.exports = {
 
 
   /*
-  Req : Lecutre ID 
-  Res : Chapter ID List
+  Req : {lecutreID}
+  Res : Chapter [ ID, title ]
   Dec : Find a Chapter with a lecture ID
         Lecture ID로 소속된 Chapter 찾기
   writtend by 신기용
   */
-  getChapterByLectureID : async (...args) =>{
+  getChapterUsingLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select distinct a.chapter_id 
-    from all_user_info as a, user_history as u 
-    where u.lecture_id = ?;
+    select ch.id as ch_id, ch.title as ch_title
+    from chapter as ch, lecture as l
+    where ch.id = l.chapter_id
+    and l.id = ?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -80,6 +83,26 @@ module.exports = {
     return result;
   },
 
+  /*
+  Req : {chapterID}
+  Res : Number of lectures belonging to Chapter
+  Dec : Chapter가 갖고 있는 Lecture Total Cnt
+  writtend by 신기용
+  */
+  getTotalLectureCntInChapter : async (...args) =>{
+    const data = args[0]; // chapter ID
+    let selectQuery =`
+
+    SELECT aci.lecture_id
+    FROM all_course_info as aci 
+    where aci.chapter_id=?;
+    `;
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+
+  
   
 
   /*
@@ -160,7 +183,7 @@ module.exports = {
   /*
   Req : Course ID 
   Res : Belonging Chapter List
-  Dec : Each Title, Number of lectures included
+  Dec : Each ( Title, Number of lectures included )
   writtend by 신기용
   */
   getCourseInfoByCourseID : async (...args) =>{
@@ -192,6 +215,17 @@ module.exports = {
       `;
       let lectureCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
 
+
+      selectQuery =`
+      select c.opened_chapter
+      from course as c
+      where c.id = ?;
+      `;
+
+      let openedChapterCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
+
+      object.chapterID = chapterCnt[i].chapter_id;
+      object.openedChapterCnt = openedChapterCnt[0].opened_chapter;
       object.chapterOrder = i+1 + "장";
       object.chapterTitle = chapterTitle[0].title;
       object.lectureCnt = lectureCnt[0].cnt;
@@ -251,11 +285,26 @@ module.exports = {
 
 
 
+  /*
+  Req : {lecutreID}
+  Res : Quiz Cnt Belonging to Lecutre
+  Dec : Number of quizzes belonging to the lecture
+        각 강의에 속해있는 퀴즈 Count
+  writtend by 신기용
+  */
+  getQuizCntBelong2Lecture : async (...args) =>{
+    const data = args[0]; // lecture ID
+    var selectQuery =`
+    select count(*) as cnt
+    from lecture as l, quiz_title as qt, quiz_question as qq
+    where l.id = qt.lecture_id
+    and qt.id = qq.quiz_id
+    and l.id = ?;
+    `;
 
-
-
-
-
+    let quizCnt = await db.queryParamCnt_Arr(selectQuery,data);    
+    return quizCnt[0].cnt;
+  },
 
 
 
