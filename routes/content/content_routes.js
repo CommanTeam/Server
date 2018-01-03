@@ -6,7 +6,6 @@ const router = express.Router();
 
 
 router.use('/coursepage', require('./course_page'));
-router.use('/registers', require('./course_register'));
 router.use('/courses', require('./courses'));
 
 router.use('/lecturepicture', require('./lecture_picture'));
