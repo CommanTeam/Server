@@ -7,9 +7,10 @@ const db = require('./pool.js');
 module.exports = {
 
   /*
-  Req : User ID 
-  Res : Finding the course you are taking with user ID
-  Dec : User ID로 소속된 Course 찾기
+  Req : {userID}
+  Res : Course List
+  Dec : Finding the course you are taking with user ID
+        User ID로 소속된 Course List 찾기
   writtend by 신기용
   */
   getCourseByUserID : async (...args) =>{
@@ -24,21 +25,20 @@ module.exports = {
     return result;
   },
 
-
-  
   /*
-  Req : Lecutre ID 
-  Res : Course ID List
+  Req : {chapterID}
+  Res : Lecture [ ID,title ] List
   Dec : List of lectures belonging to Chapters
         Chapter에 속한 Lectures List
   writtend by 신기용
   */
-  getCourseByLectureID : async (...args) =>{
-    const data = args[0]; // lecture ID
+  getLectureListBelong2Chapter : async (...args) =>{
+    const data = args[0]; // chapter ID
     let selectQuery =`
-    select distinct a.course_id 
-    from all_user_info as a, user_history as u 
-    where u.lecture_id = ?;
+    select l.id as lecture_id, l.title as lecture_title
+    from lecture as l, chapter as ch
+    where l.chapter_id = ch.id
+    and ch.id = ?
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -46,18 +46,19 @@ module.exports = {
 
 
   /*
-  Req : Lecutre ID 
-  Res : Chapter ID List
+  Req : {lecutreID}
+  Res : Chapter [ ID, title ]
   Dec : Find a Chapter with a lecture ID
         Lecture ID로 소속된 Chapter 찾기
   writtend by 신기용
   */
-  getChapterByLectureID : async (...args) =>{
+  getChapterUsingLectureID : async (...args) =>{
     const data = args[0]; // lecture ID
     let selectQuery =`
-    select distinct a.chapter_id 
-    from all_user_info as a, user_history as u 
-    where u.lecture_id = ?;
+    select ch.id as ch_id, ch.title as ch_title
+    from chapter as ch, lecture as l
+    where ch.id = l.chapter_id
+    and l.id = ?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result;
@@ -80,6 +81,26 @@ module.exports = {
     return result;
   },
 
+  /*
+  Req : {chapterID}
+  Res : Number of lectures belonging to Chapter
+  Dec : Chapter가 갖고 있는 Lecture Total Cnt
+  writtend by 신기용
+  */
+  getTotalLectureCntInChapter : async (...args) =>{
+    const data = args[0]; // chapter ID
+    let selectQuery =`
+
+    SELECT aci.lecture_id
+    FROM all_course_info as aci 
+    where aci.chapter_id=?;
+    `;
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result;
+  },
+
+
+  
   
 
   /*
@@ -160,7 +181,7 @@ module.exports = {
   /*
   Req : Course ID 
   Res : Belonging Chapter List
-  Dec : Each Title, Number of lectures included
+  Dec : Each ( Title, Number of lectures included )
   writtend by 신기용
   */
   getCourseInfoByCourseID : async (...args) =>{
@@ -192,6 +213,17 @@ module.exports = {
       `;
       let lectureCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
 
+
+      selectQuery =`
+      select c.opened_chapter
+      from course as c
+      where c.id = ?;
+      `;
+
+      let openedChapterCnt = await db.queryParamCnt_Arr(selectQuery,chapterCnt[i].chapter_id);
+
+      object.chapterID = chapterCnt[i].chapter_id;
+      object.openedChapterCnt = openedChapterCnt[0].opened_chapter;
       object.chapterOrder = i+1 + "장";
       object.chapterTitle = chapterTitle[0].title;
       object.lectureCnt = lectureCnt[0].cnt;
@@ -251,11 +283,27 @@ module.exports = {
 
 
 
+  /*
+  Req : {lecutreID}
+  Res : Lecutre Count
+  Dec : Number of quizzes belonging to the lecture
+        각 강의에 갖고 있는 퀴즈의 수
+        ( 강의에 종속된 각각의 퀴즈가 갖고 있는 보기의 수를 합한 값 )
+  writtend by 신기용
+  */
+  getQuizCntBelong2Lecture : async (...args) =>{
+    const data = args[0]; // lecture ID
+    var selectQuery =`
+    select count(*) as cnt
+    from lecture as l, quiz_title as qt, quiz_question as qq
+    where l.id = qt.lecture_id
+    and qt.id = qq.quiz_id
+    and l.id = ?;
+    `;
 
-
-
-
-
+    let quizCnt = await db.queryParamCnt_Arr(selectQuery,data);    
+    return quizCnt[0].cnt;
+  },
 
 
 
@@ -269,64 +317,6 @@ module.exports = {
     l.chapter_id = ch.id
     and ch.course_id = c.id;
     `
-  },
-
-    makeNewChatRoomTable : async (...args) => {
-    const name = args[0];
-    var ctrl_name = name + '_' + moment().format('YYMMDDHHmmss');
-    console.log(ctrl_name);
-    let createAllTableQuery =
-    `
-    CREATE TABLE IF NOT EXISTS chat.` + ctrl_name + ` (
-      chat_idx INT(11) NOT NULL AUTO_INCREMENT,
-      content TEXT NULL DEFAULT NULL,
-      write_time VARCHAR(45) NULL DEFAULT NULL,
-      count INT(11) NULL DEFAULT NULL,
-      u_idx INT(11) NULL DEFAULT NULL,
-      user_photo TEXT NULL DEFAULT NULL,
-      PRIMARY KEY (chat_idx))
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8;
-    `;
-
-    let checkAllTable = await db.queryParamCnt_0(createAllTableQuery);
-    console.log("checkAllTable", checkAllTable);
-    let insertGroupQuery = 'INSERT INTO chat.group (real_name, ctrl_name) VALUES (?,?)';
-    let insertGroup = await db.queryParamCnt_Arr(insertGroupQuery, [name, ctrl_name]);
-    console.log("insertGroup", insertGroup);
-
-    //let insertJoinedQuery = 'INSERT INTO admin.joined (u_idx, g_idx) VALUES (?,?)';
-    //let insertJoined = await db.queryParamCnt_Arr(insertJoinedQuery, [])
-  },
-  
-  joinNewPerson : async (...args) => {
-    const name = args[0];
-    const user_name = args[1];
-    let searchAllInfoQuery = 'SELECT * FROM A.user WHERE name = ?';
-    let searchAllInfo = await db.queryParamCnt_Arr(searchAllInfoQuery, [user_name]);
-
-    let insertUserInfoQuery = 'INSERT INTO C.`' + name + '` (idx, name, bio, photo) VALUES (?,?,?,?)';
-    let object = [searchAllInfo.idx, searchAllInfo.name, searchAllInfo.bio, searchAllInfo.photo];
-    let insertUserInfo = await db.queryParamCnt_Arr(insertUserInfoQuery, object);
-  },
-  findUserIndex : async (...args) => {
-    let user_name = args[0];
-    let searchUserIdxQuery = 'SELECT idx FROM A.user WHERE name = ?';
-    let result = await db.queryParamCnt_Arr(searchUserIdxQuery, [user_name]);
-    return result.user_idx;
-  },
-  findRestResLights : async (...args) => {
-    let user_idx = args[0];
-    let findUserJoinedQuery = 'SELECT * FROM A.joined WHERE user_idx = ?';
-    let tables = await db.queryParamCnt_Arr(findUserJoinedQuery, [user_idx]);
-    if(result.length === 0) {
-      res.status(400).send({
-        message : "wrong input"
-      });
-    } else {
-      for(let i = 0 ; i < result.length ; i++) {
-        let findSpecificQuery = 'SELECT * FROM ';
-      }
-    }
   }
+
 };
