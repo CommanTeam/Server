@@ -1,21 +1,21 @@
 /*
  Declare module
-*/
-const express = require('express');
-const router = express.Router();
-const crypto = require('crypto-promise');
-const async = require('async');
-const bodyParser = require('body-parser');
+ */
+ const express = require('express');
+ const router = express.Router();
+ const crypto = require('crypto-promise');
+ const async = require('async');
+ const bodyParser = require('body-parser');
 
-const jwt = require('../../module/jwt.js');
-const db = require('../../module/pool.js');
-const sql = require('../../module/sql.js');
+ const jwt = require('../../module/jwt.js');
+ const db = require('../../module/pool.js');
+ const sql = require('../../module/sql.js');
 
 
 /*
  Method : Get
-*/
-router.get('/:userID/:chapterID', async(req, res, next) => {
+ */
+ router.get('/:userID/:chapterID', async(req, res, next) => {
     /*
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -30,7 +30,7 @@ router.get('/:userID/:chapterID', async(req, res, next) => {
     // 강의페이지에서 개요 부분
     var selectQuery=`
     select ch.id as ch_id, ch.title as ch_title, ch.info as ch_info
-	from chapter as ch
+    from chapter as ch
     where ch.id = ?;
     `;
 
@@ -96,10 +96,60 @@ router.get('/:userID/:chapterID', async(req, res, next) => {
 });
 
 
+//written by 성찬
+//http://ip/content/lecturepage/nextLecture?courseID={courseID}&lectureID={lectureID}
+//courseID와 현재 lectureID로 다음 수강할 강의 가져오기(priority column 이용)
+router.get('/nextLecture', async(req, res, next) => {
+    /*
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    */
+    var data = [];
+    var result;
+    let courseID = req.query.courseID;
+    let lectureID = req.query.lectureID;
+
+    var selectAllLectureIDInCourse=`
+    SELECT l.id as lecture_id 
+    FROM course c, chapter ch, lecture l 
+    WHERE c.id=ch.course_id 
+    AND ch.id=l.chapter_id 
+    AND course_id = ? 
+    ORDER BY ch.priority, l.priority;
+    `;
+
+    let orderedLectureID = await db.queryParamCnt_Arr(selectAllLectureIDInCourse, courseID);
+    
+    for(var i=0;i<orderedLectureID.length;i++){
+        data.push(orderedLectureID[i].lecture_id.toString());
+    }
+
+
+    //현재 lecture의 index값 구하기 
+    var currentIndex = data.indexOf(lectureID.toString());
+    var nextLectureID = data[currentIndex+1];
+    if(nextLectureID != undefined){
+        result = data[currentIndex+1];
+    } else{
+        result = -1;
+    }
+
+    res.status(200).send({
+        "result" : result
+    });  
+});
+
+
+
+
 
 
 /*
  Method : Post
-*/
+ */
 
-module.exports = router;
+ module.exports = router;
