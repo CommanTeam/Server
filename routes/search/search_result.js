@@ -41,6 +41,7 @@ const sql = require('../../module/sql.js');
 
 //written by 형민
 //강좌 카테고리 클릭 시 강좌 목록 view
+//http://ip/search/searchresulte/{categoryID}
 router.get('/:categoryID', async(req, res, next) => {
     let category_ID = req.params.categoryID
 
@@ -50,7 +51,7 @@ router.get('/:categoryID', async(req, res, next) => {
         from comman_db.course as c, comman_db.course_category as s
         where c.category_id = s.id
         and s.id = ?
-        order by c.hit
+        order by c.hit desc
         ;
     `;
 
