@@ -25,7 +25,7 @@ router.get('/', async(req, res, next) => {
 
 	let selectCourseByCourseID =
 	`
-	 SELECT * FROM comman_db.course
+	 SELECT * FROM course
 	 WHERE id = ?;
 	`;
 
