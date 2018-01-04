@@ -1,37 +1,37 @@
 /*
  Default module
-*/
-const express = require('express');
-const router = express.Router();
-const async = require('async');
-const bodyParser = require('body-parser');
-const hangul = require('hangul-js');
+ */
+ const express = require('express');
+ const router = express.Router();
+ const async = require('async');
+ const bodyParser = require('body-parser');
+ const hangul = require('hangul-js');
 
 /*
  Router.use
-*/
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: false }));
+ */
+ router.use(bodyParser.json());
+ router.use(bodyParser.urlencoded({ extended: false }));
 
 /*
  Custom module
-*/
-const jwt = require('../../module/jwt.js');
-const db = require('../../module/pool.js');
-const sql = require('../../module/sql.js');
+ */
+ const jwt = require('../../module/jwt.js');
+ const db = require('../../module/pool.js');
+ const sql = require('../../module/sql.js');
 
 
 /*
  Variable declaration
-*/
+ */
 
 /*
  Function Sector
-*/
+ */
 
 /*
  Method : Post
-*/
+ */
 
 
 
@@ -41,6 +41,8 @@ const sql = require('../../module/sql.js');
 
 //written by 성찬
 //강좌 검색
+//http://ip/search/courses
+//reqBody : search
 router.post('/', async(req, res, next) => {
 
     let searchWord = req.body.search;
@@ -49,7 +51,9 @@ router.post('/', async(req, res, next) => {
     
     let selectAllCourse =
     `
-        select id, title, info, image_path, hit FROM comman_db.course;
+    SELECT id, title, info, image_path, hit 
+    FROM course 
+    ORDER BY hit DESC;
     `;
 
 
@@ -63,13 +67,15 @@ router.post('/', async(req, res, next) => {
             course.title = data[i].title;
             course.info = data[i].info;
             course.image_path = data[i].image_path;
+            course.hit = data[i].hit;
 
             result.push(course);
         }
     }
 
-    res.status(200).send(
-        result
+    res.status(200).send({
+        "result" : result
+    }
     );
 });
 

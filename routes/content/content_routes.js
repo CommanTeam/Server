@@ -6,12 +6,13 @@ const router = express.Router();
 
 
 router.use('/coursepage', require('./course_page'));
-// router.use('/registers', require('./course_register'));
 router.use('/courses', require('./courses'));
+router.use('/chapters', require('./chapters'));
+router.use('/lectures', require('./lectures'));
 
 router.use('/lecturepicture', require('./lecture_picture'));
 router.use('/categories', require('./course_category'));
 router.use('/lecturepage', require('./lecture_page'));
-
+router.use('/lecturequiz', require('./lecture_quiz'));
 
 module.exports = router;

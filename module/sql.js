@@ -35,7 +35,7 @@ module.exports = {
   getLectureListBelong2Chapter : async (...args) =>{
     const data = args[0]; // chapter ID
     let selectQuery =`
-    select l.id as lecture_id, l.title as lecture_title
+    select l.id as lecture_id, l.title as lecture_title, l.lecture_type as lecture_type
     from lecture as l, chapter as ch
     where l.chapter_id = ch.id
     and ch.id = ?
@@ -78,7 +78,7 @@ module.exports = {
     where course_id=?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
-    return result;
+    return result[0].cnt;
   },
 
   /*
@@ -91,12 +91,30 @@ module.exports = {
     const data = args[0]; // chapter ID
     let selectQuery =`
 
-    SELECT aci.lecture_id
+    SELECT count(*) as cnt
     FROM all_course_info as aci 
     where aci.chapter_id=?;
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
-    return result;
+    return result[0].cnt;
+  },
+
+  /*
+  Req : {courseID}
+  Res : Number of chapters belonging to Course
+  Dec : Course가 갖고 있는 Chapters Total Cnt
+  writtend by 신기용
+  */
+  getTotalChapterCntInCourse : async (...args) =>{
+    const data = args[0]; // course ID
+    let selectQuery =`
+    select count(*) as cnt
+    from chapter as ch, course as c
+    where ch.course_id = c.id
+    and c.id = ? ;
+    `;
+    let result = await db.queryParamCnt_Arr(selectQuery,data);
+    return result[0].cnt;
   },
 
 
@@ -147,7 +165,7 @@ module.exports = {
     and ( uh.watched_flag = 1 or uh.watched_flag = 2 );
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
-    return result;
+    return result[0].cnt;
   },
 
   // Lecture ID로 Chapter title 뽑기
@@ -288,16 +306,15 @@ module.exports = {
   Res : Lecutre Count
   Dec : Number of quizzes belonging to the lecture
         각 강의에 갖고 있는 퀴즈의 수
-        ( 강의에 종속된 각각의 퀴즈가 갖고 있는 보기의 수를 합한 값 )
   writtend by 신기용
   */
   getQuizCntBelong2Lecture : async (...args) =>{
     const data = args[0]; // lecture ID
     var selectQuery =`
+
     select count(*) as cnt
-    from lecture as l, quiz_title as qt, quiz_question as qq
+    from lecture as l, quiz_title as qt
     where l.id = qt.lecture_id
-    and qt.id = qq.quiz_id
     and l.id = ?;
     `;
 

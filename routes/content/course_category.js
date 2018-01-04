@@ -6,13 +6,14 @@
  const async = require('async');
  const bodyParser = require('body-parser');
 
+
  const jwt = require('../../module/jwt.js');
  const db = require('../../module/pool.js');
  const sql = require('../../module/sql.js');
 
 
 
-//function
+//(객체 비교 function)
 var compare = function( a, b ){
   var type = typeof a, i, j;
   if( type == "object" ){

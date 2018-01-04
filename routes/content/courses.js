@@ -16,6 +16,28 @@
 /*
  Method : Get
  */
+//written By 성찬
+//강좌 id로 강좌정보 가져오기  
+//http://ip/content/courses?courseID={courseID}
+router.get('/', async(req, res, next) => {
+
+	let courseID = req.query.courseID;
+
+	let selectCourseByCourseID =
+	`
+	 SELECT * FROM course
+	 WHERE id = ?;
+	`;
+
+	var data = await db.queryParamCnt_Arr(selectCourseByCourseID, courseID);
+
+	res.status(200).send({data});
+
+});
+
+
+
+
 
 //written By 성찬
 //강좌id로 챕터목록 반환 
@@ -37,7 +59,7 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 	`;
 
 	var openChapterNum = await db.queryParamCnt_Arr(selectOpenChapterByCourseId, courseID);
-	console.log("openedChapter: " + openChapterNum[0].opened_chapter);
+	// console.log("openedChapter: " + openChapterNum[0].opened_chapter);
 
 
 	var data = await db.queryParamCnt_Arr(selectChapterByCourseId, courseID);

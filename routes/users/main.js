@@ -66,6 +66,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     let listOfCourse = [];
     let result = [];
 
+    // Res : Course List
     // User가 듣고 있는 모든 강좌 출력
     let allCourseList = await sql.getCourseByUserID(userID);
     
@@ -81,10 +82,26 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     
     // User가 Course에서 몇개의 Lecutre를 들었는지 Count
     let molecule = await sql.getCourseInProgressByUserIDandCourseID(params); 
-    
     let denominator = await sql.getTotalLectureCntInCourse(listOfCourse[i]);
+    let progressInCourse = parseInt(molecule / denominator * 100);
 
-        result.push(parseInt(molecule[0].cnt / denominator[0].cnt * 100));
+
+    var selectQuery=`
+    select c.title as c_title
+	from course as c
+	where c.id=? ;
+    `
+    // 강좌 Title
+    let courseTitle = await db.queryParamCnt_Arr(selectQuery,listOfCourse[i]);
+
+    // 강좌가 갖고 있는 단원의 수
+    let chapterCnt = await sql.getTotalChapterCntInCourse(listOfCourse[i]);
+
+    let progressCourse = {};
+    progressCourse.courseTitle = courseTitle[0].c_title;
+    progressCourse.chapterCnt = chapterCnt;
+    progressCourse.progressPercentage = progressInCourse;     
+    result.push(progressCourse);
     }
 
     if(result != undefined) {
