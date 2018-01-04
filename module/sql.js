@@ -35,7 +35,7 @@ module.exports = {
   getLectureListBelong2Chapter : async (...args) =>{
     const data = args[0]; // chapter ID
     let selectQuery =`
-    select l.id as lecture_id, l.title as lecture_title
+    select l.id as lecture_id, l.title as lecture_title, l.lecture_type as lecture_type
     from lecture as l, chapter as ch
     where l.chapter_id = ch.id
     and ch.id = ?
