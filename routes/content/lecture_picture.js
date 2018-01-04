@@ -15,30 +15,49 @@
  Method : Get
  */
 //written by 형민
-//등록된 강좌인지 체크  return 0: 등록안됨, return 1: 등록됨
-//http://ip/content/registers/{lectureID}?userID=###
+//강의ID로 강의img, 다음 단원ID 반환
+//http://ip/content//lecturepicture/{lectureID}
 // router.get('/:lectureID', async(req, res, next) => {
 
-//     let lectureID = req.query.lectureID;
-//     let result = [];
+//     let lectureID = req.params.lectureID;
+//     let result = {};
 
-//     let checkRegisterByUserIDAndCourseID =
-//     `
-//         select id from user_register where user_id = ? and course_id=?
+//     let getImageUrlbyLectureID =
+//     `SELECT image_path
+//     FROM comman_db.lecture as l,
+//     comman_db.quiz_title as q  
+//     WHERE l.id = q.lecture_id 
+//     AND l.id = ?;
 //     `;
 
+//     let getChapterIDbyLectureID = 
+//     `SELECT ch.id AS ch_id
+//     FROM chapter AS ch, lecture AS l
+//     WHERE ch.id = l.chapter_id
+//     AND l.id = ?
+//     `
 
-//     var data = await db.queryParamCnt_Arr(checkRegisterByUserIDAndCourseID, [userID, courseID]);
+//     let imageUrlbylectureID = await db.queryParamCnt_Arr(getImageUrlbyLectureID, lectureID);
+//     let chapterIDbylectureID = await db.queryParamCnt_Arr(getChapterIDbyLectureID, lectureID);
 
-//     console.log(data.length);
+//     let nextChpaterID = chapterID + 1; //챕터 아이디를 렉쳐아이디당 챕터ID를 다시 구해주는 쿼리를 만들어야하는가 ==> //아님 포스트로 만들어서 ChapterID도 ㅏㄷ아야하는가 
+    
 
-//     if(!data.length==0){
-//         result = 1;
-//     }
+//     // if(!data.length==0){
+//     //     result = 1;
+//     // }
 
+
+// result.imageUrlbylectureID = imageUrlbylectureID;
+// result
 
 //     res.status(200).send({
-//         result
+//         result ={                       //객체 문법 이거 가능? 
+//             imageUrlbylectureID;        
+//         },
+//         {
+//             nextChpaterID;
+//         }
 //     });
 // });
 
