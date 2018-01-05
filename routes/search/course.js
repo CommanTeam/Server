@@ -51,10 +51,12 @@ router.post('/', async(req, res, next) => {
     
     let selectAllCourse =
     `
-    SELECT id, title, info, image_path, hit 
-    FROM course 
-    ORDER BY hit DESC;
+    SELECT c.id, c.title, c.info, c.image_path, ur.hit
+    FROM course c LEFT JOIN (SELECT course_id, count(*) as hit FROM comman_db.user_register group by course_id) ur
+    ON c.id = ur.course_id
+    ORDER BY hit DESC
     `;
+
 
 
     var data = await db.queryParamCnt_None(selectAllCourse);

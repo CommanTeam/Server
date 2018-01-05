@@ -29,7 +29,6 @@ var compare = function( a, b ){
       for( i in b ){
         if( b.hasOwnProperty(i) ) j++;
     }
-
       //a의 각 키와 비교하면서 카운트를 제거해간다.
       for( i in a ){
         if( a.hasOwnProperty(i) ){
@@ -103,7 +102,7 @@ router.get('/:lectureID', async(req, res, next) => {
     }
 
     console.log(result);
-    res.status(200).send(result);
+    res.status(200).send({result : result});
 
 
 
