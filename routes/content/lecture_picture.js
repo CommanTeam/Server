@@ -15,38 +15,70 @@
  Method : Get
  */
 //written by 형민
-//강의ID로 강의img, 다음 단원ID 반환
-//http://ip/content//lecturepicture/{lectureID}
-// router.get('/:lectureID', async(req, res, next) => {
+//강의ID로 강의imgPath를 강의 우선순위에 따라 정렬, 다음 단원ID 반환
+//http://ip/content/lecturepicture/lectureimgUrl?courseID={courseID}&lectureID={lectureID}
+router.get('/lectureimgUrl', async(req, res, next) => {
 
-//     let lectureID = req.params.lectureID;
-//     let result = {};
+    let courseID = req.query.courseID;
+    let lectureID = req.query.lectureID;
+    var lectureImageArr = [];
+    var object_lectureImage = {};
+    var nextlecID = [];
+    var result = {};
+    let getImageUrlbyLectureID =
+    `SELECT image_path
+    FROM comman_db.lecture as l,
+    comman_db.lecutre_image as li  
+    WHERE l.id = li.lecture_id 
+    AND l.id = ?
+    order by  li.priority;
+    `;
+    let data = await db.queryParamCnt_Arr(getImageUrlbyLectureID, lectureID);
 
-//     let getImageUrlbyLectureID =
-//     `SELECT image_path
-//     FROM comman_db.lecture as l,
-//     comman_db.quiz_title as q  
-//     WHERE l.id = q.lecture_id 
-//     AND l.id = ?;
-//     `;
 
-//     let getChapterIDbyLectureID = 
-//     `SELECT ch.id AS ch_id
-//     FROM chapter AS ch, lecture AS l
-//     WHERE ch.id = l.chapter_id
-//     AND l.id = ?
-//     `
+    for(var i=0; i<data.length;i++){ 
+        lectureImageArr.push(data[i].image_path);
+    }
 
-//     let imageUrlbylectureID = await db.queryParamCnt_Arr(getImageUrlbyLectureID, lectureID);
-//     let chapterIDbylectureID = await db.queryParamCnt_Arr(getChapterIDbyLectureID, lectureID);
+    var selectAllLectureIDInCourse=`
+    SELECT l.id as lecture_id 
+    FROM course c, chapter ch, lecture l 
+    WHERE c.id=ch.course_id 
+    AND ch.id=l.chapter_id 
+    AND course_id = ? 
+    ORDER BY ch.priority, l.priority;
+    `;
 
-//     let nextChpaterID = chapterID + 1; //챕터 아이디를 렉쳐아이디당 챕터ID를 다시 구해주는 쿼리를 만들어야하는가 ==> //아님 포스트로 만들어서 ChapterID도 ㅏㄷ아야하는가 
+
+    let orderedLectureID = await db.queryParamCnt_Arr(selectAllLectureIDInCourse, courseID);
     
 
-//     // if(!data.length==0){
-//     //     result = 1;
-//     // }
+    for(var i=0;i<orderedLectureID.length;i++){
+        nextlecID.push(orderedLectureID[i].lecture_id.toString());
+    }
 
+    var currentIndex = nextlecID.indexOf(lectureID.toString());
+    var nextLectureID = nextlecID[currentIndex+1];
+    if(nextLectureID != undefined){
+        nextLectureID = nextlecID[currentIndex+1];
+    } else{
+        nextLectureID = -1;
+    }
+
+
+result.lectureImageUrlArr = lectureImageArr;
+result.nextLectureID = nextLectureID;
+
+    console.log(result);
+    res.status(200).send({
+    	"result" : result
+    });
+
+
+
+
+
+    
 
 // result.imageUrlbylectureID = imageUrlbylectureID;
 // result
@@ -59,7 +91,7 @@
 //             nextChpaterID;
 //         }
 //     });
-// });
+});
 
 
 
