@@ -57,8 +57,6 @@ router.post('/', async(req, res, next) => {
     ORDER BY hit DESC
     `;
 
-
-
     var data = await db.queryParamCnt_None(selectAllCourse);
     
 
