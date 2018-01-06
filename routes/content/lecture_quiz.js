@@ -49,7 +49,7 @@ return a === b;
  Method : Get
  */
 //written by 성찬 
-//lectureID값으로 lecture 정보들 가져옴 (퀴즈테이블과 join) 
+//lectureID값으로 lecture(quiz) 정보들 가져옴 (퀴즈테이블과 join) 
 //http://ip/content/lecturequiz/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
 
