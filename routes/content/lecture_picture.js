@@ -101,27 +101,13 @@ result.nextLectureID = nextLectureID;
 router.get('/:lectureID', async(req, res, next) => {
 
 	let lectureID = req.params.lectureID;
-
-
-
-	let selectLectureByUserID =  `SELECT l.id as lecture_id, l.priority, l.title, l.lecture_type, uh.user_id, uh.watched_flag 
+    let selectLectureByUserID =  `
+    SELECT l.id as lecture_id, l.priority, l.title, l.lecture_type, uh.user_id, uh.watched_flag 
 	FROM lecture l, user_history uh 
 	WHERE l.id = uh.lecture_id 
-	AND uh.user_id = ?`
-
-
-	
-	// `
-	// SELECT li.lecture_id, l.title, li.image_path, li.priority AS image_priority 
-	// FROM lecture_image li, lecture l 
-	// WHERE li.lecture_id = l.id 
-	// AND lecture_id = ?
-	// ORDER BY li.priority;
-
-	// `;
+    AND uh.user_id = ?`
 
 	let result = await db.queryParamCnt_Arr(getImageUrlbyLectureID, lectureID);
-
 
     res.status(200).send({
        result : result

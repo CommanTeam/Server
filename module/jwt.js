@@ -1,6 +1,6 @@
 
 const jwt = require('jsonwebtoken');
-
+const secretKey = require('../../config/secretKey').key;
 /*
  Modularize DB Connection
 */
