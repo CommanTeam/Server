@@ -21,23 +21,6 @@
  const sql = require('../../module/sql.js');
 
 
-/*
- Variable declaration
- */
-
-/*
- Function Sector
- */
-
-/*
- Method : Post
- */
-
-
-
-
-
-
 
 //written by 성찬
 //강좌 검색
@@ -78,6 +61,56 @@ router.post('/', async(req, res, next) => {
     }
     );
 });
+
+
+
+
+//written by 성찬
+//강좌 검색
+//http://ip/search/courses
+//reqBody : search
+router.get('/categories/:categoryID', async(req, res, next) => {
+
+    let categoryID = req.params.categoryID;
+    let result = [];
+    
+    let selectCourseByCategoryID =
+    `
+    SELECT c.id, c.title, c.info, c.image_path, ur.hit, c.category_id
+    FROM (SELECT * FROM course WHERE category_id = ?) c 
+    LEFT JOIN
+    (SELECT course_id, count(*) AS hit 
+    FROM user_register GROUP BY course_id) ur
+    ON c.id = ur.course_id
+    ORDER BY hit
+    DESC
+    `;
+
+
+
+    var data = await db.queryParamCnt_Arr(selectCourseByCategoryID, categoryID);
+    
+
+    for(var i=0;i<data.length;i++){
+        let course = {};
+        course.id = data[i].id;
+        course.title = data[i].title;
+        course.info = data[i].info;
+        course.image_path = data[i].image_path;
+        course.hit = data[i].hit;
+
+        result.push(course);
+        
+    }
+
+    res.status(200).send({
+        "result" : result
+    }
+    );
+});
+
+
+
 
 
 
