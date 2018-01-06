@@ -87,7 +87,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 
 
     var selectQuery=`
-    select c.title as c_title
+    select c.title as c_title, c.id as course_id, c.image_path as image_path
 	from course as c
 	where c.id=? ;
     `
@@ -98,6 +98,8 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     let chapterCnt = await sql.getTotalChapterCntInCourse(listOfCourse[i]);
 
     let progressCourse = {};
+    progressCourse.courseID = courseTitle[0].course_id;
+    progressCourse.imagePath = courseTitle[0].image_path;
     progressCourse.courseTitle = courseTitle[0].c_title;
     progressCourse.chapterCnt = chapterCnt;
     progressCourse.progressPercentage = progressInCourse;     
