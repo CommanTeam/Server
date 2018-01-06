@@ -2,10 +2,7 @@ const async = require('async');
 const moment = require('moment');
 const db = require('./pool.js');
 
-
-
 module.exports = {
-
   /*
   Req : {userID}
   Res : Course List
