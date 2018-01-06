@@ -126,6 +126,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
   Dec : Greeting Ment
   writtend by 신기용
   */
+
 router.get('/greeting', async(req, res, next) => {
     /*
     const chkToken = jwt.verify(req.headers.authorization);
@@ -136,21 +137,17 @@ router.get('/greeting', async(req, res, next) => {
     }
     */
 
-    let result = [];
+    let result = {};
+    let mentArr = [];
+    mentArr.push(" ment 1 ");
+    mentArr.push(" ment 2 ");
+    mentArr.push(" ment 3 ");
+    mentArr.push(" ment 4 ");
+    mentArr.push(" ment 5 ");
 
-    let ment_1 = "ment_1";
-    let ment_2 = "ment_2";
-    let ment_3 = "ment_3";
-    let ment_4 = "ment_4";
-    let ment_5 = "ment_5";
-    
     // 인사말 Seed 랜덤으로 출력
-    var seed = ParseInt(Math.random() * 5 + 1);
-    var ment = "ment_";
-    ment += seed;
-
-    result = seed
-    console.log('ment : ' + ment);
+    var seed = parseInt(Math.random() * 5 + 1);
+    result.ment = mentArr[seed];
 
     if(result != undefined) {
         res.status(200).send({
@@ -158,7 +155,7 @@ router.get('/greeting', async(req, res, next) => {
         });
     }else{
         res.status(500).send({
-            "msg" : "Error /users/main/progressLecture/:userID "
+            "msg" : "Error /users/main/greeting "
         });
     }    
     
