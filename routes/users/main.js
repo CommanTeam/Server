@@ -146,7 +146,7 @@ router.get('/greeting', async(req, res, next) => {
     mentArr.push(" ment 5 ");
 
     // 인사말 Seed 랜덤으로 출력
-    var seed = parseInt(Math.random() * 5 + 1);
+    var seed = parseInt(Math.random() * 4 + 1);
     result.ment = mentArr[seed];
 
     if(result != undefined) {
