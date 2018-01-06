@@ -27,11 +27,7 @@
 //http://ip/search/courses
 //reqBody : search
 router.post('/', async(req, res, next) => {
-
     let searchWord = req.body.search;
-    console.log('searchWord 1 : ' + searchWord );
-    console.log('searchWord 2 : ' + decodeURI(searchWord) );
-
     let searcher = new hangul.Searcher(searchWord);
     let result = [];
     

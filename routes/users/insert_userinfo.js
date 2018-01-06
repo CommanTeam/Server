@@ -37,11 +37,14 @@ const sql = require('../../module/sql.js');
  Method : Post
 */
 router.post('/', async(req, res, next) => {
-    //var id = req.body.id;
-    //var pwd = req.body.u_pwd;
     var nickname = req.body.nickName;
     var thumbnail_path = req.body.thumbnailPath;
     var email = req.body.email;
+
+
+    res.send(200).status({
+        "msg": " test"
+    });
 
     //pwd해싱 필요없음
     //const hashedValue = await crypto.hash('sha512')(pwd);  
