@@ -29,7 +29,6 @@ var compare = function( a, b ){
       for( i in b ){
         if( b.hasOwnProperty(i) ) j++;
     }
-
       //a의 각 키와 비교하면서 카운트를 제거해간다.
       for( i in a ){
         if( a.hasOwnProperty(i) ){
@@ -50,7 +49,7 @@ return a === b;
  Method : Get
  */
 //written by 성찬 
-//lectureID값으로 lecture 정보들 가져옴 (퀴즈테이블과 join) 
+//lectureID값으로 lecture(quiz) 정보들 가져옴 (퀴즈테이블과 join) 
 //http://ip/content/lecturequiz/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
 
@@ -103,7 +102,7 @@ router.get('/:lectureID', async(req, res, next) => {
     }
 
     console.log(result);
-    res.status(200).send(result);
+    res.status(200).send({result : result});
 
 
 

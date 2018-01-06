@@ -31,7 +31,7 @@ router.get('/:courseID', async(req, res, next) => {
 
     var data = await db.queryParamCnt_Arr(checkRegisterByUserIDAndCourseID, [userID, courseID]);
 
-    console.log(data.length);
+    // console.log(data.length);
 
     if(!data.length==0){
         result = 1;

@@ -88,7 +88,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 
 
     var selectQuery=`
-    select c.title as c_title
+    select c.title as c_title, c.id as course_id, c.image_path as image_path
 	from course as c
 	where c.id=? ;
     `
@@ -101,7 +101,9 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     let chapterCnt = await sql.getTotalChapterCntInCourse(listOfCourse[i]);
 
     let progressCourse = {};
-    progressCourse.courseID = listOfCourse[i];
+
+    progressCourse.courseID = courseTitle[0].course_id;
+    progressCourse.imagePath = courseTitle[0].image_path;
     progressCourse.courseTitle = courseTitle[0].c_title;
     progressCourse.chapterCnt = chapterCnt;
     progressCourse.progressPercentage = progressInCourse;     
@@ -122,9 +124,56 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 });
 
 
+
+
 /*
  Method : Post
 */
+
+
+
+/*
+  Req : None
+  Res : Greeting Ment
+  Dec : Greeting Ment
+  writtend by 신기용
+  */
+router.post('/greeting', async(req, res, next) => {
+    let email = req.body.email;
+
+    const hashedValue = 
+    await crypto.hash('sha512')(email);
+
+    let result = {};
+    let mentArr = [];
+    mentArr.push(" ment 1 ");
+    mentArr.push(" ment 2 ");
+    mentArr.push(" ment 3 ");
+    mentArr.push(" ment 4 ");
+    mentArr.push(" ment 5 ");
+
+    // 인사말 Seed 랜덤으로 출력
+    var seed = parseInt(Math.random() * 4 + 1);
+    result.ment = mentArr[seed];
+
+    if(result != undefined) {
+        const token = jwt.sign(hashedValue);
+        res.status(200).send({
+            "result" : result 
+        });
+    }else{
+        res.status(500).send({
+            "msg" : "Error /users/main/greeting "
+        });
+    }    
+    
+
+});
+
+
+
+
+
 
 
 module.exports = router;

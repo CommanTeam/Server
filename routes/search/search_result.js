@@ -34,11 +34,6 @@ const sql = require('../../module/sql.js');
 */
 
 
-
-
-
-
-
 //written by 형민
 //강좌 카테고리 클릭 시 강좌 목록 view
 //http://ip/search/searchresulte/{categoryID}
@@ -58,7 +53,7 @@ router.get('/:categoryID', async(req, res, next) => {
     let result = await db.queryParamCnt_Arr(selectQuery,category_ID);
     
     res.status(200).send({
-        result
+        "result" : result
     });
 });
 

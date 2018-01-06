@@ -14,5 +14,6 @@ router.use('/lecturepicture', require('./lecture_picture'));
 router.use('/categories', require('./course_category'));
 router.use('/lecturepage', require('./lecture_page'));
 router.use('/lecturequiz', require('./lecture_quiz'));
+router.use('/lecturevideo', require('./lecture_video'));
 
 module.exports = router;

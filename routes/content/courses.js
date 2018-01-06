@@ -25,13 +25,13 @@ router.get('/', async(req, res, next) => {
 
 	let selectCourseByCourseID =
 	`
-	 SELECT * FROM course
-	 WHERE id = ?;
+	 SELECT c.id, c.supplier_id, c.opened_chapter, c.image_path, s.name, s.thumbnail_path as supplier_thumbnail, c.title, c.info, c.price, c.category_id FROM course c, supplier s
+	 WHERE c.supplier_id = s.id AND c.id = ?;
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectCourseByCourseID, courseID);
 
-	res.status(200).send({data});
+	res.status(200).send({result : data});
 
 });
 
