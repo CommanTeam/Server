@@ -36,6 +36,10 @@ const sql = require('../../module/sql.js');
 /*
  Method : Post
 */
+//written by 탁형민
+//usr info 받아서 DB에 INSERT
+//http://ip/users/insert_usr_info/
+
 router.post('/', async(req, res, next) => {
     //var id = req.body.id;
     //var pwd = req.body.u_pwd;
