@@ -25,7 +25,7 @@ router.get('/', async(req, res, next) => {
 
 	let selectCourseByCourseID =
 	`
-	 SELECT c.id, c.supplier_id, c.opened_chapter, c.image_path, s.name, c.title, c.info, c.price, c.category_id FROM course c, supplier s
+	 SELECT c.id, c.supplier_id, c.opened_chapter, c.image_path, s.name, s.thumbnail_path as supplier_thumbnail, c.title, c.info, c.price, c.category_id FROM course c, supplier s
 	 WHERE c.supplier_id = s.id AND c.id = ?;
 	`;
 
