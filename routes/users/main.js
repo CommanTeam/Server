@@ -121,6 +121,52 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 
 
 /*
+  Req : None
+  Res : Greeting Ment
+  Dec : Greeting Ment
+  writtend by 신기용
+  */
+
+router.get('/greeting', async(req, res, next) => {
+    /*
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    */
+
+    let result = {};
+    let mentArr = [];
+    mentArr.push(" ment 1 ");
+    mentArr.push(" ment 2 ");
+    mentArr.push(" ment 3 ");
+    mentArr.push(" ment 4 ");
+    mentArr.push(" ment 5 ");
+
+    // 인사말 Seed 랜덤으로 출력
+    var seed = parseInt(Math.random() * 5 + 1);
+    result.ment = mentArr[seed];
+
+    if(result != undefined) {
+        res.status(200).send({
+            "result" : result 
+        });
+    }else{
+        res.status(500).send({
+            "msg" : "Error /users/main/greeting "
+        });
+    }    
+    
+
+});
+
+
+
+
+
+/*
  Method : Post
 */
 
