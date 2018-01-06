@@ -8,7 +8,7 @@ const router = express.Router();
 // Signin
 router.use('/main', require('./main'));
 
-router.use('/insert_usr_info', require('./insert_userinfo'));
+router.use('/insert_user_info', require('./insert_userinfo'));
 
 router.use('/register', require('./register_check'));
 

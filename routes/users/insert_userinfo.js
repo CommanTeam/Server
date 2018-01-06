@@ -42,10 +42,6 @@ router.post('/', async(req, res, next) => {
     var email = req.body.email;
 
 
-    res.send(200).status({
-        "msg": " test"
-    });
-
     //pwd해싱 필요없음
     //const hashedValue = await crypto.hash('sha512')(pwd);  
 
