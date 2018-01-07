@@ -169,7 +169,7 @@ router.get('/lectureList', async(req, res, next) => {
             } 
             if(lectureQuery[i].lecture_type == 2){
                 var pictureCount = await db.queryParamCnt_Arr(countImageLecture, lectureQuery[i].lecture_id);
-                lectureList.size = "youtube lecture";
+                lectureList.size = -1;
             }
             result.push(lectureList);
             console.log('lectureList ID : ' + lectureList.lectureID);
