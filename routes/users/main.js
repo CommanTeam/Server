@@ -31,7 +31,7 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
     `
 
     let result = {};         
-    result.courseTitle = await sql.getCourseTitleByLectureID(lectureID);
+    result.courseTitle = await sql.getCourseTitleByLectureID(lectureID); //탁형민이 추가한 부분
     result.chapterTitle = await sql.getChapterTitleByLectureID(lectureID);
     let lectureTitle = await db.queryParamCnt_Arr(selectQuery,lectureID);
     result.lectureTitle = lectureTitle[0].title;
@@ -74,6 +74,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
         listOfCourse.push(allCourseList[i].course_id);
     }
 
+
     // Course에서 User가 수강했거나, 수강 중인 Lecture Count
     for(var i=0; i < listOfCourse.length; i++){
         let params = [];
@@ -91,6 +92,8 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 	from course as c
 	where c.id=? ;
     `
+
+  
     // 강좌 Title
     let courseTitle = await db.queryParamCnt_Arr(selectQuery,listOfCourse[i]);
 
@@ -98,6 +101,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
     let chapterCnt = await sql.getTotalChapterCntInCourse(listOfCourse[i]);
 
     let progressCourse = {};
+
     progressCourse.courseID = courseTitle[0].course_id;
     progressCourse.imagePath = courseTitle[0].image_path;
     progressCourse.courseTitle = courseTitle[0].c_title;
@@ -120,9 +124,56 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 });
 
 
+
+
 /*
  Method : Post
 */
+
+
+
+/*
+  Req : None
+  Res : Greeting Ment
+  Dec : Greeting Ment
+  writtend by 신기용
+  */
+router.post('/greeting', async(req, res, next) => {
+    let email = req.body.email;
+
+    const hashedValue = 
+    await crypto.hash('sha512')(email);
+
+    let result = {};
+    let mentArr = [];
+    mentArr.push(" ment 1 ");
+    mentArr.push(" ment 2 ");
+    mentArr.push(" ment 3 ");
+    mentArr.push(" ment 4 ");
+    mentArr.push(" ment 5 ");
+
+    // 인사말 Seed 랜덤으로 출력
+    var seed = parseInt(Math.random() * 4 + 1);
+    result.ment = mentArr[seed];
+
+    if(result != undefined) {
+        const token = jwt.sign(hashedValue);
+        res.status(200).send({
+            "result" : result 
+        });
+    }else{
+        res.status(500).send({
+            "msg" : "Error /users/main/greeting "
+        });
+    }    
+    
+
+});
+
+
+
+
+
 
 
 module.exports = router;

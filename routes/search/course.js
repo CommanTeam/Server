@@ -27,7 +27,6 @@
 //http://ip/search/courses
 //reqBody : search
 router.post('/', async(req, res, next) => {
-
     let searchWord = req.body.search;
     let searcher = new hangul.Searcher(searchWord);
     let result = [];
@@ -39,8 +38,6 @@ router.post('/', async(req, res, next) => {
     ON c.id = ur.course_id
     ORDER BY hit DESC
     `;
-
-
 
     var data = await db.queryParamCnt_None(selectAllCourse);
     

@@ -35,7 +35,6 @@ router.get('/:courseID', async(req, res, next) => {
     AND course_id=?
     `;
 
-
     var data = await db.queryParamCnt_Arr(checkPurchaseByUserIDAndCourseID, [userID, courseID]);
     
     result = data[0].purchase_flag;
