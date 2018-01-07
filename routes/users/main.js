@@ -134,14 +134,13 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
   writtend by 신기용
   */
 router.get('/greeting', async(req, res, next) => {
-    console.log('here?');
-    // const chkToken = jwt.verify(req.headers.authorization);
-    // // 토큰 검증 실패
-    // if(chkToken == -1) {
-    //     res.status(401).send({
-    //         message : "Access Denied"
-    //     });
-    // }
+    const chkToken = jwt.verify(req.headers.authorization);
+    // 토큰 검증 실패
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 
     let email = "jules010@naver.com";
     let result = {};
