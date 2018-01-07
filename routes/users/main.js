@@ -148,7 +148,6 @@ router.get('/greeting', async(req, res, next) => {
     let email = chkToken.email;
     let result = {};
     let mentArr = [];
-    console.log('email : ' + email);
 
     mentArr.push(" ment 1 ");
     mentArr.push(" ment 2 ");

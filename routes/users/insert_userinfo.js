@@ -40,12 +40,11 @@
 //http://ip/users/insert_user_info
 
 router.post('/', async(req, res, next) => {
+    var chkToken;
     console.log("===insert_userinfo.js ::: router('/')===");
-    const chkToken = jwt.verify(req.headers.authorization);
-    if(chkToken == -1) {
-        res.status(401).send({
-            message : "Access Denied"
-        });
+
+    if(req.headers.authorization != undefined){
+        chkToken = jwt.verify(req.headers.authorization);
     }
     var nickname = req.body.nickName;
     var thumbnail_path = req.body.thumbnailPath;
@@ -106,11 +105,11 @@ router.post('/', async(req, res, next) => {
                 })
             }
         }
-});
-    
+    });
 
 
-    
+
+
 
 
     module.exports = router;
