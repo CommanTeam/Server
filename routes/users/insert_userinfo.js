@@ -40,10 +40,8 @@
 //http://ip/users/insert_user_info
 
 router.post('/', async(req, res, next) => {
+    const chkToken;
     console.log("===insert_userinfo.js ::: router('/')===");
-
-    var chkToken;
-    
     if(req.headers.authorization != undefined){
         chkToken = jwt.verify(req.headers.authorization);
     }
