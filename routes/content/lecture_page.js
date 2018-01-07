@@ -140,7 +140,6 @@ router.get('/lectureList', async(req, res, next) => {
 	console.log(" [in lecture_page ] lectureQuery Cnt : " + lectureQuery.length ) ; 
 
     if(lectureQuery != undefined){
-
         console.log(' if(lectureQuery != undefined){ ');
         for(var i=0;i<lectureQuery.length;i++){
         // console.log(lectureQuery[i].chapter_id);
@@ -174,7 +173,6 @@ router.get('/lectureList', async(req, res, next) => {
             result.push(lectureList);
             console.log('lectureList ID : ' + lectureList.lectureID);
             console.log('lectureList lectureTitle : ' + lectureList.lectureTitle);
-
         }
     }
 }
