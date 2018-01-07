@@ -45,55 +45,53 @@ router.post('/', async(req, res, next) => {
     var thumbnail_path = req.body.thumbnailPath;
     var email = req.body.email;
 
-
     //pwd해싱 필요없음
-    //const hashedValue = await crypto.hash('sha512')(pwd);  
+    const hashedValue = await crypto.hash('sha512')(email);  
+    const token;
 
     let checkEmailQuery=    
     `
         select * from user
-        where email = ?
+        where id = ?
     `;
     let checkEmail = await db.queryParamCnt_Arr(checkEmailQuery,[email]);
 
-
-    if(checkEmail.length == 0){                                                 //등록된 email 존재 X
-
-        let insertQuery =                                                       //user테이블에 전달받은 정보 전달
+    // 등록된 회원 x 
+    if(checkEmail.length == 0){                                              
+        let insertQuery =                                                    
         `
-            INSERT INTO user (nickname, thumbnail_path, email) 
+            INSERT INTO user (nickname, thumbnail_path, id) 
             VALUES (?, ?, ?);
         `;
+        //user정보 Insert쿼리실행
+        let insertResult = await db.queryParamCnt_Arr(insertQuery,[nickname, thumbnail_path ,email]);   
 
-        let insertResult = await db.queryParamCnt_Arr(insertQuery,[nickname, thumbnail_path ,email]);   //usr정보 Insert쿼리실행
 
-        //등록된 user table 전달
-        let selectQuery =
-        `
-            SELECT * 
-            FROM user
-            WHERE email = ?
-        `
-        let result = await db.queryParamCnt_Arr(selectQuery,[email]);
-
+        msg
+        
+        token
+       
         res.status(200).send({
             "message" : " Success Register ",
-            "result " : result
+            "token " : token
         });
     } else {
-        let selectQuery =
-        `
-            SELECT * 
-            FROM user
-            WHERE email = ?
-        `
-        let result = await db.queryParamCnt_Arr(selectQuery,[email]);
-
-        res.status(401).send({
-            "message" : " ID Already Exist ",
-            "result " : result
-
-        });
+        // 회원
+        const chkToken = jwt.verify(req.headers.authorization);
+        // 회원인데 Token문제
+        if(chkToken == -1) {
+            token = jwt.sign(hashedValue);
+            res.status(200).send({
+                message : "ReIssue Token",
+                token : token
+            });
+        }
+        else{
+            res.status(200).send({
+                message : "Login Success",
+                token : token
+            });
+        }
     }
 });
 
