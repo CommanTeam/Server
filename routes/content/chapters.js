@@ -20,7 +20,6 @@
 //챕터id로 챕터정보 가져오기  
 //http://ip/content/chapters?chapterID={chapterID}
 router.get('/', async(req, res, next) => {
-
 	const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
