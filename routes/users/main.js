@@ -15,14 +15,14 @@ const sql = require('../../module/sql.js');
  Method : Get
 */
 router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
-    /*
+    
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
     let lectureID = req.body.lectureID;
     let selectQuery = `
     select title
@@ -53,16 +53,19 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
   Dec : Progress rate
   writtend by 신기용
   */
-router.get('/progressLecture/:userID', async(req, res, next) => {
-    /*
+router.get('/progressLecture', async(req, res, next) => {
+    
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
-    let userID = req.params.userID;
+
+    let userID = chkToken.email;
+
+    
+    // console.log(userID);
     let listOfCourse = [];
     let result = [];
 
@@ -116,7 +119,7 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
         });
     }else{
         res.status(500).send({
-            "msg" : "Error /users/main/progressLecture/:userID "
+            "msg" : "Error /users/main/progressLecture "
         });
     }    
     

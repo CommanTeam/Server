@@ -20,7 +20,12 @@
 //강좌 id로 강좌정보 가져오기  
 //http://ip/content/courses?courseID={courseID}
 router.get('/', async(req, res, next) => {
-
+	const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 	let courseID = req.query.courseID;
 
 	let selectCourseByCourseID =
@@ -43,7 +48,12 @@ router.get('/', async(req, res, next) => {
 //강좌id로 챕터목록 반환 
 //http://ip/content/courses/{courseID}/chapters
 router.get('/:courseID/chapters', async(req, res, next) => {
-
+	const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 	
 	let courseID = req.params.courseID;
 	let result = [];

@@ -46,7 +46,7 @@ module.exports = {
             expiresIn : 60 * 60 * 24 * 30 //30 days
         };
         const payload = {
-            email : email
+            "email" : email
         };
         let token = jwt.sign(payload, secretKey, options);
         return token;

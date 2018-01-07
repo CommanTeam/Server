@@ -20,10 +20,18 @@
  */
 //written by 성찬
 //구매한 강좌인지 체크  return 0: 구매안한 강좌, return 1: 구매함
-//localhost:3000/users/purchase/{courseID}?userID={userID}
+//localhost:3000/users/purchase/{courseID}
 router.get('/:courseID', async(req, res, next) => {
 
-    let userID = req.query.userID;
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+
+    let userID = chkToken.email;
+
     let courseID = req.params.courseID;
     let result = 0;
 
@@ -49,10 +57,17 @@ router.get('/:courseID', async(req, res, next) => {
  */
 //written by 성찬
 //구매 행위 API
-//localhost:3000/users/purchase/{courseID}?userID={userID}
+//localhost:3000/users/purchase/{courseID}
 router.put('/:courseID', async(req, res, next) => {
 
-    let userID = req.query.userID;
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+
+    let userID = chkToken.email;
     let courseID = req.params.courseID;
     let result = 0;
 

@@ -19,6 +19,12 @@
 //http://ip/content/lecturepicture/lectureimgUrl?courseID={courseID}&lectureID={lectureID}
 router.get('/lectureimgUrl', async(req, res, next) => {
 
+	const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 	let courseID = req.query.courseID;
 	let lectureID = req.query.lectureID;
 	var lectureImageArr = [];
@@ -99,10 +105,13 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 // lectureID로 image강의 정보 가져오기
 // http://ip/content/lecturepicture/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
-
+	const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 	let lectureID = req.params.lectureID;
-
-
 
 	let selectLectureByUserID =  `SELECT li.lecture_id, l.title, li.image_path, li.priority AS image_priority 
 	FROM lecture_image li, lecture l 

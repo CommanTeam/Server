@@ -35,14 +35,14 @@
 //http://ip/content/lectures?lectureID={lectureID}
 router.get('/:lectureID', async(req, res, next) => {
     
-  /*
+  
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
     let lecture_ID = req.params.lectureID
 
 
@@ -75,47 +75,13 @@ router.get('/:lectureID', async(req, res, next) => {
 
     let data = await db.queryParamCnt_Arr(selectQuery,lecture_ID);
     _lectureInfo.course_title = data[0].course_title;
-    _lectureInfo.chapter_priority = data[0].chapter_priority + '.';
+    _lectureInfo.chapter_priority = data[0].chapter_priority;
     _lectureInfo.lecture_title = data[0].lecture_title;
     _lectureInfo.lecture_priority = data[0].lecture_priority;
     _lectureInfo.lecture_type = data[0].lecture_type;
 
 
     
-
-
-    
-
-    // //이메일로 강좌의 듣거나 듣는 중인 강의 수 구하기
-    
-    // //강의 아아디로 현재 강좌ID구하기 
-    // let selectQuery2 =          
-    // ` 
-    // SELECT c.id
-    // FROM comman_db.course c, comman_db.chapter ch, comman_db.lecture l
-    // WHERE c.id = ch.course_id 
-    // AND ch.id = l.chapter_id 
-    // AND l.id = ?
-    // ` 
-
-    // let getCourseIDbyLectureID = await db.queryParamCnt_Arr(selectQuery2,lecture_ID);
-
-
-    // //강의 ID로 강좌의 강의 총 수 구하기. //분모
-    // let selectQuery3 =
-    // `
-    // SELECT  COUNT(l.id) as cntLectureIDbyLectureID
-    // FROM comman_db.course c, comman_db.chapter ch, comman_db.lecture l
-    // WHERE c.id = ch.course_id 
-    // AND ch.id = l.chapter_id 
-    // AND c.id = ?
-    // `;//강좌의 강의 총 수 구하기.
-
-    // let getCntLectureIDbyCourseID = await db.queryParamCnt_Arr(selectQuery3,getCourseIDbyLectureID[0].id);
-
-    // _lectureInfo.lecture_in_progress = getCntLectureIDbyCourseID[0].cntLectureIDbyLectureID;
-
-
     var result = _lectureInfo;
 
     res.status(200).send({

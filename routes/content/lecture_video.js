@@ -16,6 +16,12 @@
 // http://ip/content/lecturevideo/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
 
+	const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 	let lectureID = req.params.lectureID;
 
 	let selectVideoLecutreByLectureID =

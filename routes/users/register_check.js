@@ -16,10 +16,17 @@
  */
 //written by 성찬
 //등록된 강좌인지 체크  return 0: 등록안됨, return 1: 등록됨
-//localhost:3000/users/register/{courseID}?userID={userID}
+//localhost:3000/users/register/{courseID}
 router.get('/:courseID', async(req, res, next) => {
 
-    let userID = req.query.userID;
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+
+    let userID = chkToken.email;
     let courseID = req.params.courseID;
     let result = 0;
 
@@ -54,10 +61,18 @@ router.get('/:courseID', async(req, res, next) => {
 //강좌 등록
 //localhost:3000/users/register
 router.post('/', async(req, res, next) => {
-    let courseID = req.body.courseID;
-    let userID = req.body.userID;
+    
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 
-    console.log(courseID, userID);
+    let userID = chkToken.email;
+    let courseID = req.body.courseID;
+    
+    // console.log(courseID, userID);
     //insert regist query
     let insertQuery =
     `

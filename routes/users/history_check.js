@@ -19,14 +19,24 @@
  */
 //written by 성찬
 //해당 강좌의 flag 리턴  result : 0 => 미수강, result : 1 => 수강중 result : 2 => 수강완료 
-//http://ip/users/lectureHistory/{lectureID}?userID={userID}
+//http://ip/users/lectureHistory/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
+    console.log("history_check ::: :/lectureID route");
+
+
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    let userID = chkToken.email;
 
     // let userID = req.query.userID;
     let lectureID = req.params.lectureID;
-    let userInfo = jwt.verify(req.headers.authorization);
-
-    console.log(userInfo);
+    
+    // console.log(userID);
+    // console.log(userInfo.email);
 
     let checkHistoryByUserIDAndLectureID =
     `
@@ -37,10 +47,12 @@ router.get('/:lectureID', async(req, res, next) => {
     
     `;
 
-    var data = await db.queryParamCnt_Arr(checkHistoryByUserIDAndLectureID, [userInfo.email, lectureID]);
+    var data = await db.queryParamCnt_Arr(checkHistoryByUserIDAndLectureID, [userID, lectureID]);
+    // console.log(data[0]);
 
-
-    result = data[0].watched_flag;
+    if(result!=undefined){
+        result = data[0].watched_flag;
+    }
 
     res.status(200).send({
         result
@@ -58,11 +70,20 @@ router.get('/:lectureID', async(req, res, next) => {
 //강의 history create
 //localhost:3000/users/lectureHistory
 router.post('/', async(req, res, next) => {
+
+
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    let userID = chkToken.email;
     let lectureID = req.body.lectureID;
-    let userID = req.body.userID;
 
+
+    
     let insertQuery =
-
     `
     INSERT INTO user_history (user_id, lecture_id, watched_flag) VALUES (?, ?, 1);
     `;
@@ -84,10 +105,16 @@ router.post('/', async(req, res, next) => {
  */
 //written by 성찬
 //수강 완료 update
-//localhost:3000/users/lectureHistory/{lectureID}?userID={userID}
+//localhost:3000/users/lectureHistory/{lectureID}
 router.put('/:lectureID', async(req, res, next) => {
 
-    let userID = req.query.userID;
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
+    let userID = chkToken.email;
     let lectureID = req.params.lectureID;
     let result = 0;
 
