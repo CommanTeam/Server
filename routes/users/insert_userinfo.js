@@ -40,14 +40,12 @@
 //http://ip/users/insert_user_info
 
 router.post('/', async(req, res, next) => {
+    var chkToken;
     console.log("===insert_userinfo.js ::: router('/')===");
 
-    var chkToken;
-    
     if(req.headers.authorization != undefined){
         chkToken = jwt.verify(req.headers.authorization);
     }
-
     var nickname = req.body.nickName;
     var thumbnail_path = req.body.thumbnailPath;
     var email = req.body.email;
@@ -114,4 +112,4 @@ router.post('/', async(req, res, next) => {
 
 
 
-module.exports = router;
+    module.exports = router;

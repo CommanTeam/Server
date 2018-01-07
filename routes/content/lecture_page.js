@@ -137,13 +137,12 @@ router.get('/lectureList', async(req, res, next) => {
 
 
     let lectureQuery = await db.queryParamCnt_Arr(selectLectureListByUserID, userID);
-console.log(lectureQuery);
+	console.log(" [in lecture_page ] lectureQuery Cnt : " + lectureQuery.length ) ; 
+
     if(lectureQuery != undefined){
 
         for(var i=0;i<lectureQuery.length;i++){
-
         // console.log(lectureQuery[i].chapter_id);
-
         if(lectureQuery[i].chapter_id == chapterID){
 
             lectureList = {};
@@ -180,10 +179,12 @@ console.log(lectureQuery);
     }
 }
 
-res.status(200).send({
-    result : result
-});
 
+console.log(" [in lecutre_page] result : " + result[0] );
+
+    res.status(200).send({
+        result : result
+    });
 
 
 
