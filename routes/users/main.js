@@ -149,7 +149,6 @@ router.get('/greeting', async(req, res, next) => {
     let result = {};
     let mentArr = [];
 
-
     mentArr.push(" ment 1 ");
     mentArr.push(" ment 2 ");
     mentArr.push(" ment 3 ");
