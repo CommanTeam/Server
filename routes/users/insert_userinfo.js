@@ -40,7 +40,7 @@
 //http://ip/users/insert_user_info
 
 router.post('/', async(req, res, next) => {
-    const chkToken;
+    var chkToken;
     console.log("===insert_userinfo.js ::: router('/')===");
 
     if(req.headers.authorization != undefined){
