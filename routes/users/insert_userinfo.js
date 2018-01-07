@@ -104,6 +104,7 @@ router.post('/', async(req, res, next) => {
                     token : token
                 })
             }
+
         }
 
     // 등록된 회원 x 
