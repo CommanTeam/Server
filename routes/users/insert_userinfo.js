@@ -88,7 +88,7 @@ router.post('/', async(req, res, next) => {
                 // console.log("다른기기에서 접속했습니다");
                 res.status(200).send({
                     message : "new device login",
-                    token : jwt.sign(hashedValue)
+                    token : jwt.sign({ email : hashedValue})
                 });
             } else{ // 다른 기기이고 회원이 아닐때
                 // console.log("비회원입니다.")
