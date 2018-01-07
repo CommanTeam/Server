@@ -36,7 +36,7 @@ const sql = require('../../module/sql.js');
 
 //written by 형민
 //강좌 카테고리 클릭 시 강좌 목록 view
-//http://ip/search/searchresulte/{categoryID}
+//http://ip/search/searchresult/{categoryID}
 router.get('/:categoryID', async(req, res, next) => {
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
