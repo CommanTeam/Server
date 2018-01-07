@@ -32,7 +32,7 @@
 
 //written By 형민
 //강의 id, user email로 마지막으로 들은 강의 이름, 강의 priority, 단원 이름, 단원 priority, 진도  가져오기  
-//http://ip/content/lectures?lectureID={lectureID}
+//http://ip/users/lectureRecentWatch/{lecutreID}
 router.get('/:lectureID', async(req, res, next) => {
     
   /*
@@ -62,7 +62,7 @@ router.get('/:lectureID', async(req, res, next) => {
     //lectureID로 chapter_title, chapter_priority, lecture_title, leacture_priority 가져오기
     let selectQuery =
     `   
-        SELECT c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.lecture_type as lecture_type
+        SELECT c.id as course_ID,c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.lecture_type as lecture_type
         FROM comman_db.course c, chapter ch, lecture l 
         WHERE c.id = ch.course_id
         AND ch.id = l.chapter_id
@@ -70,21 +70,47 @@ router.get('/:lectureID', async(req, res, next) => {
     `;
 
 
+
     let lectureInfo = [];
     let _lectureInfo = {};
 
     let data = await db.queryParamCnt_Arr(selectQuery,lecture_ID);
+
+
+    // lecture_type = 0 ==> 퀴즈
+    let getCountQuizbyLectureID = 
+    `   
+        SELECT count(l.id) as cnt_quiz
+        FROM comman_db.lecture l, quiz_title q
+        WHERE l.id = q.lecture_id
+        AND l.id =  ?
+
+
+    `
+
+    let cntQuiz = await db.queryParamCnt_Arr(getCountQuizbyLectureID,lecture_ID);
+
+    // lecture_type = 1 ==> 글,그림
+
+    let getCountPicturebyLectureID =
+    `   
+        
+        SELECT count(l.id) as cnt_picture
+        FROM comman_db.lecture l,  lecture_image li
+        WHERE l.id = li.lecture_id
+        AND l.id =  ?
+
+
+    `
+    let cntPicture = await db.queryParamCnt_Arr(getCountPicturebyLectureID,lecture_ID);
+
     _lectureInfo.course_title = data[0].course_title;
     _lectureInfo.chapter_priority = data[0].chapter_priority + '.';
     _lectureInfo.lecture_title = data[0].lecture_title;
     _lectureInfo.lecture_priority = data[0].lecture_priority;
     _lectureInfo.lecture_type = data[0].lecture_type;
-
-
-    
-
-
-    
+    _lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
+    _lectureInfo.cnt_lecture_picture = cntPicture[0].cnt_picture;    
 
     // //이메일로 강좌의 듣거나 듣는 중인 강의 수 구하기
     
