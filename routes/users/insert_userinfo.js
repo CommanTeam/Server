@@ -83,6 +83,7 @@ router.post('/', async(req, res, next) => {
                 res.status(200).send({
                     message : "new device login",
                     token : jwt.sign({ email : email})
+
                 });
             } else{ // 다른 기기이고 회원이 아닐때
                 // console.log("비회원입니다.")
