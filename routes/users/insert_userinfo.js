@@ -67,17 +67,12 @@ router.post('/', async(req, res, next) => {
         let insertResult = await db.queryParamCnt_Arr(insertQuery,[nickname, thumbnail_path ,email]);   
 
 
-        msg
-        
-        token
-       
         res.status(200).send({
             "message" : " Success Register ",
             "token " : token
         });
     } else {
         // 회원
-        const chkToken = jwt.verify(req.headers.authorization);
         // 회원인데 Token문제
         if(chkToken == -1) {
             token = jwt.sign(hashedValue);
@@ -89,7 +84,7 @@ router.post('/', async(req, res, next) => {
         else{
             res.status(200).send({
                 message : "Login Success",
-                token : token
+                token : 
             });
         }
     }
