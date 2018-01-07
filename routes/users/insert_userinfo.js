@@ -79,8 +79,7 @@ router.post('/', async(req, res, next) => {
                     token : token
                 })
             } 
-        } else{
-            // console.log("토큰이 없습니다");
+        } else{            // console.log("토큰이 없습니다");
             let checkEmail = await db.queryParamCnt_Arr(checkEmailQuery,[email]);
 
             if(checkEmail.length != 0){ // 다른 기기이고 회원일때 
