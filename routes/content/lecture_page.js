@@ -54,14 +54,14 @@
 
 //     // Res : Lecture [ ID,title ] List
 //     let eachLectureList = await sql.getLectureListBelong2Chapter(chapterID);
-    
+
 //     for(var i=0; i<eachLectureList.length; i++){
 //         let lectureListObj = {};
 //         /*
 //         각 강의에 갖고 있는 퀴즈의 수
 //         */
 
-        
+
 //         // Res : Lecutre Count
 //         let eachQuizCntBelong2Lecture = await sql.getQuizCntBelong2Lecture(eachLectureList[i].lecture_id);
 //         lectureListObj.lectureID = eachLectureList[i].lecture_id;
@@ -70,7 +70,7 @@
 //         if (eachLectureList[i].lecture_type != 2){
 //             lectureListObj.quizCnt = eachQuizCntBelong2Lecture;
 //         }
-        
+
 
 //         // 유저가 강의를 들었는지 유무 판단
 //         selectQuery = `
@@ -104,7 +104,7 @@
 
 
 
- router.get('/lectureList', async(req, res, next) => {
+router.get('/lectureList', async(req, res, next) => {
     console.log("===lecture_page.js ::: router('/lectureList')===");
     const chkToken = jwt.verify(req.headers.authorization);
     // 토큰 검증 실패
@@ -116,6 +116,7 @@
 
     let chapterID = req.query.chapterID;
     let userID = chkToken.email;
+    console.log(userID);
     
     var result = [];
     var lectureList = {};
@@ -136,9 +137,10 @@
 
 
     let lectureQuery = await db.queryParamCnt_Arr(selectLectureListByUserID, userID);
+console.log(lectureQuery);
+    if(lectureQuery != undefined){
 
-
-    for(var i=0;i<lectureQuery.length;i++){
+        for(var i=0;i<lectureQuery.length;i++){
 
         // console.log(lectureQuery[i].chapter_id);
 
@@ -176,13 +178,13 @@
 
         }
     }
+}
+
+res.status(200).send({
+    result : result
+});
 
 
-    res.status(200).send({
-        result : result
-    });
-
-    
 
 
 
