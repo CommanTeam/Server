@@ -137,8 +137,6 @@ router.get('/progressLecture', async(req, res, next) => {
   */
 router.get('/greeting', async(req, res, next) => {
     const chkToken = jwt.verify(req.headers.authorization);
-
-    console.log('good gid');
     // 토큰 검증 실패
     if(chkToken == -1) {
         res.status(401).send({
