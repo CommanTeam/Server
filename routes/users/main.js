@@ -15,7 +15,7 @@ const sql = require('../../module/sql.js');
  Method : Get
 */
 router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
-    
+    console.log("===main.js ::: router('/lastWatchedLecture/{lectureID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -55,7 +55,7 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
   */
 router.get('/progressLecture', async(req, res, next) => {
 
-
+    console.log("===main.js ::: router('/progressLecture')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -136,9 +136,8 @@ router.get('/progressLecture', async(req, res, next) => {
   writtend by 신기용
   */
 router.get('/greeting', async(req, res, next) => {
+    console.log("===main.js ::: router('/greeting')===");
     const chkToken = jwt.verify(req.headers.authorization);
-
-    console.log('good gid');
     // 토큰 검증 실패
     if(chkToken == -1) {
         res.status(401).send({
@@ -149,7 +148,6 @@ router.get('/greeting', async(req, res, next) => {
     let email = chkToken.email;
     let result = {};
     let mentArr = [];
-    console.log('email : ' + email);
 
     mentArr.push(" ment 1 ");
     mentArr.push(" ment 2 ");

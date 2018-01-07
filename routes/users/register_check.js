@@ -18,7 +18,7 @@
 //등록된 강좌인지 체크  return 0: 등록안됨, return 1: 등록됨
 //localhost:3000/users/register/{courseID}
 router.get('/:courseID', async(req, res, next) => {
-
+    console.log("===register_check.js ::: router('/{courseID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -38,7 +38,7 @@ router.get('/:courseID', async(req, res, next) => {
 
     var data = await db.queryParamCnt_Arr(checkRegisterByUserIDAndCourseID, [userID, courseID]);
 
-    console.log(data.length);
+    // console.log(data.length);
 
     if(!data.length==0){
         result = 1;
@@ -61,7 +61,7 @@ router.get('/:courseID', async(req, res, next) => {
 //강좌 등록
 //localhost:3000/users/register
 router.post('/', async(req, res, next) => {
-    
+    console.log("===register_check.js ::: router('/')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

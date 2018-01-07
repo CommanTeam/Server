@@ -27,7 +27,7 @@
 //http://ip/search/courses
 //reqBody : search
 router.post('/', async(req, res, next) => {
-
+    console.log("===course.js ::: router('/')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -76,7 +76,7 @@ router.post('/', async(req, res, next) => {
 //http://ip/search/courses
 //reqBody : search
 router.get('/categories/:categoryID', async(req, res, next) => {
-
+    console.log("===course.js ::: router('/categories/{categoryID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

@@ -15,7 +15,7 @@
 // lectureID로 video강의 정보 가져오기
 // http://ip/content/lecturevideo/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
-
+	console.log("===lecture_video.js ::: router('/{lectureID}')===");
 	const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

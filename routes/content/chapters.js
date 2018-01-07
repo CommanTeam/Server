@@ -20,6 +20,7 @@
 //챕터id로 챕터정보 가져오기  
 //http://ip/content/chapters?chapterID={chapterID}
 router.get('/', async(req, res, next) => {
+	console.log("===chapters.js ::: router('/')===");
 
 	const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -47,6 +48,8 @@ router.get('/', async(req, res, next) => {
 //챕터id로 챕터정보 가져오기  
 //http://ip/content/chapters/nextChapter?courseID={courseID}
 router.get('/nextChapter', async(req, res, next) => {
+
+	console.log("===chapters.js ::: router('/nextChapter')===");
 
 	const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {

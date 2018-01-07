@@ -35,7 +35,7 @@
 //http://ip/users/lectureRecentWatch/{lecutreID}
 router.get('/:lectureID', async(req, res, next) => {
     
-  
+    console.log("===lecture_recent_watch.js ::: router('/{lectureID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
