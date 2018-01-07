@@ -41,12 +41,12 @@
 
 router.post('/', async(req, res, next) => {
     console.log("===insert_userinfo.js ::: router('/')===");
-    const chkToken = jwt.verify(req.headers.authorization);
-    if(chkToken == -1) {
-        res.status(401).send({
-            message : "Access Denied"
-        });
-    }
+
+    const chkToken;
+    if(req.headers.authorization != undefined){
+        chkToken = jwt.verify(req.headers.authorization);
+       }
+
     var nickname = req.body.nickName;
     var thumbnail_path = req.body.thumbnailPath;
     var email = req.body.email;

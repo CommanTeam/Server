@@ -136,7 +136,7 @@
 
 
     let lectureQuery = await db.queryParamCnt_Arr(selectLectureListByUserID, userID);
-
+	console.log(" [in lecture_page ] lectureQuery Cnt : " + lectureQuery.length ) ; 
 
     for(var i=0;i<lectureQuery.length;i++){
 
@@ -177,6 +177,8 @@
         }
     }
 
+
+console.log(" [in lecutre_page] result : " + result[0] );
 
     res.status(200).send({
         result : result
