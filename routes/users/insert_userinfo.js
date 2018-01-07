@@ -41,6 +41,7 @@
 
 router.post('/', async(req, res, next) => {
     const chkToken;
+    console.log("===insert_userinfo.js ::: router('/')===");
     if(req.headers.authorization != undefined){
         chkToken = jwt.verify(req.headers.authorization);
     }
@@ -104,11 +105,11 @@ router.post('/', async(req, res, next) => {
                 })
             }
         }
-});
-    
+    });
 
 
-    
 
 
-    module.exports = router;
+
+
+module.exports = router;
