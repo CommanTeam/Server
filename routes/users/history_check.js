@@ -29,6 +29,7 @@ router.get('/:lectureID', async(req, res, next) => {
             message : "Access Denied"
         });
     }
+    var result;
     let userID = chkToken.email;
 
     // let userID = req.query.userID;
@@ -49,12 +50,12 @@ router.get('/:lectureID', async(req, res, next) => {
     var data = await db.queryParamCnt_Arr(checkHistoryByUserIDAndLectureID, [userID, lectureID]);
     // console.log(data[0]);
 
-    if(result!=undefined){
+    if(data != undefined){
         result = data[0].watched_flag;
     }
 
     res.status(200).send({
-        result
+        result : result
     });
 });
 

@@ -82,32 +82,35 @@ router.get('/:lectureID', async(req, res, next) => {
   var result = [];
   var object = {};
 
-  for(var i=0; i<data.length;i++){
 
-    if(object.quizID != data[i].quiz_id){
-      var object = {};
-      object.quizID = data[i].quiz_id;
-      object.quizTitle = data[i].quiz_title;
-      object.quizPriority = data[i].quiz_priority;
-      object.quizImage = data[i].quiz_image;
-      object.explanation = data[i].explanation;
-      object.questionArr = [];
+  if(data != undefined){
+    for(var i=0; i<data.length;i++){
+
+      if(object.quizID != data[i].quiz_id){
+        var object = {};
+        object.quizID = data[i].quiz_id;
+        object.quizTitle = data[i].quiz_title;
+        object.quizPriority = data[i].quiz_priority;
+        object.quizImage = data[i].quiz_image;
+        object.explanation = data[i].explanation;
+        object.questionArr = [];
+      }
+
+      var object_question = {};
+      object_question.questionID = data[i].question_id;
+      object_question.questionContent = data[i].question_content;
+      object_question.answerFlag = data[i].answer_flag;
+      object.questionArr.push(object_question)
+
+
+      if(!compare(result[result.length - 1], object)){
+        result.push(object);
+      }
+
     }
-
-    var object_question = {};
-    object_question.questionID = data[i].question_id;
-    object_question.questionContent = data[i].question_content;
-    object_question.answerFlag = data[i].answer_flag;
-    object.questionArr.push(object_question)
-
-
-    if(!compare(result[result.length - 1], object)){
-      result.push(object);
-    }
-
   }
 
-  console.log(result);
+  // console.log(result);
   res.status(200).send({result : result});
 
 
