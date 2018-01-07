@@ -134,17 +134,20 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
   writtend by 신기용
   */
 router.get('/greeting', async(req, res, next) => {
-    const chkToken = jwt.verify(req.headers.authorization);
-    // 토큰 검증 실패
-    if(chkToken == -1) {
-        res.status(401).send({
-            message : "Access Denied"
-        });
-    }
+    console.log('here?');
+    // const chkToken = jwt.verify(req.headers.authorization);
+    // // 토큰 검증 실패
+    // if(chkToken == -1) {
+    //     res.status(401).send({
+    //         message : "Access Denied"
+    //     });
+    // }
 
-    let email = chkToken.email;
+    let email = "jules010@naver.com";
     let result = {};
     let mentArr = [];
+
+    console.log('email : ' + email);
 
     mentArr.push(" ment 1 ");
     mentArr.push(" ment 2 ");
@@ -156,10 +159,18 @@ router.get('/greeting', async(req, res, next) => {
     var seed = parseInt(Math.random() * 4 + 1);
     result.ment = mentArr[seed];
 
+
+    var selectQuery = `
+    select thumbnail_path
+    from user
+    where id = ? ;
+    `
+    var userImg = await db.queryParamCnt_Arr(selectQuery,email);
+    result.userImg = userImg[0].thumbnail_path;
+
     if(result != undefined) {
         res.status(200).send({
-            "result" : result ,
-            "email" : chkToken.email
+            "result" : result
         });
     }else{
         res.status(500).send({
