@@ -37,16 +37,22 @@
  */
 //written by 탁형민
 //usr info 받아서 DB에 INSERT
-//http://ip/users/insert_usr_info/
+//http://ip/users/insert_user_info
 
 router.post('/', async(req, res, next) => {
+
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
     var nickname = req.body.nickName;
     var thumbnail_path = req.body.thumbnailPath;
     var email = req.body.email;
-    var checkToken = req.headers.authorization;
     var token;
 
-    let checkEmailQuery=    
+    let checkEmailQuery =     
     `
     select * from user
     where id = ?
@@ -82,7 +88,7 @@ router.post('/', async(req, res, next) => {
                 // console.log("다른기기에서 접속했습니다");
                 res.status(200).send({
                     message : "new device login",
-                    token : jwt.sign({ email : email})
+                    token : jwt.sign(email)
 
                 });
             } else{ // 다른 기기이고 회원이 아닐때

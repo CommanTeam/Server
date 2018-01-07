@@ -35,14 +35,14 @@
 //http://ip/users/lectureRecentWatch/{lecutreID}
 router.get('/:lectureID', async(req, res, next) => {
     
-  /*
+  
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
     let lecture_ID = req.params.lectureID
 
 
@@ -105,7 +105,7 @@ router.get('/:lectureID', async(req, res, next) => {
     let cntPicture = await db.queryParamCnt_Arr(getCountPicturebyLectureID,lecture_ID);
 
     _lectureInfo.course_title = data[0].course_title;
-    _lectureInfo.chapter_priority = data[0].chapter_priority + '.';
+    _lectureInfo.chapter_priority = data[0].chapter_priority;
     _lectureInfo.lecture_title = data[0].lecture_title;
     _lectureInfo.lecture_priority = data[0].lecture_priority;
     _lectureInfo.lecture_type = data[0].lecture_type;
@@ -140,7 +140,6 @@ router.get('/:lectureID', async(req, res, next) => {
     // let getCntLectureIDbyCourseID = await db.queryParamCnt_Arr(selectQuery3,getCourseIDbyLectureID[0].id);
 
     // _lectureInfo.lecture_in_progress = getCntLectureIDbyCourseID[0].cntLectureIDbyLectureID;
-
 
     var result = _lectureInfo;
 

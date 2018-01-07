@@ -18,17 +18,23 @@
 //http://ip/content/lectures?lectureID={lectureID}
 router.get('/', async(req, res, next) => {
 
-  let lectureID = req.query.lectureID;
+	const chkToken = jwt.verify(req.headers.authorization);
+	if(chkToken == -1) {
+		res.status(401).send({
+			message : "Access Denied"
+		});
+	}
+	let lectureID = req.query.lectureID;
 
-  let selectLectureByLectureID =
-  `
-   SELECT * FROM lecture
-   WHERE id = ?;
-  `;
+	let selectLectureByLectureID =
+	`
+	SELECT * FROM lecture
+	WHERE id = ?;
+	`;
 
-  var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
+	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
 
-  res.status(200).send({data});
+	res.status(200).send({data});
 
 });
 

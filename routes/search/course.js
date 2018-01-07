@@ -27,6 +27,13 @@
 //http://ip/search/courses
 //reqBody : search
 router.post('/', async(req, res, next) => {
+
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
     let searchWord = req.body.search;
     let searcher = new hangul.Searcher(searchWord);
     let result = [];
@@ -70,6 +77,12 @@ router.post('/', async(req, res, next) => {
 //reqBody : search
 router.get('/categories/:categoryID', async(req, res, next) => {
 
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
     let categoryID = req.params.categoryID;
     let result = [];
     

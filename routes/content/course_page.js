@@ -16,14 +16,14 @@ const sql = require('../../module/sql.js');
  Method : Get
 */
 router.get('/:courseID', async(req, res, next) => {
-    /*
+    
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
     let courseID = req.params.courseID;
     let result = [];
     result = await sql.getCourseInfoByCourseID(courseID);
@@ -41,14 +41,14 @@ router.get('/:courseID', async(req, res, next) => {
 
 
 router.get('/popup/:courseID', async(req, res, next) => {
-    /*
+    
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
     let courseID = req.params.courseID;
     let result = [];
     result = await sql.getExplainPopUpByCourseID(courseID);

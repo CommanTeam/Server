@@ -38,6 +38,12 @@ const sql = require('../../module/sql.js');
 //강좌 카테고리 클릭 시 강좌 목록 view
 //http://ip/search/searchresult/{categoryID}
 router.get('/:categoryID', async(req, res, next) => {
+    const chkToken = jwt.verify(req.headers.authorization);
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
     let category_ID = req.params.categoryID
 
     let selectQuery =

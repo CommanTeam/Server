@@ -52,14 +52,14 @@ var compare = function( a, b ){
  Method : Get
  */
  router.get('/', async(req, res, next) => {
-    /*
+    
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
     
     let selectAllCategories =
     `
@@ -83,14 +83,14 @@ var compare = function( a, b ){
 
 //카테고리별 course title들 
 router.get('/course', async(req, res, next) => {
-    /*
+    
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
             message : "Access Denied"
         });
     }
-    */
+    
 
     var result = [];
 
