@@ -141,10 +141,10 @@ router.get('/lectureList', async(req, res, next) => {
 
     if(lectureQuery != undefined){
 
+        console.log(' if(lectureQuery != undefined){ ');
         for(var i=0;i<lectureQuery.length;i++){
         // console.log(lectureQuery[i].chapter_id);
         if(lectureQuery[i].chapter_id == chapterID){
-
             lectureList = {};
             lectureList.lectureID = lectureQuery[i].lecture_id;
             lectureList.lecturePriority = lectureQuery[i].priority;
@@ -153,8 +153,6 @@ router.get('/lectureList', async(req, res, next) => {
             lectureList.lectureType = lectureQuery[i].lecture_type;
             lectureList.videoID = lectureQuery[i].video_id;
             lectureList.userID = lectureQuery[i].user_id;
-
-
             lectureList.watchedFlag = lectureQuery[i].watched_flag;
 
             if(lectureQuery[i].watched_flag == undefined){
@@ -174,11 +172,12 @@ router.get('/lectureList', async(req, res, next) => {
                 lectureList.size = "youtube lecture";
             }
             result.push(lectureList);
+            console.log('lectureList ID : ' + lectureList.lectureID);
+            console.log('lectureList lectureTitle : ' + lectureList.lectureTitle);
 
         }
     }
 }
-
 
 console.log(" [in lecutre_page] result : " + result[0] );
 
