@@ -127,7 +127,7 @@ router.get('/:lectureID', async(req, res, next) => {
 
 	// `;
 
-	let result = await db.queryParamCnt_Arr(getImageUrlbyLectureID, lectureID);
+	let result = await db.queryParamCnt_Arr(selectLectureByUserID, lectureID);
 
 
 	res.status(200).send({
