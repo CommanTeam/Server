@@ -126,11 +126,6 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
 
 
 
-/*
- Method : Post
-*/
-
-
 
 /*
   Req : None
@@ -138,14 +133,19 @@ router.get('/progressLecture/:userID', async(req, res, next) => {
   Dec : Greeting Ment
   writtend by 신기용
   */
-router.post('/greeting', async(req, res, next) => {
-    let email = req.body.email;
+router.get('/greeting', async(req, res, next) => {
+    const chkToken = jwt.verify(req.headers.authorization);
+    // 토큰 검증 실패
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 
-    const hashedValue = 
-    await crypto.hash('sha512')(email);
-
+    let email = chkToken.email;
     let result = {};
     let mentArr = [];
+
     mentArr.push(" ment 1 ");
     mentArr.push(" ment 2 ");
     mentArr.push(" ment 3 ");
@@ -157,9 +157,9 @@ router.post('/greeting', async(req, res, next) => {
     result.ment = mentArr[seed];
 
     if(result != undefined) {
-        const token = jwt.sign(hashedValue);
         res.status(200).send({
-            "result" : result 
+            "result" : result ,
+            "email" : chkToken.email
         });
     }else{
         res.status(500).send({
@@ -170,6 +170,11 @@ router.post('/greeting', async(req, res, next) => {
 
 });
 
+
+
+/*
+ Method : Post
+*/
 
 
 
