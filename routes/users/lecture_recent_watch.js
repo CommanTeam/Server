@@ -59,10 +59,10 @@ router.get('/:lectureID', async(req, res, next) => {
 
 
     // `
-    //lectureID로 chapter_title, chapter_priority, lecture_title, leacture_priority 가져오기
+    //lectureID로 chapter_title, chapter_priority, lecture_title, leacture_priority, l.video가져오기
     let selectQuery =
     `   
-        SELECT c.id as course_ID,c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.lecture_type as lecture_type
+       SELECT c.id as course_ID,c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.lecture_type as lecture_type, l.video_id
         FROM comman_db.course c, chapter ch, lecture l 
         WHERE c.id = ch.course_id
         AND ch.id = l.chapter_id
@@ -104,12 +104,14 @@ router.get('/:lectureID', async(req, res, next) => {
     `
     let cntPicture = await db.queryParamCnt_Arr(getCountPicturebyLectureID,lecture_ID);
 
+
     _lectureInfo.course_title = data[0].course_title;
     _lectureInfo.chapter_priority = data[0].chapter_priority;
     _lectureInfo.lecture_title = data[0].lecture_title;
     _lectureInfo.lecture_priority = data[0].lecture_priority;
     _lectureInfo.lecture_type = data[0].lecture_type;
-    _lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
+    _lectureInfo.lecture_video_id = data[0].video_id
+_lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
     _lectureInfo.cnt_lecture_picture = cntPicture[0].cnt_picture;    
 
     // //이메일로 강좌의 듣거나 듣는 중인 강의 수 구하기
