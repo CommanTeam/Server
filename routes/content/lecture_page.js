@@ -179,18 +179,12 @@ router.get('/lectureList', async(req, res, next) => {
     }
 }
 
-res.status(200).send({
-    result : result
-});
 
-<<<<<<< HEAD
 console.log(" [in lecutre_page] result : " + result[0] );
 
     res.status(200).send({
         result : result
     });
-=======
->>>>>>> d5d14f0b0d8b2f2fa799effafe71c29fb58ed55b
 
 
 
