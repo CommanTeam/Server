@@ -40,7 +40,7 @@
 //http://ip/users/insert_user_info
 
 router.post('/', async(req, res, next) => {
-
+    console.log("===insert_userinfo.js ::: router('/')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -64,9 +64,9 @@ router.post('/', async(req, res, next) => {
     VALUES (?, ?, ?);
     `;
         //user정보 Insert쿼리실행
-        if(checkToken != undefined){
+        if(chkToken != undefined){
             // console.log("토큰이 있습니다");
-            if(jwt.verify(checkToken) != -1){
+            if(jwt.verify(chkToken) != -1){
                 // console.log("성공적으로 로그인 되었습니다");
                 res.status(200).send({
                     message : "success",

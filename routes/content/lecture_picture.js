@@ -18,7 +18,7 @@
 //강의ID로 강의imgPath를 강의 우선순위에 따라 정렬, 다음 단원ID 반환
 //http://ip/content/lecturepicture/lectureimgUrl?courseID={courseID}&lectureID={lectureID}
 router.get('/lectureimgUrl', async(req, res, next) => {
-
+	console.log("===lecture_picture.js ::: router('/lectureimgUrl')===");
 	const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -105,6 +105,7 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 // lectureID로 image강의 정보 가져오기
 // http://ip/content/lecturepicture/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
+	console.log("===lecture_picture.js ::: router('/{lectureID}')===");
 	const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

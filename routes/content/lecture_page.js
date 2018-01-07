@@ -105,6 +105,7 @@
 
 
  router.get('/lectureList', async(req, res, next) => {
+    console.log("===lecture_page.js ::: router('/lectureList')===");
     const chkToken = jwt.verify(req.headers.authorization);
     // 토큰 검증 실패
     if(chkToken == -1) {
@@ -191,7 +192,7 @@
 //http://ip/content/lecturepage/nextLecture?courseID={courseID}&chapterID={chapterID}&lectureID={lectureID}
 //courseID와 현재 lectureID로 다음 수강할 강의 가져오기(priority column 이용)
 router.get('/nextLecture', async(req, res, next) => {
-    
+    console.log("===lecture_page.js ::: router('/nextLecture')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

@@ -16,7 +16,7 @@ const sql = require('../../module/sql.js');
  Method : Get
 */
 router.get('/:courseID', async(req, res, next) => {
-    
+    console.log("===course_page.js ::: router('/{courseID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -41,7 +41,7 @@ router.get('/:courseID', async(req, res, next) => {
 
 
 router.get('/popup/:courseID', async(req, res, next) => {
-    
+    console.log("===course_page.js ::: router('/popup/{courseID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

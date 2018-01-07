@@ -22,7 +22,7 @@
 //구매한 강좌인지 체크  return 0: 구매안한 강좌, return 1: 구매함
 //localhost:3000/users/purchase/{courseID}
 router.get('/:courseID', async(req, res, next) => {
-
+    console.log("===purchase_check.js ::: router('/{courseID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -59,7 +59,7 @@ router.get('/:courseID', async(req, res, next) => {
 //구매 행위 API
 //localhost:3000/users/purchase/{courseID}
 router.put('/:courseID', async(req, res, next) => {
-
+    console.log("===purchase_check.js ::: router('/{courseID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

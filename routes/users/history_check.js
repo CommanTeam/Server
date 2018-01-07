@@ -21,8 +21,7 @@
 //해당 강좌의 flag 리턴  result : 0 => 미수강, result : 1 => 수강중 result : 2 => 수강완료 
 //http://ip/users/lectureHistory/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
-    console.log("history_check ::: :/lectureID route");
-
+    console.log("===history_check.js ::: router('/{lectureID}')===");
 
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -70,7 +69,7 @@ router.get('/:lectureID', async(req, res, next) => {
 //강의 history create
 //localhost:3000/users/lectureHistory
 router.post('/', async(req, res, next) => {
-
+    console.log("===history_check.js ::: router('/')===");
 
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -107,7 +106,7 @@ router.post('/', async(req, res, next) => {
 //수강 완료 update
 //localhost:3000/users/lectureHistory/{lectureID}
 router.put('/:lectureID', async(req, res, next) => {
-
+    console.log("===history_check.js ::: router('/{lectureID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
