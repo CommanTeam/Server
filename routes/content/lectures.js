@@ -17,7 +17,7 @@
 //강의 id로 강좌정보 가져오기  
 //http://ip/content/lectures?lectureID={lectureID}
 router.get('/', async(req, res, next) => {
-
+	console.log("===lectures.js ::: router('/')===");
 	const chkToken = jwt.verify(req.headers.authorization);
 	if(chkToken == -1) {
 		res.status(401).send({

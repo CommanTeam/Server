@@ -52,7 +52,7 @@ var compare = function( a, b ){
  Method : Get
  */
  router.get('/', async(req, res, next) => {
-    
+    console.log("===course_category.js ::: router('/')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({
@@ -83,7 +83,7 @@ var compare = function( a, b ){
 
 //카테고리별 course title들 
 router.get('/course', async(req, res, next) => {
-    
+    console.log("===course_category.js ::: router('/course')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

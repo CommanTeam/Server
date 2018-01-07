@@ -52,7 +52,7 @@ var compare = function( a, b ){
 //lectureID값으로 lecture(quiz) 정보들 가져옴 (퀴즈테이블과 join) 
 //http://ip/content/lecturequiz/{lectureID}
 router.get('/:lectureID', async(req, res, next) => {
-
+  console.log("===lecture_quiz.js ::: router('/{lectureID}')===");
   const chkToken = jwt.verify(req.headers.authorization);
   if(chkToken == -1) {
     res.status(401).send({
