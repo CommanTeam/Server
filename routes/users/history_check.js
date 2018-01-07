@@ -5,10 +5,13 @@
  const router = express.Router();
  const async = require('async');
  const bodyParser = require('body-parser');
+ 
+
 
  const jwt = require('../../module/jwt.js');
  const db = require('../../module/pool.js');
  const sql = require('../../module/sql.js');
+
 
 
 /*
@@ -19,9 +22,11 @@
 //http://ip/users/lectureHistory/{lectureID}?userID={userID}
 router.get('/:lectureID', async(req, res, next) => {
 
-    let userID = req.query.userID;
+    // let userID = req.query.userID;
     let lectureID = req.params.lectureID;
-    let result = 0; 
+    let userInfo = jwt.verify(req.headers.authorization);
+
+    console.log(userInfo);
 
     let checkHistoryByUserIDAndLectureID =
     `
@@ -32,7 +37,7 @@ router.get('/:lectureID', async(req, res, next) => {
     
     `;
 
-    var data = await db.queryParamCnt_Arr(checkHistoryByUserIDAndLectureID, [userID, lectureID]);
+    var data = await db.queryParamCnt_Arr(checkHistoryByUserIDAndLectureID, [userInfo.email, lectureID]);
 
 
     result = data[0].watched_flag;
@@ -106,4 +111,4 @@ router.put('/:lectureID', async(req, res, next) => {
 
 
 
- module.exports = router;
+module.exports = router;
