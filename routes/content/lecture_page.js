@@ -98,10 +98,17 @@
 
 
  router.get('/lectureList', async(req, res, next) => {
+    const chkToken = jwt.verify(req.headers.authorization);
+    // 토큰 검증 실패
+    if(chkToken == -1) {
+        res.status(401).send({
+            message : "Access Denied"
+        });
+    }
 
     let chapterID = req.query.chapterID;
-    let userID = req.query.userID;
-
+    let userID = chkToken.email;
+    
     var result = [];
     var lectureList = {};
 
@@ -212,10 +219,8 @@ router.get('/nextLecture', async(req, res, next) => {
     `
 
     let orderedLectureID = await db.queryParamCnt_Arr(selectAllLectureIDInCourse, courseID);
-
     let orderedLectureIDByChapterID = await db.queryParamCnt_Arr(selectLectureIDInChapter, chapterID);
-
-
+    
     for(var i=0;i<orderedLectureID.length;i++){
         dataOfCourse.push(orderedLectureID[i].lecture_id.toString());
     }
