@@ -142,10 +142,9 @@ router.get('/greeting', async(req, res, next) => {
         });
     }
 
-    let email = "jules010@naver.com";
+    let email = chkToken.email;
     let result = {};
     let mentArr = [];
-
     console.log('email : ' + email);
 
     mentArr.push(" ment 1 ");
