@@ -3,7 +3,7 @@
 
 
 # Security Mehtod
-1. JWT
+1. (JWT)[http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html]
 
 [![JWT](http://jwt.io/assets/logo.svg)](https://jwt.io/)
 
