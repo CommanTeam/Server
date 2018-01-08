@@ -17,6 +17,7 @@ This module lets you authenticate HTTP requests using JWT tokens in your Node.js
 
 ---
 2. [Nginx](https://nginx.org/en/)
+
 An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hourly. Pull requests on GitHub cannot be accepted and will be automatically closed. The proper way to submit changes to nginx is via the nginx development mailing list, see http://nginx.org/en/docs/contributing_changes.html http://nginx.org/
 
 
@@ -38,8 +39,5 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 [Looking for a version of Helmet that supports the Koa framework?](https://github.com/venables/koa-helmet)
 
 
-
----
-4. Passport
 
 ---
