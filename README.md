@@ -24,7 +24,7 @@ An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hour
 
 3. Helmet
 <img align="right" width="200" src="http://static.nfl.com/static/content/public/static/img/logos/react-helmet.jpg" />
-======
+
 [![npm version](https://badge.fury.io/js/helmet.svg)](http://badge.fury.io/js/helmet)
 [![npm dependency status](https://david-dm.org/helmetjs/helmet.svg)](https://david-dm.org/helmetjs/helmet)
 [![Build Status](https://travis-ci.org/helmetjs/helmet.svg?branch=master)](https://travis-ci.org/helmetjs/helmet)
