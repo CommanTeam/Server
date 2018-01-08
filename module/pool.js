@@ -14,10 +14,12 @@ module.exports = {
       result = await connection.query(query) || null;
     }
     catch(err) {
+      console.log("mysql error! err log =>" + err);
       next(err);
     }
     finally {
       pool.releaseConnection(connection);
+
       return result;
     }
   },
@@ -30,6 +32,7 @@ module.exports = {
       result = await connection.query(query, data) || null;
     }
     catch(err) {
+      console.log("mysql error! err log =>" + err);
       next(err);
     }
     finally {

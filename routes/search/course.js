@@ -46,19 +46,25 @@ router.post('/', async(req, res, next) => {
     ORDER BY hit DESC
     `;
 
+
     var data = await db.queryParamCnt_None(selectAllCourse);
-    
 
-    for(var i=0;i<data.length;i++){
-        let course = {};
-        if(searcher.search(data[i].title) >= 0){
-            course.id = data[i].id;
-            course.title = data[i].title;
-            course.info = data[i].info;
-            course.image_path = data[i].image_path;
-            course.hit = data[i].hit;
 
-            result.push(course);
+    // console.log(data);
+
+
+    if(data != undefined){
+        for(var i=0;i<data.length;i++){
+            let course = {};
+            if(searcher.search(data[i].title) >= 0){
+                course.id = data[i].id;
+                course.title = data[i].title;
+                course.info = data[i].info;
+                course.image_path = data[i].image_path;
+                course.hit = data[i].hit;
+
+                result.push(course);
+            }
         }
     }
 
@@ -67,7 +73,7 @@ router.post('/', async(req, res, next) => {
     }
     );
 });
-
+////used
 
 
 
