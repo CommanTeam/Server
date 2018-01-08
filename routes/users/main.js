@@ -6,7 +6,7 @@ const router = express.Router();
 const crypto = require('crypto-promise');
 const async = require('async');
 const bodyParser = require('body-parser');
-
+const moment = require('moment');
 const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 const sql = require('../../module/sql.js');
@@ -147,26 +147,43 @@ router.get('/greeting', async(req, res, next) => {
 
     let email = chkToken.email;
     let result = {};
-    let mentArr = [];
-
-    mentArr.push(" ment 1 ");
-    mentArr.push(" ment 2 ");
-    mentArr.push(" ment 3 ");
-    mentArr.push(" ment 4 ");
-    mentArr.push(" ment 5 ");
-
-    // 인사말 Seed 랜덤으로 출력
-    var seed = parseInt(Math.random() * 4 + 1);
-    result.ment = mentArr[seed];
 
 
-    var selectQuery = `
-    select thumbnail_path
+    var selectQuery = 
+    `
+    select thumbnail_path, nickname
     from user
     where id = ? ;
     `
     var userImg = await db.queryParamCnt_Arr(selectQuery,email);
+
+    var now = moment().format('YYYY-MM-DD');
+    var lastAccessTime = moment("2018-01-07")
+    var accessFromNow = moment(lastAccessTime).startOf('day').fromNow(); // intvalue_accessFromNow + " days ago" 형식올 출력된다.
+    var intvalue_accessFromNow = accessFromNow.substring(0,1) - 1;
+
+
+
+    let mentArr = [];
+    let ment1 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 3강 질문에 대한 답변이 도착했습니다.'; 
+    let ment2 = userImg[0].nickname + '님 3일 연속 출석이네요!';
+    let ment3 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 완강까지 진도율 70% 달성했습니다! 조금만 더 힘내세요!';
+    let ment4 = userImg[0].nickname + '님 ' + intvalue_accessFromNow + '일만에 출석이네요! 조금 더 자주 뵀으면 좋겠어요 ^^';
+    let ment5 = userImg[0].nickname + '님 토요일이네요~ 즐거운 주말의 시작 컴만과 함께해요!^^';
+
+
+    mentArr.push(ment1);
+    mentArr.push(ment2);
+    mentArr.push(ment3);
+    mentArr.push(ment4);
+    mentArr.push(ment5);
+
+    // 인사말 Seed 랜덤으로 출력
+    var seed = parseInt(Math.random() * 4 + 1);
+
     result.userImg = userImg[0].thumbnail_path;
+    result.ment = mentArr[seed];
+
 
     if(result != undefined) {
         res.status(200).send({

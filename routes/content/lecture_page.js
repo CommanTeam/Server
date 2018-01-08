@@ -189,9 +189,9 @@ console.log(" [in lecutre_page] result : " + result[0] );
 });
 
 //written by 성찬
-//http://ip/content/lecturepage/nextLecture?courseID={courseID}&chapterID={chapterID}&lectureID={lectureID}
-//courseID와 현재 lectureID로 다음 수강할 강의 가져오기(priority column 이용)
-router.get('/nextLecture', async(req, res, next) => {
+//http://ip/content/lecturepage/nextLecture?lectureID={lectureID}
+//현재 lectureID로 다음 수강할 강의 가져오기(priority column 이용)
+router.get('/nextLecture/', async(req, res, next) => {
     console.log("===lecture_page.js ::: router('/nextLecture')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -204,9 +204,19 @@ router.get('/nextLecture', async(req, res, next) => {
     var dataOfChapter = [];
     var resultOfCourse;
     var resultOfChapter;
-    let courseID = req.query.courseID;
-    let chapterID = req.query.chapterID;
     let lectureID = req.query.lectureID;
+
+    var selectChIDCoIDbyLectureID=
+    `
+    SELECT course_id as course_ID, chapter_id as chapter_ID, lecture_id as lecture_ID
+    FROM comman_db.all_course_info
+    WHERE lecture_id = ?
+
+    `
+    let data = await db.queryParamCnt_Arr(selectChIDCoIDbyLectureID, lectureID);
+
+    var chapterID = data[0].chapter_ID;
+    var courseID = data[0].course_ID;
 
     var selectAllLectureIDInCourse=`
     SELECT l.id as lecture_id 
