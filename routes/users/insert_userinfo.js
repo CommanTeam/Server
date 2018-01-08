@@ -46,6 +46,11 @@ router.post('/', async(req, res, next) => {
     if(req.headers.authorization != undefined){
         chkToken = jwt.verify(req.headers.authorization);
     }
+
+    // console.log()
+    console.log(chkToken);
+    console.log(jwt.verify(chkToken));
+
     var nickname = req.body.nickName;
     var thumbnail_path = req.body.thumbnailPath;
     var email = req.body.email;
@@ -65,11 +70,11 @@ router.post('/', async(req, res, next) => {
         //user정보 Insert쿼리실행
         if(chkToken != undefined){
             // console.log("토큰이 있습니다");
-            if(jwt.verify(chkToken) != -1){
+            if(chkToken.email == email){
                 // console.log("성공적으로 로그인 되었습니다");
                 res.status(200).send({
                     message : "success",
-                    token : token
+                    token : req.headers.authorization
                 });
             } else {
                 // console.log("기간이 만료되었습니다. 재발급 합니다");
@@ -96,7 +101,7 @@ router.post('/', async(req, res, next) => {
                 let insertResult = await db.queryParamCnt_Arr(insertQuery,[nickname, thumbnail_path ,email]); 
 
                 token = jwt.sign(email);
-                // console.log(token);
+                console.log(token);
                 
                 res.status(200).send({
                     message : "sign up success",
