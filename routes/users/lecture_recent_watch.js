@@ -104,7 +104,7 @@ router.get('/:lectureID', async(req, res, next) => {
     `
     let cntPicture = await db.queryParamCnt_Arr(getCountPicturebyLectureID,lecture_ID);
 
-
+    _lectureInfo.course_ID = data[0].course_ID;
     _lectureInfo.course_title = data[0].course_title;
     _lectureInfo.chapter_priority = data[0].chapter_priority;
     _lectureInfo.lecture_title = data[0].lecture_title;
