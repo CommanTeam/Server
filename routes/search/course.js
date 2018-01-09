@@ -35,6 +35,7 @@ router.post('/', async(req, res, next) => {
         });
     }
     let searchWord = req.body.search;
+    console.log("search this word" + searchWord);
     let searcher = new hangul.Searcher(searchWord);
     let result = [];
     
