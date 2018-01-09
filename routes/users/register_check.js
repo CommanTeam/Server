@@ -32,15 +32,15 @@ router.get('/:courseID', async(req, res, next) => {
 
     let checkRegisterByUserIDAndCourseID =
     `
-    select id from user_register where user_id = ? and course_id=?
+    select id from user_register where user_id = ? and course_id = ?
     `;
 
 
     var data = await db.queryParamCnt_Arr(checkRegisterByUserIDAndCourseID, [userID, courseID]);
-
+    console.log("register check data ===> " + data[0]);
     // console.log(data.length);
 
-    if(!data.length==0){
+    if(data != undefined && data.length !=0){
         result = 1;
     }
 
@@ -79,8 +79,9 @@ router.post('/', async(req, res, next) => {
     insert into user_register (user_id, course_id)
     values (?,?)
     `;
-    await db.queryParamCnt_Arr(insertQuery, [userID, courseID]);
+    var data = await db.queryParamCnt_Arr(insertQuery, [userID, courseID]);
 
+    console.log("course register do ==>" + data);
 
     res.status(200).send({
         message : "강좌 등록 성공"

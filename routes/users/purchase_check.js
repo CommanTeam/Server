@@ -40,13 +40,15 @@ router.get('/:courseID', async(req, res, next) => {
     SELECT purchase_flag 
     FROM user_register 
     WHERE user_id = ? 
-    AND course_id=?
+    AND course_id = ?
     `;
 
     var data = await db.queryParamCnt_Arr(checkPurchaseByUserIDAndCourseID, [userID, courseID]);
-    
-    result = data[0].purchase_flag;
+    console.log("purchase check data ==> " + data[0]);
 
+    if(data != undefined && data.length !=0){
+        result = data[0].purchase_flag;
+    }
     res.status(200).send({result});
 });
 
@@ -80,7 +82,9 @@ router.put('/:courseID', async(req, res, next) => {
 
     `;
 
-    console.log(await db.queryParamCnt_Arr(updatePurchaseByUserIDAndCourseID, [userID, courseID]));
+    var data = await db.queryParamCnt_Arr(updatePurchaseByUserIDAndCourseID, [userID, courseID]);
+    console.log("purchase do data =>" + data[0]);
+
 
 
     res.status(200).send({

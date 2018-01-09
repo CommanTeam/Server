@@ -23,17 +23,19 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
 	let lectureID = req.params.lectureID;
-
+	let result = [];
 	let selectVideoLecutreByLectureID =
-	`
-	SELECT id as lecture_id, title, info, file_path, lecture_type, video_id, priority AS lecture_priority 
-	FROM lecture
-	WHERE id = ?;
 
-	`;
+	`SELECT lv.lecture_id, l.title, l.info, l.profile_image as file_path, lv.video_id, l.priority 
+	FROM lecture_video lv, lecture l 
+	WHERE lv.lecture_id = l.id AND lecture_id = ?`;
 
-	let result = await db.queryParamCnt_Arr(selectVideoLecutreByLectureID, lectureID);
 
+	let data = await db.queryParamCnt_Arr(selectVideoLecutreByLectureID, lectureID);
+
+	if(data != undefined){
+		result = data;
+	}
 
     res.status(200).send({
        result : result

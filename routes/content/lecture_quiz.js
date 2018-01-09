@@ -66,13 +66,20 @@ router.get('/:lectureID', async(req, res, next) => {
   var object_question = {};
   let selectQuizAndQuestionByLectureID =
   `
-  SELECT T.lecture_id, T.id as quiz_id, T.title as quiz_title, T.explanation, T.image_path as quiz_image, T.priority as quiz_priority, Q.id as question_id, Q.question_content, Q.answer_flag 
-  FROM quiz_title T, quiz_question Q, lecture L 
-  WHERE T.id=Q.quiz_id 
-  AND T.lecture_id = L.id
-  AND lecture_id = ?
-  ORDER BY lecture_id, quiz_priority
-  `;
+    SELECT L.id as lecture_id, L.priority as lecture_priority, LQ.id as quiz_id, LQ.title as quiz_title, LQ.explanation as explanation, LQ.image_path as quiz_image, LQ.priority as quiz_priority, Q.id as question_id, Q.content as question_content, Q.answer_flag
+    FROM lecture L, lecture_quiz LQ, quiz_question Q
+    WHERE L.id = LQ.lecture_id AND LQ.id = Q.quiz_id AND lecture_id = ?
+    ORDER BY lecture_priority, quiz_priority
+  `
+
+  // `
+  //   SELECT lq.lecture_id, lq.id as quiz_id, lq.title as quiz_title, lq.explanation, lq.image_path as quiz_image, lq.priority as quiz_priority, Q.id as question_id, Q.content, Q.answer_flag 
+  //   FROM lecture_quiz lq, quiz_question Q, lecture L 
+  //   WHERE lq.id=Q.quiz_id 
+  //   AND lq.lecture_id = L.id
+  //   AND lecture_id = ?
+  //   ORDER BY lecture_id, quiz_priority
+  // `;
 
 
   var data = await db.queryParamCnt_Arr(selectQuizAndQuestionByLectureID, lectureID);

@@ -34,7 +34,7 @@
 //강의 id, user email로 마지막으로 들은 강의 이름, 강의 priority, 단원 이름, 단원 priority, 진도  가져오기  
 //http://ip/users/lectureRecentWatch/{lecutreID}
 router.get('/:lectureID', async(req, res, next) => {
-    
+
     console.log("===lecture_recent_watch.js ::: router('/{lectureID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -43,7 +43,7 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
     
-    let lecture_ID = req.params.lectureID
+    let lectureID = req.params.lectureID
 
 
     //let user_email =  chkToken.email;
@@ -54,55 +54,54 @@ router.get('/:lectureID', async(req, res, next) => {
     // SELECT * 
     // FROM comman_db.user as u,             user_history as uh,             lecture as l
     // where u.id = uh.user_id
-    // and uh.lecture_id = l.id
+    // and uh.lectureID = l.id
     // and u.email = 'user@user'
-
-
-    // `
-    //lectureID로 chapter_title, chapter_priority, lecture_title, leacture_priority, l.video가져오기
-    let selectQuery =
-    `   
-       SELECT c.id as course_ID,c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.lecture_type as lecture_type, l.video_id
-        FROM comman_db.course c, chapter ch, lecture l 
-        WHERE c.id = ch.course_id
-        AND ch.id = l.chapter_id
-        AND l.id = ?
-    `;
-
-
 
     let lectureInfo = [];
     let _lectureInfo = {};
-
-    let data = await db.queryParamCnt_Arr(selectQuery,lecture_ID);
-
-
-    // lecture_type = 0 ==> 퀴즈
-    let getCountQuizbyLectureID = 
-    `   
-        SELECT count(l.id) as cnt_quiz
-        FROM comman_db.lecture l, quiz_title q
-        WHERE l.id = q.lecture_id
-        AND l.id =  ?
-
-
+    // `
+    //lectureID로 chapter_title, chapter_priority, lecture_title, leacture_priority, l.video가져오기
+    let selectQuery =
     `
-
-    let cntQuiz = await db.queryParamCnt_Arr(getCountQuizbyLectureID,lecture_ID);
-
-    // lecture_type = 1 ==> 글,그림
+    SELECT c.id as course_ID,c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.type as lecture_type
+    FROM comman_db.course c, chapter ch, lecture l 
+    WHERE c.id = ch.course_id
+    AND ch.id = l.chapter_id
+    AND l.id = ?
+    `;
+    
+    let getCountQuizbyLectureID = 
+    `
+    SELECT count(*) as quizCount
+    FROM lecture_quiz 
+    WHERE lecture_id = ?
+    `;
 
     let getCountPicturebyLectureID =
     `   
-        
-        SELECT count(l.id) as cnt_picture
-        FROM comman_db.lecture l,  lecture_image li
-        WHERE l.id = li.lecture_id
-        AND l.id =  ?
-
+    SELECT count(*) as pictureCount
+    FROM lecture_picture 
+    WHERE lecture_id = ?;
 
     `
-    let cntPicture = await db.queryParamCnt_Arr(getCountPicturebyLectureID,lecture_ID);
+    let getVideoIDByLectureID = 
+    `SELECT video_id FROM 
+    lecture_video 
+    WHERE lecture_id = ?`
+    
+
+    let data = await db.queryParamCnt_Arr(selectQuery,lectureID);
+    
+    // lecture_type = 0 ==> 퀴즈
+    let cntQuiz = await db.queryParamCnt_Arr(getCountQuizbyLectureID,lectureID);
+
+    // lecture_type = 1 ==> 글,그림
+    let cntPicture = await db.queryParamCnt_Arr(getCountPicturebyLectureID,lectureID);
+
+    // lecture_type = 2 ==> 비디오 
+    let videoID = await db.queryParamCnt_Arr(getVideoIDByLectureID,lectureID);
+
+
 
     _lectureInfo.course_ID = data[0].course_ID;
     _lectureInfo.course_title = data[0].course_title;
@@ -110,9 +109,33 @@ router.get('/:lectureID', async(req, res, next) => {
     _lectureInfo.lecture_title = data[0].lecture_title;
     _lectureInfo.lecture_priority = data[0].lecture_priority;
     _lectureInfo.lecture_type = data[0].lecture_type;
-    _lectureInfo.lecture_video_id = data[0].video_id
-_lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
-    _lectureInfo.cnt_lecture_picture = cntPicture[0].cnt_picture;    
+
+    
+    if(cntQuiz[0].quizCount != 0){
+        console.log("here quiz");
+        // _lectureInfo.lecture_type = 0;
+        lectureInfo.cnt_lecture_picture = cntPicture[0].pictureCount;
+    }
+    if(cntPicture[0].pictureCount != 0){
+        console.log("here picture");
+        // _lectureInfo.lecture_type = 1;
+        _lectureInfo.cnt_lecture_picture = cntPicture[0].pictureCount;
+    }
+    if(videoID[0] != undefined){
+        console.log("here video");
+        // _lectureInfo.lecture_type = 2;
+        _lectureInfo.lecture_video_id = videoID[0].video_id;
+        console.log("videoID : " + videoID[0].video_id);
+    }
+
+
+
+
+
+    // _lectureInfo.lecture_type = data[0].lecture_type;
+    // _lectureInfo.lecture_video_id = data[0].video_id
+    // _lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
+    // _lectureInfo.cnt_lecture_picture = cntPicture[0].cnt_picture;    
 
     // //이메일로 강좌의 듣거나 듣는 중인 강의 수 구하기
     
@@ -126,7 +149,7 @@ _lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
     // AND l.id = ?
     // ` 
 
-    // let getCourseIDbyLectureID = await db.queryParamCnt_Arr(selectQuery2,lecture_ID);
+    // let getCourseIDbyLectureID = await db.queryParamCnt_Arr(selectQuery2,lectureID);
 
 
     // //강의 ID로 강좌의 강의 총 수 구하기. //분모
@@ -147,7 +170,7 @@ _lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
 
     res.status(200).send({
        "result" : result
-    });
+   });
 });
 
 
