@@ -13,35 +13,41 @@ const db = require('../../module/pool.js');
 const sql = require('../../module/sql.js');
 
 
-// var Curl = require( 'node-libcurl' ).Curl;
-
+const request = require('request-promise');
 
 /*
 Method : Get
 */
-router.get('/', function(req,res,next){
-    console.log('good gid ');
+router.get('/', async(req, res, next) => {
+    var token = "VTDI10s8Md7V_-knqwpvykaWaE94_9Auo7ss1QopdkgAAAFg29_n1A";
+
+    let option = {
+        method : 'GET',
+        uri: 'https://kapi.kakao.com/v1/user/me ',
+        json : true,
+        headers : {
+            'Authorization': "Bearer " +  token
+        }
+    }
 
 
-    var curl = new Curl();
-    curl.setOpt( 'URL', 'www.google.com' );
-    curl.setOpt( 'FOLLOWLOCATION', true );
-    
-    
-    curl.on( 'end', function( statusCode, body, headers ) {
-    
-        console.info( statusCode );
-        console.info( '---' );
-        console.info( body.length );
-        console.info( '---' );
-        console.info( this.getInfo( 'TOTAL_TIME' ) );
-    
-        this.close();
-    });
-    
-    curl.on( 'error', curl.close.bind( curl ) );
-    curl.perform();
+    let cacaoResult = await request(option);
+    let result = {};
+    result.kaccount_email = cacaoResult.kaccount_email;
+    result.nickname = cacaoResult.properties.nickname;
+    result.thumbnail_image = cacaoResult.properties.thumbnail_image;
 
+    console.log(result);
+    
+
+    /*
+        .then(function (repos) {
+            console.log('User has %d repos', repos.length);
+        })
+        .catch(function (err) {
+            // API call failed...
+        });
+    */
 
     res.status(200).send({
           "msg" : " msg good gid"
