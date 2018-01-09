@@ -1,20 +1,20 @@
 /*
  Declare module
-*/
-const express = require('express');
-const router = express.Router();
-const crypto = require('crypto-promise');
-const async = require('async');
-const bodyParser = require('body-parser');
-const moment = require('moment');
-const jwt = require('../../module/jwt.js');
-const db = require('../../module/pool.js');
-const sql = require('../../module/sql.js');
+ */
+ const express = require('express');
+ const router = express.Router();
+ const crypto = require('crypto-promise');
+ const async = require('async');
+ const bodyParser = require('body-parser');
+ const moment = require('moment');
+ const jwt = require('../../module/jwt.js');
+ const db = require('../../module/pool.js');
+ const sql = require('../../module/sql.js');
 
 /*
  Method : Get
-*/
-router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
+ */
+ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
     console.log("===main.js ::: router('/lastWatchedLecture/{lectureID}')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -53,7 +53,7 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
   Dec : Progress rate
   writtend by 신기용
   */
-router.get('/progressLecture', async(req, res, next) => {
+  router.get('/progressLecture', async(req, res, next) => {
     console.log("===main.js ::: router('/progressLecture')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -80,7 +80,7 @@ router.get('/progressLecture', async(req, res, next) => {
         let params = [];
         params.push(userID);
         params.push(listOfCourse[i]);
-    
+        
     // User가 Course에서 몇개의 Lecutre를 들었는지 Count
     let molecule = await sql.getCourseInProgressByUserIDandCourseID(params); 
     let denominator = await sql.getTotalLectureCntInCourse(listOfCourse[i]);
@@ -89,11 +89,11 @@ router.get('/progressLecture', async(req, res, next) => {
 
     var selectQuery=`
     select c.title as c_title, c.id as course_id, c.image_path as image_path
-	from course as c
-	where c.id=? ;
+    from course as c
+    where c.id=? ;
     `
 
-  
+    
     // 강좌 Title
     let courseTitle = await db.queryParamCnt_Arr(selectQuery,listOfCourse[i]);
 
@@ -108,18 +108,18 @@ router.get('/progressLecture', async(req, res, next) => {
     progressCourse.chapterCnt = chapterCnt;
     progressCourse.progressPercentage = progressInCourse;     
     result.push(progressCourse);
-    }
+}
 
-    if(result != undefined) {
-        res.status(200).send({
-            "result" : result 
-        });
-    }else{
-        res.status(500).send({
-            "msg" : "Error /users/main/progressLecture "
-        });
-    }    
-    
+if(result != undefined) {
+    res.status(200).send({
+        "result" : result 
+    });
+}else{
+    res.status(500).send({
+        "msg" : "Error /users/main/progressLecture "
+    });
+}    
+
 
 });
 
@@ -133,7 +133,7 @@ router.get('/progressLecture', async(req, res, next) => {
   Dec : Greeting Ment
   writtend by 신기용
   */
-router.get('/greeting', async(req, res, next) => {
+  router.get('/greeting', async(req, res, next) => {
     console.log("===main.js ::: router('/greeting')===");
     const chkToken = jwt.verify(req.headers.authorization);
     // 토큰 검증 실패
@@ -163,23 +163,27 @@ router.get('/greeting', async(req, res, next) => {
 
 
     let mentArr = [];
-    let ment1 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 3강 질문에 대한 답변이 도착했습니다.'; 
-    let ment2 = userImg[0].nickname + '님 3일 연속 출석이네요!';
-    let ment3 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 완강까지 진도율 70% 달성했습니다! 조금만 더 힘내세요!';
-    let ment4 = userImg[0].nickname + '님 ' + intvalue_accessFromNow + '일만에 출석이네요! 조금 더 자주 뵀으면 좋겠어요 ^^';
-    let ment5 = userImg[0].nickname + '님 토요일이네요~ 즐거운 주말의 시작 컴만과 함께해요!^^';
 
+    if(userImg != undefined && userImg.length != 0){
+        result.userImg = userImg[0].thumbnail_path;
+        let ment1 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 3강 질문에 대한 답변이 도착했습니다.'; 
+        let ment2 = userImg[0].nickname + '님 3일 연속 출석이네요!';
+        let ment3 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 완강까지 진도율 70% 달성했습니다! 조금만 더 힘내세요!';
+        let ment4 = userImg[0].nickname + '님 ' + intvalue_accessFromNow + '일만에 출석이네요! 조금 더 자주 뵀으면 좋겠어요 ^^';
+        let ment5 = userImg[0].nickname + '님 토요일이네요~ 즐거운 주말의 시작 컴만과 함께해요!^^';
 
+    
     mentArr.push(ment1);
     mentArr.push(ment2);
     mentArr.push(ment3);
     mentArr.push(ment4);
     mentArr.push(ment5);
-
+    }
     // 인사말 Seed 랜덤으로 출력
     var seed = parseInt(Math.random() * 4 + 1);
 
-    result.userImg = userImg[0].thumbnail_path;
+
+    
     result.ment = mentArr[seed];
 
 
@@ -198,11 +202,11 @@ router.get('/greeting', async(req, res, next) => {
 
 /*
  Method : Post
-*/
+ */
 
 
 
 
 
 
-module.exports = router;
+ module.exports = router;

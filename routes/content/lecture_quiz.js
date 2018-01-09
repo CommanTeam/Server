@@ -66,10 +66,10 @@ router.get('/:lectureID', async(req, res, next) => {
   var object_question = {};
   let selectQuizAndQuestionByLectureID =
   `
-    SELECT L.id as lecture_id, L.priority as lecture_priority, LQ.id as quiz_id, LQ.title as quiz_title, LQ.explanation as explanation, LQ.image_path as quiz_image, LQ.priority as quiz_priority, Q.id as question_id, Q.content as question_content, Q.answer_flag
-    FROM lecture L, lecture_quiz LQ, quiz_question Q
-    WHERE L.id = LQ.lecture_id AND LQ.id = Q.quiz_id AND lecture_id = ?
-    ORDER BY lecture_priority, quiz_priority
+  SELECT L.id as lecture_id, L.priority as lecture_priority, LQ.id as quiz_id, LQ.title as quiz_title, LQ.explanation as explanation, LQ.image_path as quiz_image, LQ.priority as quiz_priority, Q.id as question_id, Q.content as question_content, Q.answer_flag
+  FROM lecture L, lecture_quiz LQ, quiz_question Q
+  WHERE L.id = LQ.lecture_id AND LQ.id = Q.quiz_id AND lecture_id = ?
+  ORDER BY lecture_priority, quiz_priority
   `
 
   // `
@@ -98,7 +98,14 @@ router.get('/:lectureID', async(req, res, next) => {
         object.quizID = data[i].quiz_id;
         object.quizTitle = data[i].quiz_title;
         object.quizPriority = data[i].quiz_priority;
-        object.quizImage = data[i].quiz_image;
+
+        
+        if(object.quizImage != undefined){
+          object.quizImage = data[i].quiz_image;
+        } else{
+          object.quizImage = "";
+        } 
+        console.log(object.quizImage);
         object.explanation = data[i].explanation;
         object.questionArr = [];
       }
