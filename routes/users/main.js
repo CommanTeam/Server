@@ -54,7 +54,6 @@ router.get('/lastWatchedLecture/:lectureID', async(req, res, next) => {
   writtend by 신기용
   */
 router.get('/progressLecture', async(req, res, next) => {
-
     console.log("===main.js ::: router('/progressLecture')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
@@ -64,7 +63,6 @@ router.get('/progressLecture', async(req, res, next) => {
     }
 
     let userID = chkToken.email;
-
     let listOfCourse = [];
     let result = [];
 
@@ -194,8 +192,6 @@ router.get('/greeting', async(req, res, next) => {
             "msg" : "Error /users/main/greeting "
         });
     }    
-    
-
 });
 
 
