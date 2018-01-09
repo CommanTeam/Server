@@ -25,18 +25,22 @@ router.get('/', async(req, res, next) => {
 		});
 	}
 	let lectureID = req.query.lectureID;
-	let result = [];
+	let result = {};
 	let selectLectureByLectureID =
 	`
-	select count(*) as cnt
-	from lecture_quiz as lq
-	where lq.lecture_id = ?
+	select l.priority as priority, l.title as title, count(*) as pass_value
+	from lecture as l, lecture_quiz as lq
+	where l.id = lq.lecture_id
+	and lq.lecture_id = ?
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
+	result.priority = data[0].priority;
+	result.title = data[0].title;
+	result.pass_value = parseInt( parseInt(data[0].pass_value) * 0.8 );
 
 	if(data!=undefined){
-		result = parseInt( parseInt(data[0].cnt) * 0.8 );
+		result = result;
 	}
 
 	res.status(200).send({data : result});
