@@ -134,8 +134,6 @@ router.get('/:lectureID', async(req, res, next) => {
 
 
     var result = _lectureInfo;
-    console.log('최신 강의');
-    console.log(result);
 
     res.status(200).send({
        "result" : result
