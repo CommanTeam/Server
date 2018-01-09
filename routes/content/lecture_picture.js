@@ -33,8 +33,8 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	var result = {};
 	let getImageUrlbyLectureID =
 	`SELECT image_path
-	FROM comman_db.lecture as l,
-	comman_db.lecutre_image as li  
+	FROM comman.lecture as l,
+	comman.lecutre_image as li  
 	WHERE l.id = li.lecture_id 
 	AND l.id = ?
 	order by  li.priority;
@@ -113,22 +113,18 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
 	let lectureID = req.params.lectureID;
+	let result = [];
+	let selectLectureByUserID = `SELECT  lp.lecture_id, l.title, lp.priority, lp.image_path 
+	FROM lecture_picture lp, lecture l
+	WHERE lp.lecture_id = l.id AND lecture_id = ?
+	ORDER BY priority`;
 
-	let selectLectureByUserID = `SELECT li.lecture_id, l.title, li.image_path, li.priority AS image_priority 
-	FROM lecture_image li, lecture l 
-	WHERE li.lecture_id = l.id 
-	AND lecture_id = ?
-	ORDER BY li.priority`;
+	let data = await db.queryParamCnt_Arr(selectLectureByUserID, lectureID);
+	// console.log(data);
 
-
-	
-	// `
-	
-
-	// `;
-
-	let result = await db.queryParamCnt_Arr(selectLectureByUserID, lectureID);
-
+	if(data != undefined){
+		result = data;
+	}
 
 	res.status(200).send({
 		result : result

@@ -22,17 +22,17 @@
 router.get('/', async(req, res, next) => {
 	console.log("===courses.js ::: router('/')===");
 	const chkToken = jwt.verify(req.headers.authorization);
-    if(chkToken == -1) {
-        res.status(401).send({
-            message : "Access Denied"
-        });
-    }
+	if(chkToken == -1) {
+		res.status(401).send({
+			message : "Access Denied"
+		});
+	}
 	let courseID = req.query.courseID;
 
 	let selectCourseByCourseID =
 	`
-	 SELECT c.id, c.supplier_id, c.opened_chapter, c.image_path, s.name, s.thumbnail_path as supplier_thumbnail, c.title, c.info, c.price, c.category_id FROM course c, supplier s
-	 WHERE c.supplier_id = s.id AND c.id = ?;
+	SELECT c.id, c.supplier_id, c.opened_chapter, c.image_path, s.name, s.thumbnail_path as supplier_thumbnail, c.title, c.info, c.price, c.category_id FROM course c, supplier s
+	WHERE c.supplier_id = s.id AND c.id = ?;
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectCourseByCourseID, courseID);
@@ -51,68 +51,44 @@ router.get('/', async(req, res, next) => {
 router.get('/:courseID/chapters', async(req, res, next) => {
 	console.log("===courses.js ::: router('/{courseID}/chapters')===");
 	const chkToken = jwt.verify(req.headers.authorization);
-    if(chkToken == -1) {
-        res.status(401).send({
-            message : "Access Denied"
-        });
-    }
+	if(chkToken == -1) {
+		res.status(401).send({
+			message : "Access Denied"
+		});
+	}
 	
 	let courseID = req.params.courseID;
 	let result = [];
 
-	let selectChapterByCourseId =
-	`
-	select id, course_id, info, title, priority from comman_db.chapter where course_id = ? order by priority asc
-	`;
 
-	let selectOpenChapterByCourseId =
-	`
-	select opened_chapter from comman_db.course where id = ?
-	`;
+	let query = `
+	SELECT ch.chapter_id, ch.chapter_info, ch.chapter_title, ch.chapter_priority, ch.lecture_count, c.opened_chapter FROM
+	course c, 
+	(SELECT c.id as chapter_id, c.course_id, c.info as chapter_info, c.title as chapter_title, c.priority as chapter_priority, count(*) as lecture_count 
+	FROM lecture l 
+	LEFT JOIN chapter c 
+	ON l.chapter_id = c.id GROUP BY chapter_id) ch 
+	WHERE c.id = ch.course_id AND course_id = ?`
 
-	var openChapterNum = await db.queryParamCnt_Arr(selectOpenChapterByCourseId, courseID);
-	// console.log("openedChapter: " + openChapterNum[0].opened_chapter);
+	var data = await db.queryParamCnt_Arr(query, courseID);
 
-
-	var data = await db.queryParamCnt_Arr(selectChapterByCourseId, courseID);
-
-	for(var i=0;i<data.length;i++){
-		let chapter = {};
-		chapter.chapterID = data[i].id;
-		chapter.info = data[i].info;
-		chapter.title = data[i].title;
-		chapter.priority = data[i].priority;
-		chapter.open = (i < openChapterNum[0].opened_chapter || openChapterNum[0].opened_chapter==-1)
-
-		result.push(chapter);
-	}
+	if(data != undefined && data.length !=0){
+		for(var i=0;i<data.length;i++){
+			let chapter = {};
+			chapter.chapterID = data[i].chapter_id;
+			chapter.info = data[i].chapter_info;
+			chapter.title = data[i].chapter_title;
+			chapter.priority = data[i].chapter_priority;
+			chapter.open = (i < data[0].opened_chapter || data[0].opened_chapter==-1);
+			chapter.size = data[i].lecture_count;
+			result.push(chapter);
+		}
+}
 	
 
 	res.status(200).send({result});
 
 });
-
-
-
-//written By 성찬
-//강좌id로 오픈된 챕터 개수 반환 
-//http://ip/content/courses/{courseID}/openChapter
-// router.get('/:courseID/openChapter', async(req, res, next) => {
-
-// 	let courseID = req.params.courseID;
-
-// 	let selectOpenChapterByCourseId =
-// 	`
-// 	select opened_chapter from comman_db.course where id = ?
-// 	`;
-
-// 	var data = await db.queryParamCnt_Arr(selectOpenChapterByCourseId, courseID);
-
-// 	res.status(200).send(
-// 		data
-// 		);
-
-// });
 
 
 module.exports = router;

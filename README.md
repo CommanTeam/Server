@@ -41,3 +41,39 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 
 
 ---
+
+
+기술 명세서
+
+1. curl
+
+https://github.com/jiangmiao/node-curl
+https://www.npmjs.com/package/node-curl
+
+![curl logo](https://cdn.rawgit.com/curl/curl-www/master/logo/curl-logo.svg)
+
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/63/badge)](https://bestpractices.coreinfrastructure.org/projects/63)
+[![Coverity passed](https://scan.coverity.com/projects/curl/badge.svg)](https://scan.coverity.com/projects/curl)
+[![Build Status](https://travis-ci.org/curl/curl.svg?branch=master)](https://travis-ci.org/curl/curl)
+[![Coverage Status](https://coveralls.io/repos/github/curl/curl/badge.svg)](https://coveralls.io/github/curl/curl)
+
+Curl is a command-line tool for transferring data specified with URL
+syntax. Find out how to use curl by reading [the curl.1 man
+page](https://curl.haxx.se/docs/manpage.html) or [the MANUAL
+document](https://curl.haxx.se/docs/manual.html). Find out how to install Curl
+by reading [the INSTALL document](https://curl.haxx.se/docs/install.html).
+
+libcurl is the library curl is using to do its job. It is readily available to
+be used by your software. Read [the libcurl.3 man
+page](https://curl.haxx.se/libcurl/c/libcurl.html) to learn how!
+
+You find answers to the most frequent questions we get in [the FAQ
+document](https://curl.haxx.se/docs/faq.html).
+
+Study [the COPYING file](https://curl.haxx.se/docs/copyright.html) for
+distribution terms and similar. If you distribute curl binaries or other
+binaries that involve libcurl, you might enjoy [the LICENSE-MIXING
+document](https://curl.haxx.se/legal/licmix.html).
+
+
+

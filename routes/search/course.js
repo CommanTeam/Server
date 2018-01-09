@@ -35,13 +35,14 @@ router.post('/', async(req, res, next) => {
         });
     }
     let searchWord = req.body.search;
+    console.log("search this word" + searchWord);
     let searcher = new hangul.Searcher(searchWord);
     let result = [];
     
     let selectAllCourse =
     `
     SELECT c.id, c.title, c.info, c.image_path, ur.hit
-    FROM course c LEFT JOIN (SELECT course_id, count(*) as hit FROM comman_db.user_register group by course_id) ur
+    FROM course c LEFT JOIN (SELECT course_id, count(*) as hit FROM comman.user_register group by course_id) ur
     ON c.id = ur.course_id
     ORDER BY hit DESC
     `;

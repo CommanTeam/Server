@@ -128,7 +128,7 @@ router.put('/:lectureID', async(req, res, next) => {
     `;
 
 
-    console.log(await db.queryParamCnt_Arr(updateLectureHistoryByUserIDAndLectureID, [userID, lectureID]));
+    await db.queryParamCnt_Arr(updateLectureHistoryByUserIDAndLectureID, [userID, lectureID]);
 
 
     res.status(200).send({

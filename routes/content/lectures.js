@@ -14,7 +14,7 @@
  Method : Get
  */
 //written By 성찬
-//강의 id로 강좌정보 가져오기  
+//강의 id로 강의정보 가져오기  
 //http://ip/content/lectures?lectureID={lectureID}
 router.get('/', async(req, res, next) => {
 	console.log("===lectures.js ::: router('/')===");
@@ -25,7 +25,7 @@ router.get('/', async(req, res, next) => {
 		});
 	}
 	let lectureID = req.query.lectureID;
-
+	let result = [];
 	let selectLectureByLectureID =
 	`
 	SELECT * FROM lecture
@@ -34,7 +34,11 @@ router.get('/', async(req, res, next) => {
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
 
-	res.status(200).send({data});
+	if(data!=undefined){
+		result = data;
+	}
+
+	res.status(200).send({data : result});
 
 });
 

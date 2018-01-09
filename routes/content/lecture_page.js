@@ -15,93 +15,6 @@
 /*
  Method : Get
  */
-//  router.get('/:chapterID', async(req, res, next) => {
-//     /* 
-//     const chkToken = jwt.verify(req.headers.authorization);
-//     if(chkToken == -1) {
-//         res.status(401).send({
-//             message : "Access Denied"
-//         });
-//     }
-//     */
-//     const chkToken = jwt.verify(req.headers.authorization);
-//     if(chkToken == -1) {
-//         res.status(401).send({
-//             message : "Access Denied"
-//         });
-//     }
-
-//     let userID = chkToken.email;
-//     let chapterID = req.params.chapterID;
-
-//     // 강의페이지에서 개요 부분
-//     var selectQuery=`
-//     select ch.id as ch_id, ch.title as ch_title, ch.info as ch_info
-//     from chapter as ch
-//     where ch.id = ?;
-//     `;
-
-//     let result = {};
-
-//     let FinalChapterSummary =  {};
-//     let chapterSummary = await db.queryParamCnt_Arr(selectQuery,chapterID);
-//     FinalChapterSummary.chapterID = chapterSummary[0].ch_id;
-//     FinalChapterSummary.chapterTitle = chapterSummary[0].ch_title;
-//     FinalChapterSummary.chapterInfo = chapterSummary[0].ch_info;
-//     result.summary = FinalChapterSummary;
-
-//     let FinalLectureList = [];
-
-//     // Res : Lecture [ ID,title ] List
-//     let eachLectureList = await sql.getLectureListBelong2Chapter(chapterID);
-
-//     for(var i=0; i<eachLectureList.length; i++){
-//         let lectureListObj = {};
-//         /*
-//         각 강의에 갖고 있는 퀴즈의 수
-//         */
-
-
-//         // Res : Lecutre Count
-//         let eachQuizCntBelong2Lecture = await sql.getQuizCntBelong2Lecture(eachLectureList[i].lecture_id);
-//         lectureListObj.lectureID = eachLectureList[i].lecture_id;
-//         lectureListObj.lectureTitle = eachLectureList[i].lecture_title;
-//         lectureListObj.lectureType = eachLectureList[i].lecture_type;
-//         if (eachLectureList[i].lecture_type != 2){
-//             lectureListObj.quizCnt = eachQuizCntBelong2Lecture;
-//         }
-
-
-//         // 유저가 강의를 들었는지 유무 판단
-//         selectQuery = `
-//         select count(*) as cnt
-//         from user_history as uh
-//         where uh.user_id = ?
-//         and uh.lecture_id = ?
-//         and uh.watched_flag = 2
-//         ;
-//         `
-
-//         // Req : userID , lectureID
-//         // Res : True / False
-//         let JudgeUserListened2Lecture = await db.queryParamCnt_Arr(selectQuery,[ userID, eachLectureList[i].lecture_id] );
-//         lectureListObj.listendLectureFlag = JudgeUserListened2Lecture[0].cnt ? true : false;
-//         FinalLectureList.push(lectureListObj);
-//     }
-
-//     result.lectureList = FinalLectureList;
-
-//     if(result != undefined) {
-//         res.status(200).send({
-//             "result" : result
-//         });
-//     }else{
-//         res.status(500).send({
-//             "msg" : "Error /content/lecturepage/:chapterID "
-//         });
-//     }    
-// });
-
 
 
 router.get('/lectureList', async(req, res, next) => {
@@ -121,26 +34,27 @@ router.get('/lectureList', async(req, res, next) => {
     var result = [];
     var lectureList = {};
 
-    var selectLectureListByUserID = `SELECT l.id as lecture_id, l.chapter_id, l.priority, l.title, l.lecture_type, l.video_id, uh.user_id, uh.watched_flag 
+    var selectLectureListByUserID = `SELECT l.id as lecture_id, l.chapter_id, l.priority, l.title, l.type as lecture_type, uh.watched_flag 
     FROM lecture l LEFT JOIN user_history uh 
     ON l.id = uh.lecture_id 
     AND uh.user_id = ?
     ORDER BY priority`;
 
+    var videoLecture = `SELECT video_id FROM comman.lecture_video WHERE lecture_id = ?`; 
+
     var countImageLecture = `SELECT count(*) as count
-    FROM comman_db.lecture_image where lecture_id = ?`;
+    FROM comman.lecture_picture where lecture_id = ?`;
 
     var countQuizLecture = `SELECT count(*) as count
-    FROM comman_db.quiz_title 
+    FROM comman.lecture_quiz 
     WHERE lecture_id = ?`;
 
 
-
     let lectureQuery = await db.queryParamCnt_Arr(selectLectureListByUserID, userID);
-	console.log(" [in lecture_page ] lectureQuery Cnt : " + lectureQuery.length ) ; 
+    // console.log(" [in lecture_page ] lectureQuery Cnt : " + lectureQuery.length ) ; 
 
-    if(lectureQuery != undefined){
-        console.log(' if(lectureQuery != undefined){ ');
+    if(lectureQuery != undefined && lectureQuery.length != 0){
+        // console.log(' if(lectureQuery != undefined){ ');
         for(var i=0;i<lectureQuery.length;i++){
         // console.log(lectureQuery[i].chapter_id);
         if(lectureQuery[i].chapter_id == chapterID){
@@ -150,8 +64,8 @@ router.get('/lectureList', async(req, res, next) => {
             lectureList.chapterID = lectureQuery[i].chapter_id;
             lectureList.lectureTitle = lectureQuery[i].title;
             lectureList.lectureType = lectureQuery[i].lecture_type;
-            lectureList.videoID = lectureQuery[i].video_id;
-            lectureList.userID = lectureQuery[i].user_id;
+            // lectureList.videoID = lectureQuery[i].video_id;
+            // lectureList.userID = lectureQuery[i].user_id;
             lectureList.watchedFlag = lectureQuery[i].watched_flag;
 
             if(lectureQuery[i].watched_flag == undefined){
@@ -167,21 +81,22 @@ router.get('/lectureList', async(req, res, next) => {
                 lectureList.size = pictureCount[0].count;
             } 
             if(lectureQuery[i].lecture_type == 2){
-                var pictureCount = await db.queryParamCnt_Arr(countImageLecture, lectureQuery[i].lecture_id);
+                var videoID = await db.queryParamCnt_Arr(videoLecture, lectureQuery[i].lecture_id);
+                lectureList.videoID = videoID[0].video_id;
                 lectureList.size = -1;
             }
             result.push(lectureList);
-            console.log('lectureList ID : ' + lectureList.lectureID);
-            console.log('lectureList lectureTitle : ' + lectureList.lectureTitle);
+            // console.log('lectureList ID : ' + lectureList.lectureID);
+            // console.log('lectureList lectureTitle : ' + lectureList.lectureTitle);
         }
     }
 }
 
-console.log(" [in lecutre_page] result : " + result[0] );
+// console.log(" [in lecutre_page] result : " + result[0] );
 
-    res.status(200).send({
-        result : result
-    });
+res.status(200).send({
+    result : result
+});
 
 
 
@@ -202,21 +117,26 @@ router.get('/nextLecture/', async(req, res, next) => {
     
     var dataOfCourse = [];
     var dataOfChapter = [];
-    var resultOfCourse;
-    var resultOfChapter;
+    var resultOfCourse = -1;
+    var resultOfChapter = -1;
     let lectureID = req.query.lectureID;
 
     var selectChIDCoIDbyLectureID=
     `
-    SELECT course_id as course_ID, chapter_id as chapter_ID, lecture_id as lecture_ID
-    FROM comman_db.all_course_info
+    SELECT course_id as course_id, chapter_id as chapter_id, lecture_id as lecture_id
+    FROM comman.all_course_info
     WHERE lecture_id = ?
 
     `
+    let chapterID = 0;
+    let courseID = 0;
     let data = await db.queryParamCnt_Arr(selectChIDCoIDbyLectureID, lectureID);
 
-    var chapterID = data[0].chapter_ID;
-    var courseID = data[0].course_ID;
+
+    if(data.length != 0){
+        chapterID = data[0].chapter_id;
+        courseID = data[0].course_id;
+    }
 
     var selectAllLectureIDInCourse=`
     SELECT l.id as lecture_id 
@@ -239,33 +159,43 @@ router.get('/nextLecture/', async(req, res, next) => {
     let orderedLectureID = await db.queryParamCnt_Arr(selectAllLectureIDInCourse, courseID);
     let orderedLectureIDByChapterID = await db.queryParamCnt_Arr(selectLectureIDInChapter, chapterID);
     
-    for(var i=0;i<orderedLectureID.length;i++){
-        dataOfCourse.push(orderedLectureID[i].lecture_id.toString());
+    console.log(orderedLectureID);
+    console.log(orderedLectureIDByChapterID);
+
+    if(orderedLectureID.length != 0){
+        for(var i=0;i<orderedLectureID.length;i++){
+            dataOfCourse.push(orderedLectureID[i].lecture_id.toString());
+        }
     }
-
-
-    for(var i=0;i<orderedLectureIDByChapterID.length;i++){
-        dataOfChapter.push(orderedLectureIDByChapterID[i].lecture_id.toString());
+    if(orderedLectureIDByChapterID.length != 0){
+        for(var i=0;i<orderedLectureIDByChapterID.length;i++){
+            dataOfChapter.push(orderedLectureIDByChapterID[i].lecture_id.toString());
+        }
     }
 
     // console.log(dataOfCourse);
     // console.log(dataOfChapter);
 
     //현재 lecture의 index값 구하기 
-    var currentIndexByCourse = dataOfCourse.indexOf(lectureID.toString());
-    var nextLectureIDByCourse = dataOfCourse[currentIndexByCourse+1];
-    if(nextLectureIDByCourse != undefined){
-        resultOfCourse = dataOfCourse[currentIndexByCourse+1];
-    } else{
-        resultOfCourse = -1;
+
+    if(dataOfCourse.length != 0){
+        var currentIndexByCourse = dataOfCourse.indexOf(lectureID.toString());
+        var nextLectureIDByCourse = dataOfCourse[currentIndexByCourse+1];
+        if(nextLectureIDByCourse != undefined){
+            resultOfCourse = dataOfCourse[currentIndexByCourse+1];
+        } else{
+            resultOfCourse = -1;
+        }
     }
 
-    var currentIndexByChapter = dataOfChapter.indexOf(lectureID.toString());
-    var nextLectureIDByChapter = dataOfChapter[currentIndexByChapter+1];
-    if(nextLectureIDByChapter != undefined){
-        resultOfChapter = dataOfChapter[currentIndexByChapter+1];
-    } else{
-        resultOfChapter = -1;
+    if(dataOfChapter.length != 0){
+        var currentIndexByChapter = dataOfChapter.indexOf(lectureID.toString());
+        var nextLectureIDByChapter = dataOfChapter[currentIndexByChapter+1];
+        if(nextLectureIDByChapter != undefined){
+            resultOfChapter = dataOfChapter[currentIndexByChapter+1];
+        } else{
+            resultOfChapter = -1;
+        }
     }
 
     res.status(200).send({
