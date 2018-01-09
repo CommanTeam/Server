@@ -83,7 +83,7 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 			chapter.size = data[i].lecture_count;
 			result.push(chapter);
 		}
-	}
+}
 	
 
 	res.status(200).send({result});
