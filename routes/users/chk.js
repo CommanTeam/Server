@@ -13,7 +13,7 @@ const db = require('../../module/pool.js');
 const sql = require('../../module/sql.js');
 
 
-var Curl = require( 'node-libcurl' ).Curl;
+// var Curl = require( 'node-libcurl' ).Curl;
 
 
 /*
