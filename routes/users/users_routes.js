@@ -18,4 +18,7 @@ router.use('/lectureHistory', require('./history_check'));
 
 router.use('/lectureRecentWatch', require('./lecture_recent_watch'));
 
+router.use('/chk', require('./chk'));
+
+
 module.exports = router;

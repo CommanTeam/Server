@@ -194,8 +194,6 @@ router.get('/greeting', async(req, res, next) => {
             "msg" : "Error /users/main/greeting "
         });
     }    
-    
-
 });
 
 

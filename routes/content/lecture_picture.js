@@ -119,17 +119,8 @@ router.get('/:lectureID', async(req, res, next) => {
 	WHERE li.lecture_id = l.id 
 	AND lecture_id = ?
 	ORDER BY li.priority`;
-
-
 	
-	// `
-	
-
-	// `;
-
 	let result = await db.queryParamCnt_Arr(selectLectureByUserID, lectureID);
-
-
 	res.status(200).send({
 		result : result
 	});
