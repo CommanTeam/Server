@@ -43,10 +43,10 @@ router.get('/lectureList', async(req, res, next) => {
     var videoLecture = `SELECT video_id FROM comman.lecture_video WHERE lecture_id = ?`; 
 
     var countImageLecture = `SELECT count(*) as count
-    FROM comman_db.lecture_image where lecture_id = ?`;
+    FROM comman.lecture_picture where lecture_id = ?`;
 
     var countQuizLecture = `SELECT count(*) as count
-    FROM comman_db.quiz_title 
+    FROM comman.lecture_quiz 
     WHERE lecture_id = ?`;
 
 
