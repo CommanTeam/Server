@@ -19,6 +19,8 @@
  const db = require('../../module/pool.js');
  const sql = require('../../module/sql.js');
 
+ const request = require('request-promise');
+
 /*
  Variable declaration
  */
@@ -58,9 +60,31 @@
 
 
 router.post('/', async(req, res, next) => {
-    var chkToken;
     console.log("===insert_userinfo.js ::: router('/')===");
 
+    let accessToken = req.body.accessToken;
+
+    let option = {
+        method : 'GET',
+        uri: 'https://kapi.kakao.com/v1/user/me ',
+        json : true,
+        headers : {
+            'Authorization': "Bearer " +  accessToken
+        }
+    }
+
+    let cacaoResult = await request(option);
+    let result = {};
+    result.nickname = cacaoResult.properties.nickname;
+    result.thumbnail_image = cacaoResult.properties.thumbnail_image;
+
+    var nickname = cacaoResult.properties.nickname;
+    var thumbnail_path = cacaoResult.properties.thumbnail_image;
+    var email = cacaoResult.kaccount_email;
+    var token;
+
+    console.log('img path : ' + thumbnail_path);
+    var chkToken;
     if(req.headers.authorization != undefined){
         chkToken = jwt.verify(req.headers.authorization);
     }
@@ -68,11 +92,6 @@ router.post('/', async(req, res, next) => {
     // console.log()
     console.log(chkToken);
     console.log(jwt.verify(chkToken));
-
-    var nickname = req.body.nickName;
-    var thumbnail_path = req.body.thumbnailPath;
-    var email = req.body.email;
-    var token;
 
     let checkEmailQuery =     
     `
@@ -91,15 +110,21 @@ router.post('/', async(req, res, next) => {
             if(chkToken.email == email){
                 console.log("성공적으로 로그인 되었습니다");
                 res.status(200).send({
+                    result : {
                     message : "success",
-                    token : req.headers.authorization
+                    token : req.headers.authorization,
+                    user : result
+                    }
                 });
             } else {
                 console.log("기간이 만료되었습니다. 재발급 합니다");
                 token = jwt.sign(email);
                 res.status(200).send({
+                    "result" : {
                     message : "your token ended and reissue new token",
-                    token : token
+                    token : token ,
+                    user : result
+                    }
                 })
             } 
         } else{            // console.log("토큰이 없습니다");
@@ -108,9 +133,11 @@ router.post('/', async(req, res, next) => {
             if(checkEmail.length != 0){ // 다른 기기이고 회원일때 
                 console.log("다른기기에서 접속했습니다");
                 res.status(200).send({
-                    message : "new device login",
-                    token : jwt.sign(email)
-
+                    "result" : {
+                        message : "new device login",
+                        token : jwt.sign(email),
+                        user : result
+                    }
                 });
             } else{ // 다른 기기이고 회원이 아닐때
                 console.log("비회원입니다.")
@@ -122,8 +149,11 @@ router.post('/', async(req, res, next) => {
                 console.log(token);
                 
                 res.status(200).send({
-                    message : "sign up success",
-                    token : token
+                    "result" : {
+                        message : "sign up success",
+                        token : token,
+                        user : result
+                    }
                 })
             }
         }

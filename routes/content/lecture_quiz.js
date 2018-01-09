@@ -81,14 +81,12 @@ router.get('/:lectureID', async(req, res, next) => {
   //   ORDER BY lecture_id, quiz_priority
   // `;
 
-
   var data = await db.queryParamCnt_Arr(selectQuizAndQuestionByLectureID, lectureID);
 
-
+  console.log('data size : ' + data.length);
 
   var result = [];
   var object = {};
-
 
   if(data != undefined){
     for(var i=0; i<data.length;i++){
@@ -124,76 +122,17 @@ router.get('/:lectureID', async(req, res, next) => {
     }
   }
 
+  console.log('size');
+  console.log(result.length);
+  for(var idx in result){
+    console.log('value : ' + result[idx].explanation);
+  }
+  console.log('');
+
   // console.log(result);
-  res.status(200).send({result : result});
-
-
-
-
-
-
-
-
-
-
-
-    // for(var i=0; i<data.length;i++){
-
-
-
-
-    //     for(테이블전체){
-
-
-
-
-
-
-
-    //     if(quiz_id가 겹칠경우){ //==> 다른 보기를 가진 row 데이터 
-    //         question객체 초기화//question = {};
-    //         question관련 데이터 삽입
-    //         "quiz.question"배열에 question객체 push
-    //         question배열 초기화
-
-    //     } else { //==> 다른 quiz인 데이터
-
-    //     }
-    // }
-
-
-
-
-
-
-
-
-//     for(var i=0; i<data.length;i++){
-
-//         if(object.categoryID != data[i].category_id){
-
-//             var object = {};
-//             object.categoryID = data[i].category_id;
-//             object.categoryName = data[i].category_name;
-//             object.title = [];
-//         }
-
-//         object.title.push(data[i].title)
-
-//         if(!compare(result[result.length - 1], object)){
-//             result.push(object);
-//         }
-
-//     }
-
-
-//     if(!compare(result[result.length - 1], object)){
-//         result.push(object);
-//     }
-
-// }
-
-
+  res.status(200).send({
+    result : result
+  });
 
 });
 

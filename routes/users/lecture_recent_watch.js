@@ -131,8 +131,6 @@ router.get('/:lectureID', async(req, res, next) => {
         console.log("videoID : " + videoID[0].video_id);
     }
 
-
-
     var result = _lectureInfo;
 
     res.status(200).send({
