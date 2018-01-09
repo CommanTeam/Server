@@ -47,6 +47,9 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 
 1. curl
 
+https://github.com/jiangmiao/node-curl
+https://www.npmjs.com/package/node-curl
+
 ![curl logo](https://cdn.rawgit.com/curl/curl-www/master/logo/curl-logo.svg)
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/63/badge)](https://bestpractices.coreinfrastructure.org/projects/63)
