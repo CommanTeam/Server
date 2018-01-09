@@ -177,7 +177,7 @@ router.get('/nextLecture', async(req, res, next) => {
                 // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
-
+                dataOfCourse.purchaseFlag = true;
                 if(chapterID == data[i].chapter_id){
                     // console.log("here!");
                     dataOfChapter.push(data[i].lecture_id);
@@ -191,7 +191,7 @@ router.get('/nextLecture', async(req, res, next) => {
                 // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
-
+                dataOfCourse.purchaseFlag = false;
                 if(chapterID == data[i].chapter_id){
                     // console.log("here!");
                     dataOfChapter.push(data[i].lecture_id);
@@ -214,9 +214,9 @@ router.get('/nextLecture', async(req, res, next) => {
 
         var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
         if(nextLectureIDByCourse != undefined){
-            resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1]};
+            resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag};
         } else{
-            resultOfCourse = {lectureID : -1, lectureType: -1};
+            resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag};
         }
     }
 
