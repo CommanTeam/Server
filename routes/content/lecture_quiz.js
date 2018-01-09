@@ -81,14 +81,12 @@ router.get('/:lectureID', async(req, res, next) => {
   //   ORDER BY lecture_id, quiz_priority
   // `;
 
-
   var data = await db.queryParamCnt_Arr(selectQuizAndQuestionByLectureID, lectureID);
 
-
+  console.log('data size : ' + data.length);
 
   var result = [];
   var object = {};
-
 
   if(data != undefined){
     for(var i=0; i<data.length;i++){

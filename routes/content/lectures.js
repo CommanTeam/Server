@@ -13,7 +13,7 @@
 /*
  Method : Get
  */
-//written By 성찬
+//written By 성찬 -> 기용 수정
 //강의 id로 강의정보 가져오기  
 //http://ip/content/lectures?lectureID={lectureID}
 router.get('/', async(req, res, next) => {
@@ -28,11 +28,14 @@ router.get('/', async(req, res, next) => {
 	let result = [];
 	let selectLectureByLectureID =
 	`
-	SELECT * FROM lecture
-	WHERE id = ?;
+	select count(*)
+	from lecture_quiz as lq
+	where lq.lecture_id = ?
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
+
+	data = data[0].cnt * 0.8;
 
 	if(data!=undefined){
 		result = data;
