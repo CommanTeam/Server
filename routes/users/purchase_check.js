@@ -83,10 +83,6 @@ router.put('/:courseID', async(req, res, next) => {
     `;
 
     var data = await db.queryParamCnt_Arr(updatePurchaseByUserIDAndCourseID, [userID, courseID]);
-    console.log("purchase do data =>" + data[0]);
-
-
-
     res.status(200).send({
         message : "구매 성공"
     });

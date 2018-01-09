@@ -130,42 +130,6 @@ router.get('/:lectureID', async(req, res, next) => {
 
 
 
-
-
-    // _lectureInfo.lecture_type = data[0].lecture_type;
-    // _lectureInfo.lecture_video_id = data[0].video_id
-    // _lectureInfo.cnt_lecture_quiz = cntQuiz[0].cnt_quiz;
-    // _lectureInfo.cnt_lecture_picture = cntPicture[0].cnt_picture;    
-
-    // //이메일로 강좌의 듣거나 듣는 중인 강의 수 구하기
-    
-    // //강의 아아디로 현재 강좌ID구하기 
-    // let selectQuery2 =          
-    // ` 
-    // SELECT c.id
-    // FROM comman_db.course c, comman_db.chapter ch, comman_db.lecture l
-    // WHERE c.id = ch.course_id 
-    // AND ch.id = l.chapter_id 
-    // AND l.id = ?
-    // ` 
-
-    // let getCourseIDbyLectureID = await db.queryParamCnt_Arr(selectQuery2,lectureID);
-
-
-    // //강의 ID로 강좌의 강의 총 수 구하기. //분모
-    // let selectQuery3 =
-    // `
-    // SELECT  COUNT(l.id) as cntLectureIDbyLectureID
-    // FROM comman_db.course c, comman_db.chapter ch, comman_db.lecture l
-    // WHERE c.id = ch.course_id 
-    // AND ch.id = l.chapter_id 
-    // AND c.id = ?
-    // `;//강좌의 강의 총 수 구하기.
-
-    // let getCntLectureIDbyCourseID = await db.queryParamCnt_Arr(selectQuery3,getCourseIDbyLectureID[0].id);
-
-    // _lectureInfo.lecture_in_progress = getCntLectureIDbyCourseID[0].cntLectureIDbyLectureID;
-
     var result = _lectureInfo;
 
     res.status(200).send({
