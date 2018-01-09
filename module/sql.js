@@ -157,12 +157,12 @@ module.exports = {
     const data = args[0]; // userID and courseID
     let selectQuery =`
     select count(*) as cnt
-    from user_history as uh, all_user_info as aui
-    where aui.user_id = uh.user_id
-    and aui.lecture_id = uh.lecture_id
-    and uh.user_id = ?
-    and aui.course_id = ?
-    and ( uh.watched_flag = 1 or uh.watched_flag = 2 );
+    from user_history as uh, user_register as ur, all_course_info as aci
+    where uh.user_id = ur.user_id 
+    and ur.course_id = aci.course_id
+    and uh.lecture_id = aci.lecture_id
+    and ur.user_id = ?
+    and ur.course_id = ? 
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result[0].cnt;
