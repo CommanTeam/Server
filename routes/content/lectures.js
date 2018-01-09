@@ -28,17 +28,15 @@ router.get('/', async(req, res, next) => {
 	let result = [];
 	let selectLectureByLectureID =
 	`
-	select count(*)
+	select count(*) as cnt
 	from lecture_quiz as lq
 	where lq.lecture_id = ?
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
 
-	data = data[0].cnt * 0.8;
-
 	if(data!=undefined){
-		result = data;
+		result = parseInt( parseInt(data[0].cnt) * 0.8 );
 	}
 
 	res.status(200).send({data : result});
