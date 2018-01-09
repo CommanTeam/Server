@@ -5,7 +5,7 @@
  const router = express.Router();
  const async = require('async');
  const bodyParser = require('body-parser');
-
+ const http = require('http');
 /*
  Router.use
  */
@@ -38,6 +38,24 @@
 //written by 탁형민
 //usr info 받아서 DB에 INSERT
 //http://ip/users/insert_user_info
+
+// var options = {
+//   host: 'https://kapi.kakao.com',
+//   path: '/v1/user/access_token_info',
+//   method: 'GET'
+// };
+
+// http.request(options, function(res) {
+//   console.log('STATUS: ' + res.statusCode);
+//   console.log('HEADERS: ' + JSON.stringify(res.headers));
+
+//   res.setEncoding('utf8');
+//   res.on('data', function (chunk) {
+//     console.log('BODY: ' + chunk);
+// });
+// }).end();
+
+
 
 router.post('/', async(req, res, next) => {
     var chkToken;
@@ -85,7 +103,7 @@ router.post('/', async(req, res, next) => {
                 })
             } 
         } else{            // console.log("토큰이 없습니다");
-            let checkEmail = await db.queryParamCnt_Arr(checkEmailQuery,[email]);
+        let checkEmail = await db.queryParamCnt_Arr(checkEmailQuery,[email]);
 
             if(checkEmail.length != 0){ // 다른 기기이고 회원일때 
                 // console.log("다른기기에서 접속했습니다");
@@ -116,4 +134,4 @@ router.post('/', async(req, res, next) => {
 
 
 
-    module.exports = router;
+module.exports = router;

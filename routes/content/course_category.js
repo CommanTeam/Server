@@ -106,7 +106,7 @@ router.get('/course', async(req, res, next) => {
 
     var data = await db.queryParamCnt_None(selectAllCategoryAndCourse);
 
-
+    
 
     for(var i=0; i<data.length;i++){
 
