@@ -124,7 +124,7 @@ router.get('/nextLecture/', async(req, res, next) => {
     var selectChIDCoIDbyLectureID=
     `
     SELECT course_id as course_id, chapter_id as chapter_id, lecture_id as lecture_id
-    FROM comman_db.all_course_info
+    FROM comman.all_course_info
     WHERE lecture_id = ?
 
     `
