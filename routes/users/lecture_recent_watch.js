@@ -64,7 +64,7 @@ router.get('/:lectureID', async(req, res, next) => {
     let selectQuery =
     `
     SELECT c.id as course_ID,c.title as course_title, ch.priority as chapter_priority, l.title as lecture_title, l.priority as lecture_priority, l.type as lecture_type
-    FROM comman_db.course c, chapter ch, lecture l 
+    FROM course c, chapter ch, lecture l 
     WHERE c.id = ch.course_id
     AND ch.id = l.chapter_id
     AND l.id = ?
