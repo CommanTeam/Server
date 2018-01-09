@@ -30,7 +30,7 @@ router.get('/', async(req, res, next) => {
     }
 
 	let chapterID = req.query.chapterID;
-
+	let result = [];
 	let selectChapterByChapterID =
 	`
 	SELECT * FROM chapter
@@ -38,8 +38,12 @@ router.get('/', async(req, res, next) => {
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectChapterByChapterID, chapterID);
+	// console.log(data);
+	if(data != undefined){
+		result = data;
+	}
 
-	res.status(200).send({data});
+	res.status(200).send({data : result});
 
 });
 
