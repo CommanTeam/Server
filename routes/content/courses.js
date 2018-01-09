@@ -80,7 +80,7 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 		let chapter = {};
 		chapter.chapterID = data[i].id;
 		chapter.info = data[i].info;
-		chapter.title = data[i].info;
+		chapter.title = data[i].title;
 		chapter.priority = data[i].priority;
 		chapter.open = (i < openChapterNum[0].opened_chapter || openChapterNum[0].opened_chapter==-1)
 
