@@ -165,6 +165,7 @@ if(result != undefined) {
     let mentArr = [];
 
     if(userImg != undefined && userImg.length != 0){
+        result.userImg = userImg[0].thumbnail_path;
         let ment1 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 3강 질문에 대한 답변이 도착했습니다.'; 
         let ment2 = userImg[0].nickname + '님 3일 연속 출석이네요!';
         let ment3 = userImg[0].nickname + '님 [Rhino] 반지 모델링하기 완강까지 진도율 70% 달성했습니다! 조금만 더 힘내세요!';
@@ -181,7 +182,8 @@ if(result != undefined) {
     // 인사말 Seed 랜덤으로 출력
     var seed = parseInt(Math.random() * 4 + 1);
 
-    result.userImg = userImg[0].thumbnail_path;
+
+    
     result.ment = mentArr[seed];
 
 

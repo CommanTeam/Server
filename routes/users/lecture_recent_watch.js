@@ -109,12 +109,15 @@ router.get('/:lectureID', async(req, res, next) => {
     _lectureInfo.lecture_title = data[0].lecture_title;
     _lectureInfo.lecture_priority = data[0].lecture_priority;
     _lectureInfo.lecture_type = data[0].lecture_type;
+    _lectureInfo.lecture_video_id = "";
+    _lectureInfo.cnt_lecture_quiz = 0;
+    _lectureInfo.cnt_lecture_picture = 0;
 
     
     if(cntQuiz[0].quizCount != 0){
         console.log("here quiz");
         // _lectureInfo.lecture_type = 0;
-        lectureInfo.cnt_lecture_picture = cntPicture[0].pictureCount;
+        _lectureInfo.cnt_lecture_quiz = cntQuiz[0].quizCount;
     }
     if(cntPicture[0].pictureCount != 0){
         console.log("here picture");
