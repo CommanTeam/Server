@@ -33,8 +33,8 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	var result = {};
 	let getImageUrlbyLectureID =
 	`SELECT image_path
-	FROM comman_db.lecture as l,
-	comman_db.lecutre_image as li  
+	FROM comman.lecture as l,
+	comman.lecutre_image as li  
 	WHERE l.id = li.lecture_id 
 	AND l.id = ?
 	order by  li.priority;

@@ -62,12 +62,12 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 
 	let selectChapterByCourseId =
 	`
-	select id, course_id, info, title, priority from comman_db.chapter where course_id = ? order by priority asc
+	select id, course_id, info, title, priority from chapter where course_id = ? order by priority asc
 	`;
 
 	let selectOpenChapterByCourseId =
 	`
-	select opened_chapter from comman_db.course where id = ?
+	select opened_chapter from course where id = ?
 	`;
 
 	var openChapterNum = await db.queryParamCnt_Arr(selectOpenChapterByCourseId, courseID);
@@ -82,7 +82,10 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 		chapter.info = data[i].info;
 		chapter.title = data[i].info;
 		chapter.priority = data[i].priority;
-		chapter.open = (i < openChapterNum[0].opened_chapter || openChapterNum[0].opened_chapter==-1)
+		chapter.open = (i < openChapterNum[0].opened_chapter || openChapterNum[0].opened_chapter==-1);
+		chapter.size = 1;
+
+
 
 		result.push(chapter);
 	}

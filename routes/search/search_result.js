@@ -49,7 +49,7 @@ router.get('/:categoryID', async(req, res, next) => {
     let selectQuery =
     `  
         select c.id as courseID, c.title as courseTitle, c.image_path as courseImg, c.info as courseInfo, c.hit as courseHit
-        from comman_db.course as c, comman_db.course_category as s
+        from comman.course as c, comman.course_category as s
         where c.category_id = s.id
         and s.id = ?
         order by c.hit desc
