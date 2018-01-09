@@ -63,7 +63,7 @@ router.post('/', async(req, res, next) => {
     console.log("===insert_userinfo.js ::: router('/')===");
 
     // var token = "VTDI10s8Md7V_-knqwpvykaWaE94_9Auo7ss1QopdkgAAAFg29_n1A";
-    let accessToken = req.body.token;
+    let accessToken = req.body.accessToken;
 
     let option = {
         method : 'GET',
