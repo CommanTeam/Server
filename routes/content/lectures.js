@@ -39,6 +39,11 @@ router.get('/', async(req, res, next) => {
 	result.title = data[0].title;
 	result.pass_value = parseInt( parseInt(data[0].pass_value) * 0.8 );
 
+
+	console.log(result);
+
+
+
 	if(data!=undefined){
 		result = result;
 	}
