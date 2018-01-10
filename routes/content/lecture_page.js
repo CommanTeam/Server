@@ -123,7 +123,6 @@ router.get('/nextLecture', async(req, res, next) => {
     var resultOfCourse = -1;
     var resultOfChapter = -1;
     let lectureID = req.query.lectureID;
-    // let lectureID = req.query.lectureID;
     let userID = chkToken.email;
     let purchaseFlag;
     let openedChapter;
@@ -180,21 +179,16 @@ router.get('/nextLecture', async(req, res, next) => {
                 dataOfCourse.lectureID.push(data[i].lecture_id);
                 dataOfCourse.purchaseFlag = true;
                 if(chapterID == data[i].chapter_id){
-                    // console.log("here!");
                     dataOfChapter.push(data[i].lecture_id);
                 }
-
-
             }
         } else{
             for(var i=0; data[i].chapter_priority <= openedChapter; i++){
-                // console.log("here");
                 // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
                 dataOfCourse.purchaseFlag = false;
                 if(chapterID == data[i].chapter_id){
-                    // console.log("here!");
                     dataOfChapter.push(data[i].lecture_id);
                 }
             }
