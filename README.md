@@ -16,7 +16,7 @@
 
 <img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS.png" />
 
-<img align="center" width="2000" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
+<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
 
 
 
@@ -83,13 +83,4 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 
 # Technology Stack
 
-
-1. AWS - EC2
-
-<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2.png" />
-
-
-2. AWS - RDS
-
-<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS.png" />
 
