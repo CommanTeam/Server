@@ -33,14 +33,17 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
     let user_ID = chkToken.email;
-    let user_nickname = chkToken.nickname;
     let lectureID = req.params.lectureID;
     let result = [];
 
     let selectAllQnA =
     `
-    SELECT * FROM comman.lecture_qna 
-    WHERE l_question_lecture_id = ?;
+    SELECT lqa.*, ac.*,u.*
+    FROM user u, lecture_question_answer lqa, 
+    (SELECT lecture_id, supplier_id, name as supplier_name FROM all_course ac, supplier s WHERE ac.supplier_id = s.id) ac
+    where u.id = lqa.user_id
+    and lqa.lecture_id = ac.lecture_id
+    and lqa.lecture_id = ?
     `;
 
     var data = await db.queryParamCnt_Arr(selectAllQnA, lectureID);
@@ -49,16 +52,16 @@ router.get('/:lectureID', async(req, res, next) => {
     for(var i=0; i<data.length;i++){
 
       var object = {};
-      object.lq_id = data[i].lq_id;
-      object.l_question_user_id = data[i].l_question_user_id;
-      object.l_question_lecture_id = data[i].l_question_lecture_id;
+      object.lq_id = data[i].lecture_question_id;
+      object.l_question_user_nickname = data[i].nickname;
+      object.l_question_lecture_id = data[i].lecture_id;
       object.question_text = data[i].question_text;
-      object.l_question_date = data[i].l_question_date;
-      object.l_question_flag = data[i].l_question_flag;
-      object.l_answer_id = data[i].l_answer_id;
-      object.l_answer_question_id = data[i].l_answer_question_id;
-      object.l_answer_text = data[i].l_answer_text;
-      object.l_answer_date = data[i].l_answer_date;
+      object.l_question_date = data[i].question_date;
+      object.l_question_flag = data[i].flag;
+      object.l_answer_id = data[i].lecture_answer_id;
+      object.l_answer_question_id = data[i].lecture_question_id;
+      object.l_answer_text = data[i].answer_text;
+      object.l_answer_date = data[i].answer_date;
       object.supplier_name = data[i].supplier_name;
     result.push(object);
     }
@@ -88,8 +91,7 @@ router.post('/insertanswer', async(req, res, next) => {
 
 
 
-    let user_nickname = chkToken.nickname;
-    let user_id = req.body.user_id
+    let user_id = chkToken.email;     
     let lectureID = req.body.lectureID;
     let question_text = req.body.question_text;
     let question_date  = moment().format('YYYY-MM-DD');
@@ -103,10 +105,19 @@ router.post('/insertanswer', async(req, res, next) => {
 
     var data = await db.queryParamCnt_Arr(insertQusetion, [user_id,lectureID,question_text, question_date]);
 
-  
+    let SelectQusetion =
+    `
+    SELECT * 
+    FROM comman.lecture_question 
+    WHERE lecture_id = ? 
+    AND question_text = ?
+
+    `;
+
+    var InsertData = await db.queryParamCnt_Arr(SelectQusetion, [lectureID,question_text]);
 
     res.status(200).send({
-        "result" : data
+        "result" : InsertData
     }
     );
 });
