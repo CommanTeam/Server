@@ -25,15 +25,30 @@ router.get('/', async(req, res, next) => {
 		});
 	}
 	let lectureID = req.query.lectureID;
-	let result = [];
+	let result = {};
 	let selectLectureByLectureID =
 	`
-	SELECT * FROM lecture
-	WHERE id = ?;
+	select l.id, l.chapter_id, l.title, l.type as lecture_type, l.profile_image as file_path, l.priority, l.info, count(*) as pass_value
+	from lecture as l, lecture_quiz as lq
+	where l.id = lq.lecture_id
+	and lq.lecture_id = ?
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
 
+	if ( data[0].type == 2){
+		let selectQuery = `
+		select lv.video_id
+		from lecture as l, lecture_video as lv
+		where l.id = lv.lecture_id
+		and l.id = ?
+		`
+		var _data = await db.queryParamCnt_Arr(selectQuery,lectureID);
+		data[0].video_id = _data[0].video_id;
+	}else{
+		data[0].video_id = "";
+	}
+	
 	if(data!=undefined){
 		result = data;
 	}
