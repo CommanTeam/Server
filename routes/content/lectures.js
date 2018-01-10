@@ -28,7 +28,7 @@ router.get('/', async(req, res, next) => {
 	let result = {};
 	let selectLectureByLectureID =
 	`
-	select l.priority as priority, l.title as title, count(*) as pass_value
+	select l.id, l.chapter_id, l.title, l.type as lecture_type, l.profile_image as file_path, l.priority, l.info, count(*) as pass_value
 	from lecture as l, lecture_quiz as lq
 	where l.id = lq.lecture_id
 	and lq.lecture_id = ?
@@ -48,7 +48,9 @@ router.get('/', async(req, res, next) => {
 		result = result;
 	}
 
-	res.status(200).send({data : result});
+	res.status(200).send({
+		data : result
+	});
 
 });
 
