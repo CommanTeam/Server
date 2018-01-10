@@ -170,11 +170,13 @@ router.get('/nextLecture', async(req, res, next) => {
 
     if(data != undefined && data.length != 0){
         purchaseFlag = data[0].purchase_flag;
+        console.log(purchaseFlag);
         openedChapter = data[0].opened_chapter;
 
         if(purchaseFlag == 1){
             for(var i=0; i<data.length; i++){
                 // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
+                // console.log("here purchased!");
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
                 dataOfCourse.purchaseFlag = true;
@@ -189,6 +191,7 @@ router.get('/nextLecture', async(req, res, next) => {
             for(var i=0; data[i].chapter_priority <= openedChapter; i++){
                 // console.log("here");
                 // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
+                // console.log("here dont purchased!");
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
                 dataOfCourse.purchaseFlag = false;
@@ -200,8 +203,8 @@ router.get('/nextLecture', async(req, res, next) => {
             
         }
 
-        console.log(dataOfCourse);
-        console.log(dataOfChapter);
+        // console.log(dataOfCourse);
+        // console.log(dataOfChapter);
     }
 
     //현재 lecture의 index값 구하기 
@@ -212,19 +215,30 @@ router.get('/nextLecture', async(req, res, next) => {
 
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
 
-        var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
-        if(nextLectureIDByCourse != undefined){
-            resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag};
+        if(currentIndexByCourse != -1){
+            var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
+            // console.log("here!!!" + nextLectureIDByCourse)  ;
+            if(nextLectureIDByCourse != undefined){
+                resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag};
+            } else{
+                resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag};
+            }
         } else{
-            resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag};
+            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : false};
         }
+
     }
 
     if(dataOfChapter.length != 0){
         var currentIndexByChapter = dataOfChapter.indexOf(parseInt(lectureID));
-        var nextLectureIDByChapter = dataOfChapter[currentIndexByChapter+1];
-        if(nextLectureIDByChapter != undefined){
-            resultOfChapter = dataOfChapter[currentIndexByChapter+1];
+
+        if(currentIndexByChapter != -1){
+            var nextLectureIDByChapter = dataOfChapter[currentIndexByChapter+1];
+            if(nextLectureIDByChapter != undefined){
+                resultOfChapter = dataOfChapter[currentIndexByChapter+1];
+            } else{
+                resultOfChapter = -1;
+            }
         } else{
             resultOfChapter = -1;
         }
