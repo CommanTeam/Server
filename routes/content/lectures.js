@@ -44,6 +44,19 @@ router.get('/', async(req, res, next) => {
 
 
 
+	if ( data[0].type == 2){
+		let selectQuery = `
+		select lv.video_id
+		from lecture as l, lecture_video as lv
+		where l.id = lv.lecture_id
+		and l.id = ?
+		`
+		var _data = await db.queryParamCnt_Arr(selectQuery,lectureID);
+		data[0].video_id = _data[0].video_id;
+	}else{
+		data[0].video_id = "";
+	}
+	
 	if(data!=undefined){
 		result = result;
 	}
