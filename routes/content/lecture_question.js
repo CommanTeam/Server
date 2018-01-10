@@ -1,5 +1,6 @@
 
 
+
 /*
  Declare module
  */
@@ -88,14 +89,8 @@ router.post('/insertanswer', async(req, res, next) => {
         });
     }
 
-<<<<<<< HEAD
-    let user_nickname = chkToken.nickname;
-    let user_id = req.body.user_id
-=======
-
 
     let user_id = chkToken.email;     
->>>>>>> f6c56d9a27fbaf9e0696576bee7a65b1edc47134
     let lectureID = req.body.lectureID;
     let question_text = req.body.question_text;
     let question_date  = moment().format('YYYY-MM-DD');
