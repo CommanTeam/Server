@@ -174,34 +174,41 @@ router.get('/nextLecture', async(req, res, next) => {
         console.log(purchaseFlag);
         openedChapter = data[0].opened_chapter;
 
-        if(purchaseFlag == 1){
-            for(var i=0; i<data.length; i++){
-                // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
-                // console.log("here purchased!");
+
+        if(openedChapter != -1){ // 무료강의가 아닐때
+            if(purchaseFlag == 1){ // 구매 했을 경우
+                for(var i=0; i<data.length; i++){
+
+                    dataOfCourse.lectureType.push(data[i].lecture_type);
+                    dataOfCourse.lectureID.push(data[i].lecture_id);
+                    dataOfCourse.purchaseFlag = true;
+                    if(chapterID == data[i].chapter_id){ //챕터단위로 배열에 push(챕터별 강의 단위로 파악하기 위함)
+                        dataOfChapter.push(data[i].lecture_id);
+                    }
+
+
+                }
+            } else{ //구매 안했을 경우
+                for(var i=0; data[i].chapter_priority <= openedChapter; i++){
+
+                    dataOfCourse.lectureType.push(data[i].lecture_type);
+                    dataOfCourse.lectureID.push(data[i].lecture_id);
+                    dataOfCourse.purchaseFlag = false;
+                    if(chapterID == data[i].chapter_id){
+                        dataOfChapter.push(data[i].lecture_id);
+                    }
+                }
+                
+            }
+        } else{ // 무료강의일때 
+            for(var i=0;i<data.length;i++){
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
                 dataOfCourse.purchaseFlag = true;
                 if(chapterID == data[i].chapter_id){
-                    // console.log("here!");
-                    dataOfChapter.push(data[i].lecture_id);
-                }
-
-
-            }
-        } else{
-            for(var i=0; data[i].chapter_priority <= openedChapter; i++){
-                // console.log("here");
-                // dataOfCourse.push({lectureType : data[i].lecture_type, lectureID : data[i].lecture_id});
-                // console.log("here dont purchased!");
-                dataOfCourse.lectureType.push(data[i].lecture_type);
-                dataOfCourse.lectureID.push(data[i].lecture_id);
-                dataOfCourse.purchaseFlag = false;
-                if(chapterID == data[i].chapter_id){
-                    // console.log("here!");
                     dataOfChapter.push(data[i].lecture_id);
                 }
             }
-            
         }
 
         // console.log(dataOfCourse);
