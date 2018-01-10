@@ -181,7 +181,7 @@ router.get('/nextLecture', async(req, res, next) => {
         if(openedChapter != -1){ // 무료강의가 아닐때
             if(purchaseFlag == 1){ // 구매 했을 경우
                 for(var i=0; i<data.length; i++){
-                    console.log('good gid');
+
 
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
