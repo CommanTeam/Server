@@ -87,19 +87,22 @@ router.get('/:lectureID', async(req, res, next) => {
 
     // lecture_type = 2 ==> 비디오 
     let videoID = await db.queryParamCnt_Arr(getVideoIDByLectureID,lectureID);
+    
+    console.log('');
 
 
-
-    _lectureInfo.course_ID = data[0].course_ID;
-    _lectureInfo.course_title = data[0].course_title;
-    _lectureInfo.chapter_priority = data[0].chapter_priority;
-    _lectureInfo.chapter_ID = data[0].chapter_id;
-    _lectureInfo.lecture_title = data[0].lecture_title;
-    _lectureInfo.lecture_priority = data[0].lecture_priority;
-    _lectureInfo.lecture_type = data[0].lecture_type;
-    _lectureInfo.lecture_video_id = "";
-    _lectureInfo.cnt_lecture_quiz = 0;
-    _lectureInfo.cnt_lecture_picture = 0;
+    if( data.length > 0){
+        _lectureInfo.course_ID = data[0].course_ID;
+        _lectureInfo.course_title = data[0].course_title;
+        _lectureInfo.chapter_priority = data[0].chapter_priority;
+        _lectureInfo.chapter_ID = data[0].chapter_id;
+        _lectureInfo.lecture_title = data[0].lecture_title;
+        _lectureInfo.lecture_priority = data[0].lecture_priority;
+        _lectureInfo.lecture_type = data[0].lecture_type;
+        _lectureInfo.lecture_video_id = "";
+        _lectureInfo.cnt_lecture_quiz = 0;
+        _lectureInfo.cnt_lecture_picture = 0;
+    }
 
     
     if(cntQuiz[0].quizCount != 0){
