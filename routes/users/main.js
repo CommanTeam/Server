@@ -53,8 +53,8 @@
   Dec : Progress rate
   writtend by 신기용
   */
-  router.get('/progressLecture', async(req, res, next) => {
-    console.log("===main.js ::: router('/progressLecture')===");
+  router.get('/progressCourse', async(req, res, next) => {
+    console.log("===main.js ::: router('/progressCourse')===");
     const chkToken = jwt.verify(req.headers.authorization);
     if(chkToken == -1) {
         res.status(401).send({

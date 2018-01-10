@@ -34,7 +34,8 @@
     var result = [];
     var lectureList = {};
 
-    var selectLectureListByUserID = `SELECT l.id as lecture_id, l.chapter_id, l.priority, l.title, l.type as lecture_type, uh.watched_flag 
+    var selectLectureListByUserID = `
+    SELECT l.id as lecture_id, l.chapter_id, l.priority, l.title, l.type as lecture_type, uh.watched_flag 
     FROM lecture l LEFT JOIN user_history uh 
     ON l.id = uh.lecture_id 
     AND uh.user_id = ?
@@ -64,8 +65,8 @@
             lectureList.chapterID = lectureQuery[i].chapter_id;
             lectureList.lectureTitle = lectureQuery[i].title;
             lectureList.lectureType = lectureQuery[i].lecture_type;
-            // lectureList.videoID = lectureQuery[i].video_id;
-            // lectureList.userID = lectureQuery[i].user_id;
+            lectureList.videoID = lectureQuery[i].video_id;
+            lectureList.userID = lectureQuery[i].user_id;
             lectureList.watchedFlag = lectureQuery[i].watched_flag;
 
             if(lectureQuery[i].watched_flag == undefined){
@@ -208,12 +209,10 @@ router.get('/nextLecture', async(req, res, next) => {
     }
 
     //현재 lecture의 index값 구하기 
-
     if(dataOfCourse.length != 0){
-
         var dataOfCourseLectureIDArray = dataOfCourse.lectureID;
-
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
+
 
         if(currentIndexByCourse != -1){
             var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
@@ -223,6 +222,7 @@ router.get('/nextLecture', async(req, res, next) => {
             } else{
                 resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag};
             }
+
         } else{
             resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : false};
         }

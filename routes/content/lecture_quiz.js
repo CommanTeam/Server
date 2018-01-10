@@ -83,8 +83,6 @@ router.get('/:lectureID', async(req, res, next) => {
 
   var data = await db.queryParamCnt_Arr(selectQuizAndQuestionByLectureID, lectureID);
 
-  console.log('data size : ' + data.length);
-
   var result = [];
   var object = {};
 
@@ -103,7 +101,7 @@ router.get('/:lectureID', async(req, res, next) => {
         } else{
           object.quizImage = "";
         } 
-        console.log(object.quizImage);
+        
         object.explanation = data[i].explanation;
         object.questionArr = [];
       }
@@ -122,14 +120,6 @@ router.get('/:lectureID', async(req, res, next) => {
     }
   }
 
-  console.log('size');
-  console.log(result.length);
-  for(var idx in result){
-    console.log('value : ' + result[idx].explanation);
-  }
-  console.log('');
-
-  // console.log(result);
   res.status(200).send({
     result : result
   });
