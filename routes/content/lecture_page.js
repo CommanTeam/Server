@@ -41,7 +41,7 @@
     AND uh.user_id = ?
     ORDER BY priority`;
 
-    var videoLecture = `SELECT video_id FROM comman.lecture_video WHERE lecture_id = ?`; 
+    var videoLecture = `SELECT video_id, play_time FROM comman.lecture_video WHERE lecture_id = ?`; 
 
     var countImageLecture = `SELECT count(*) as count
     FROM comman.lecture_picture where lecture_id = ?`;
@@ -84,6 +84,7 @@
             if(lectureQuery[i].lecture_type == 2){
                 var videoID = await db.queryParamCnt_Arr(videoLecture, lectureQuery[i].lecture_id);
                 lectureList.videoID = videoID[0].video_id;
+                lectureList.playTime = videoID[0].play_time;
                 lectureList.size = -1;
             }
             result.push(lectureList);

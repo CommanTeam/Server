@@ -72,9 +72,11 @@ router.get('/:lectureID', async(req, res, next) => {
 
     `
     let getVideoIDByLectureID = 
-    `SELECT video_id FROM 
-    lecture_video 
-    WHERE lecture_id = ?`
+    `
+    SELECT video_id , play_time
+    FROM  lecture_video 
+    WHERE lecture_id = ?;
+    `
     
 
     let data = await db.queryParamCnt_Arr(selectQuery,lectureID);
@@ -88,18 +90,19 @@ router.get('/:lectureID', async(req, res, next) => {
     // lecture_type = 2 ==> 비디오 
     let videoID = await db.queryParamCnt_Arr(getVideoIDByLectureID,lectureID);
     
-    console.log('');
-
-
     if( data.length > 0){
         _lectureInfo.course_ID = data[0].course_ID;
         _lectureInfo.course_title = data[0].course_title;
         _lectureInfo.chapter_priority = data[0].chapter_priority;
         _lectureInfo.chapter_ID = data[0].chapter_id;
+
         _lectureInfo.lecture_title = data[0].lecture_title;
         _lectureInfo.lecture_priority = data[0].lecture_priority;
         _lectureInfo.lecture_type = data[0].lecture_type;
+
         _lectureInfo.lecture_video_id = "";
+        _lectureInfo.playTime = -1;
+
         _lectureInfo.cnt_lecture_quiz = 0;
         _lectureInfo.cnt_lecture_picture = 0;
     }
@@ -119,6 +122,7 @@ router.get('/:lectureID', async(req, res, next) => {
         console.log("here video");
         // _lectureInfo.lecture_type = 2;
         _lectureInfo.lecture_video_id = videoID[0].video_id;
+        _lectureInfo.playTime = videoID[0].play_time;
         console.log("videoID : " + videoID[0].video_id);
     }
 
