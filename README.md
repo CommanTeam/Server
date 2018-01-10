@@ -42,7 +42,7 @@ JWTs are typically used to protect API endpoints, and are often issued using Ope
 ---
 2. [Nginx](https://nginx.org/en/)
 
-<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/nginx.png" />
+<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/nginx.png" />
 
 An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hourly. 
 
