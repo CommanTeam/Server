@@ -8,7 +8,7 @@
 
 <img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2.png" />
 
-<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2_Environment.png" />
+<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2_Environment.png" />
 
 
 
@@ -16,7 +16,7 @@
 
 <img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS.png" />
 
-<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
+<img align="center" width="2000" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
 
 
 
