@@ -62,10 +62,14 @@
             lectureList = {};
             lectureList.lectureID = lectureQuery[i].lecture_id;
             lectureList.lecturePriority = lectureQuery[i].priority;
-            lectureList.chapterID = lectureQuery[i].chapter_id;
             lectureList.lectureTitle = lectureQuery[i].title;
             lectureList.lectureType = lectureQuery[i].lecture_type;
+
+            lectureList.chapterID = lectureQuery[i].chapter_id;
+            
             lectureList.videoID = lectureQuery[i].video_id;
+            lectureList.playTime = -1;
+            
             lectureList.userID = lectureQuery[i].user_id;
             lectureList.watchedFlag = lectureQuery[i].watched_flag;
 
