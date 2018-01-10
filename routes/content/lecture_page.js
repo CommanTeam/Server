@@ -123,7 +123,6 @@ router.get('/nextLecture', async(req, res, next) => {
     var resultOfCourse = -1;
     var resultOfChapter = -1;
     let lectureID = req.query.lectureID;
-    // let lectureID = req.query.lectureID;
     let userID = chkToken.email;
     let purchaseFlag;
     let openedChapter;
@@ -173,7 +172,6 @@ router.get('/nextLecture', async(req, res, next) => {
         purchaseFlag = data[0].purchase_flag;
         console.log(purchaseFlag);
         openedChapter = data[0].opened_chapter;
-
 
         if(openedChapter != -1){ // 무료강의가 아닐때
             if(purchaseFlag == 1){ // 구매 했을 경우
