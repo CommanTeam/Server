@@ -2,6 +2,27 @@
 [API Document](https://comman.postman.co/collections/1458906-c866ca9a-ab48-60de-394c-efc05b285bef)
 
 
+# Develop Environment
+
+1. AWS - EC2
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2.png" />
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2_Environment.png" />
+
+
+
+2. AWS - RDS
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS.png" />
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
+
+
+
+--- 
+
+
 # Security Mehtod
 1. [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html)
 
@@ -61,4 +82,14 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 ---
 
 # Technology Stack
+
+
+1. AWS - EC2
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2.png" />
+
+
+2. AWS - RDS
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS.png" />
 
