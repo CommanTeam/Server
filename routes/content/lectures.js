@@ -28,24 +28,29 @@ router.get('/', async(req, res, next) => {
 	let result = {};
 	let selectLectureByLectureID =
 	`
-	select l.priority as priority, l.title as title, count(*) as pass_value
+	select l.id, l.chapter_id, l.title, l.type as lecture_type, l.profile_image as file_path, l.priority, l.info, count(*) as pass_value
 	from lecture as l, lecture_quiz as lq
 	where l.id = lq.lecture_id
 	and lq.lecture_id = ?
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
-	result.priority = data[0].priority;
-	result.title = data[0].title;
-	result.pass_value = parseInt( parseInt(data[0].pass_value) * 0.8 );
 
-
-	console.log(result);
-
-
-
+	if ( data[0].type == 2){
+		let selectQuery = `
+		select lv.video_id
+		from lecture as l, lecture_video as lv
+		where l.id = lv.lecture_id
+		and l.id = ?
+		`
+		var _data = await db.queryParamCnt_Arr(selectQuery,lectureID);
+		data[0].video_id = _data[0].video_id;
+	}else{
+		data[0].video_id = "";
+	}
+	
 	if(data!=undefined){
-		result = result;
+		result = data;
 	}
 
 	res.status(200).send({data : result});
