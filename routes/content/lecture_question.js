@@ -89,7 +89,6 @@ router.post('/insertanswer', async(req, res, next) => {
         });
     }
 
-
     let user_id = chkToken.email;     
     let lectureID = req.body.lectureID;
     let question_text = req.body.question_text;
