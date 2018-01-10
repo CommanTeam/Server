@@ -22,12 +22,11 @@ const sql = require('../../module/sql.js');
 
 
 // API for https Test
-router.get('/', async(req, res, next) => {
+router.get('/', function (req, res, next) {
 
-   res.status(200).send({
-       "msg" : "Welcome to Comman World"
-   }
-   );
+    res.status(200).send(
+        " 조 져 버 렸 다 ! "
+    );
 });
 
 
