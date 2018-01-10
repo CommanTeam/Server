@@ -2,24 +2,53 @@
 [API Document](https://comman.postman.co/collections/1458906-c866ca9a-ab48-60de-394c-efc05b285bef)
 
 
+---
+
+# Develop Environment
+
+1. AWS - EC2
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2.png" />
+
+<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/EC2_Environment.png" />
+
+
+
+2. AWS - RDS
+
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS.png" />
+
+<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
+
+
+
+--- 
+
+
 # Security Mehtod
 1. [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html)
 
 [![JWT](http://jwt.io/assets/logo.svg)](https://jwt.io/)
 
-[![Build Status](https://travis-ci.org/yourkarma/JWT.svg?branch=master)](https://travis-ci.org/yourkarma/JWT)
-[![Pod Version](http://img.shields.io/cocoapods/v/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
+[![Build Status](https://travis-ci.org/yourkarma/JWT.svg?branch=master)](https://travis-ci.org/yourkarma/JWT) 
 [![Reference Status](https://www.versioneye.com/objective-c/jwt/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/jwt/references)
 
 Middleware that validates JsonWebTokens and sets req.user.
 
-This module lets you authenticate HTTP requests using JWT tokens in your Node.js applications. JWTs are typically used to protect API endpoints, and are often issued using OpenID Connect.
+This module lets you authenticate HTTP requests using JWT tokens in your Node.js applications.
+
+JWTs are typically used to protect API endpoints, and are often issued using OpenID Connect.
 
 ---
 2. [Nginx](https://nginx.org/en/)
 
-An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hourly. Pull requests on GitHub cannot be accepted and will be automatically closed. The proper way to submit changes to nginx is via the nginx development mailing list, see http://nginx.org/en/docs/contributing_changes.html http://nginx.org/
+<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/nginx.png" />
 
+An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hourly. 
+
+Pull requests on GitHub cannot be accepted and will be automatically closed. 
+
+The proper way to submit changes to nginx is via the nginx development mailing list, see http://nginx.org/en/docs/contributing_changes.html http://nginx.org/
 
 ---
 
@@ -36,44 +65,23 @@ Helmet is Middlewares to help secure your apps
 
 Helmet helps you secure your Express apps by setting various HTTP headers. *It's not a silver bullet*, but it can help!
 
-[Looking for a version of Helmet that supports the Koa framework?](https://github.com/venables/koa-helmet)
-
-
 
 ---
 
 
-기술 명세서
+4. SSL
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/SSL.png" />
 
-1. curl
+* 전송 계층 보안 (영어: Transport Layer Security, TLS, 과거 명칭: 보안 소켓 레이어/Secure Sockets Layer, SSL)는 암호 규약이다. 
 
-https://github.com/jiangmiao/node-curl
-https://www.npmjs.com/package/node-curl
+* '트랜스포트 레이어 보안'이라는 이름은 '보안 소켓 레이어'가 표준화 되면서 바뀐 이름이다. 
 
-![curl logo](https://cdn.rawgit.com/curl/curl-www/master/logo/curl-logo.svg)
+* TLS의 3단계 기본 절차:
+  1. 지원 가능한 알고리즘 서로 교환
+  2. 키 교환, 인증
+  3. 대칭키 암호로 암호화하고 메시지 인증
+---
 
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/63/badge)](https://bestpractices.coreinfrastructure.org/projects/63)
-[![Coverity passed](https://scan.coverity.com/projects/curl/badge.svg)](https://scan.coverity.com/projects/curl)
-[![Build Status](https://travis-ci.org/curl/curl.svg?branch=master)](https://travis-ci.org/curl/curl)
-[![Coverage Status](https://coveralls.io/repos/github/curl/curl/badge.svg)](https://coveralls.io/github/curl/curl)
-
-Curl is a command-line tool for transferring data specified with URL
-syntax. Find out how to use curl by reading [the curl.1 man
-page](https://curl.haxx.se/docs/manpage.html) or [the MANUAL
-document](https://curl.haxx.se/docs/manual.html). Find out how to install Curl
-by reading [the INSTALL document](https://curl.haxx.se/docs/install.html).
-
-libcurl is the library curl is using to do its job. It is readily available to
-be used by your software. Read [the libcurl.3 man
-page](https://curl.haxx.se/libcurl/c/libcurl.html) to learn how!
-
-You find answers to the most frequent questions we get in [the FAQ
-document](https://curl.haxx.se/docs/faq.html).
-
-Study [the COPYING file](https://curl.haxx.se/docs/copyright.html) for
-distribution terms and similar. If you distribute curl binaries or other
-binaries that involve libcurl, you might enjoy [the LICENSE-MIXING
-document](https://curl.haxx.se/legal/licmix.html).
-
+# Technology Stack
 
 

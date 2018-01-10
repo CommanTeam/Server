@@ -71,7 +71,7 @@ router.get('/popup/:courseID', async(req, res, next) => {
  Method : Get
 */
 //Written by 형민
-//couseID로 강좌에 해당된 첫번째 강의의 첫번째 동영상강좌ID를 리턴
+//couseID로 강좌에 해당된 첫번째 강의의 첫번째 동영상강의ID를 리턴
 //http://ip/content/coursepage/previewvideo/{courseID}
 router.get('/previewvideo/:courseID', async(req, res, next) => {
     console.log("===course_page.js ::: router('/previewvideo/:courseID')===");
@@ -95,6 +95,9 @@ router.get('/previewvideo/:courseID', async(req, res, next) => {
     `
 
     var lectureIdData = await db.queryParamCnt_Arr(getVideoLecture, courseID);
+
+
+if( lectureIdData.length > 0){
     let lectureID = lectureIdData[0].lecture_id;
 
 
@@ -106,6 +109,8 @@ router.get('/previewvideo/:courseID', async(req, res, next) => {
     videoIDdata = await db.queryParamCnt_Arr(getVideoID, lectureID);
 
     result = videoIDdata[0].video_id;
+
+}
 
     if(result != undefined) {
         res.status(200).send({
