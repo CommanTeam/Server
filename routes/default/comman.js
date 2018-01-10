@@ -24,9 +24,10 @@ const sql = require('../../module/sql.js');
 // API for https Test
 router.get('/', function (req, res, next) {
 
-    res.status(200).send(
-        " 조 져 버 렸 다 ! "
-    );
+
+    res.status(200);
+    res.render('comman');
+
 });
 
 
