@@ -40,7 +40,7 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 
 
 4. SSL
-<img align="right" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/SSL.png" />
+<img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/SSL.png" />
 
 Helmet is Middlewares to help secure your apps
 
