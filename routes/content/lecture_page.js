@@ -205,13 +205,9 @@ router.get('/nextLecture', async(req, res, next) => {
     }
 
     //현재 lecture의 index값 구하기 
-
     if(dataOfCourse.length != 0){
-
         var dataOfCourseLectureIDArray = dataOfCourse.lectureID;
-
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
-
         var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
         if(nextLectureIDByCourse != undefined){
             resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag};
