@@ -13,12 +13,18 @@
 
 Middleware that validates JsonWebTokens and sets req.user.
 
-This module lets you authenticate HTTP requests using JWT tokens in your Node.js applications. JWTs are typically used to protect API endpoints, and are often issued using OpenID Connect.
+This module lets you authenticate HTTP requests using JWT tokens in your Node.js applications.
+
+JWTs are typically used to protect API endpoints, and are often issued using OpenID Connect.
 
 ---
 2. [Nginx](https://nginx.org/en/)
 
-An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hourly. Pull requests on GitHub cannot be accepted and will be automatically closed. The proper way to submit changes to nginx is via the nginx development mailing list, see http://nginx.org/en/docs/contributing_changes.html http://nginx.org/
+An official read-only mirror of http://hg.nginx.org/nginx/ which is updated hourly. 
+
+Pull requests on GitHub cannot be accepted and will be automatically closed. 
+
+The proper way to submit changes to nginx is via the nginx development mailing list, see http://nginx.org/en/docs/contributing_changes.html http://nginx.org/
 
 ---
 
@@ -42,13 +48,14 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 4. SSL
 <img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/SSL.png" />
 
-Helmet is Middlewares to help secure your apps
+* 전송 계층 보안 (영어: Transport Layer Security, TLS, 과거 명칭: 보안 소켓 레이어/Secure Sockets Layer, SSL)는 암호 규약이다. 
 
-Helmet helps you secure your Express apps by setting various HTTP headers. *It's not a silver bullet*, but it can help!
+* '트랜스포트 레이어 보안'이라는 이름은 '보안 소켓 레이어'가 표준화 되면서 바뀐 이름이다. 
 
-
-
-
+* TLS의 3단계 기본 절차:
+  1. 지원 가능한 알고리즘 서로 교환
+  2. 키 교환, 인증
+  3. 대칭키 암호로 암호화하고 메시지 인증
 ---
 
 # Technology Stack
