@@ -24,7 +24,6 @@ const sql = require('../../module/sql.js');
 // API for https Test
 router.get('/', function (req, res, next) {
 
-
     res.status(200);
     res.render('comman');
 
