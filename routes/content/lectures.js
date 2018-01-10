@@ -35,14 +35,6 @@ router.get('/', async(req, res, next) => {
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectLectureByLectureID, lectureID);
-	result.priority = data[0].priority;
-	result.title = data[0].title;
-	result.pass_value = parseInt( parseInt(data[0].pass_value) * 0.8 );
-
-
-	console.log(result);
-
-
 
 	if ( data[0].type == 2){
 		let selectQuery = `
@@ -58,12 +50,10 @@ router.get('/', async(req, res, next) => {
 	}
 	
 	if(data!=undefined){
-		result = result;
+		result = data;
 	}
 
-	res.status(200).send({
-		data : result
-	});
+	res.status(200).send({data : result});
 
 });
 
