@@ -76,7 +76,6 @@ router.get('/:lectureID', async(req, res, next) => {
 //lectureID로 질문 DB에 INSERT
 //http://ip/content/lecturequestion/{lectureID}
 router.post('/insertanswer', async(req, res, next) => {
-
     console.log("===lecture_question.js ::: router('/')===");
 
     const chkToken = jwt.verify(req.headers.authorization);
@@ -85,8 +84,6 @@ router.post('/insertanswer', async(req, res, next) => {
             message : "Access Denied"
         });
     }
-
-
 
     let user_nickname = chkToken.nickname;
     let user_id = req.body.user_id
@@ -100,10 +97,7 @@ router.post('/insertanswer', async(req, res, next) => {
     VALUES (?, ?, ?, ?, 0);
     `;
 
-
     var data = await db.queryParamCnt_Arr(insertQusetion, [user_id,lectureID,question_text, question_date]);
-
-  
 
     res.status(200).send({
         "result" : data

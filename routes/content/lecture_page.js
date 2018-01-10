@@ -181,6 +181,7 @@ router.get('/nextLecture', async(req, res, next) => {
         if(openedChapter != -1){ // 무료강의가 아닐때
             if(purchaseFlag == 1){ // 구매 했을 경우
                 for(var i=0; i<data.length; i++){
+                    console.log('good gid');
 
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
@@ -224,6 +225,7 @@ router.get('/nextLecture', async(req, res, next) => {
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
 
 
+        console.log('value : ' + dataOfCourse.lectureID);
         if(currentIndexByCourse != -1){
             var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
             // console.log("here!!!" + nextLectureIDByCourse)  ;
@@ -239,6 +241,7 @@ router.get('/nextLecture', async(req, res, next) => {
 
     }
 
+    
     if(dataOfChapter.length != 0){
         var currentIndexByChapter = dataOfChapter.indexOf(parseInt(lectureID));
 
