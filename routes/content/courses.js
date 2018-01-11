@@ -29,6 +29,7 @@ router.get('/', async(req, res, next) => {
 	}
 	let courseID = req.query.courseID;
 
+	let result = {};
 	let selectCourseByCourseID =
 	`
 	SELECT c.id, c.supplier_id, c.opened_chapter, c.image_path, s.name, s.thumbnail_path as supplier_thumbnail, c.title, c.info, c.price, c.category_id FROM course c, supplier s
@@ -37,7 +38,22 @@ router.get('/', async(req, res, next) => {
 
 	var data = await db.queryParamCnt_Arr(selectCourseByCourseID, courseID);
 
-	res.status(200).send({result : data});
+	if( data.length > 0){
+		result.id = data[0].id;
+		result.supplier_id = data[0].supplier_id;
+		result.opened_chapter = data[0].opened_chapter;
+		result.image_path = data[0].image_path;
+		result.name = data[0].name;
+		result.supplier_thumbnail = data[0].supplier_thumbnail;
+		result.info = data[0].info;
+		result.price = data[0].price;
+		result.category_id = data[0].category_id;
+	}
+	
+
+	res.status(200).send({
+		"result" : result
+	});
 
 });
 
@@ -87,7 +103,9 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 }
 	
 
-	res.status(200).send({result});
+	res.status(200).send({
+		result: result
+	});
 
 });
 

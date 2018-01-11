@@ -56,7 +56,9 @@ router.get('/', async(req, res, next) => {
 		result = data;
 	}
 
-	res.status(200).send({data : result});
+	res.status(200).send({
+		"data" : data[0]
+	});
 
 });
 

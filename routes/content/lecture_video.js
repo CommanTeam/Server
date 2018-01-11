@@ -31,7 +31,6 @@ router.get('/:lectureID', async(req, res, next) => {
 	WHERE lv.lecture_id = l.id AND lecture_id = ?`;
 
 
-	console.log('good gid');
 	let data = await db.queryParamCnt_Arr(selectVideoLecutreByLectureID, lectureID);
 
 	if( data.length > 0) {
