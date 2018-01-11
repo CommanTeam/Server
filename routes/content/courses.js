@@ -72,25 +72,16 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 
 	var data = await db.queryParamCnt_Arr(query, courseID);
 
-
-	let selectLectureCntBelong2Chapter = `
-	select count(*) as cnt
-	from chapter as ch, lecture as l
-	where l.chapter_id = ch.id
-	and ch.id =  ?
-	`
 	if(data != undefined && data.length !=0){
 		for(var i=0;i<data.length;i++){
 			let chapter = {};
 			chapter.chapterID = data[i].chapter_id;
 
-			let lectureCnt = await db.queryParamCnt_Arr(selectLectureCntBelong2Chapter, data[i].chapter_id);
-			chapter.lectureCnt = lectureCnt[0].cnt;
 			chapter.info = data[i].chapter_info;
 			chapter.title = data[i].chapter_title;
 			chapter.priority = data[i].chapter_priority;
 			chapter.open = (i < data[0].opened_chapter || data[0].opened_chapter==-1);
-			chapter.size = data[i].lecture_count;
+			chapter.lectureCnt = data[i].lecture_count;
 			result.push(chapter);
 		}
 }
