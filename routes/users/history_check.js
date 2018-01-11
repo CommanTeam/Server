@@ -38,6 +38,18 @@ router.get('/:lectureID', async(req, res, next) => {
     // console.log(userID);
     // console.log(userInfo.email);
 
+
+    let checkInsertedQuery = `
+    SELECT count(*) as cnt
+    FROM user_history as uh
+    where uh.user_id =  ?
+    and uh.lecture_id = ?;
+    `
+    let checkInsert = await db.queryParamCnt_Arr(checkInsertedQuery, [userID, lectureID]);
+
+    if (checkInsert.length > 0){
+        result = '중복으로 인한 삽입 불가';
+    }else{
     let checkHistoryByUserIDAndLectureID =
     `
     SELECT watched_flag 
@@ -53,6 +65,7 @@ router.get('/:lectureID', async(req, res, next) => {
     if(data != undefined){
         result = data[0].watched_flag;
     }
+}
 
     res.status(200).send({
         result : result
