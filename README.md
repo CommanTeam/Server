@@ -67,14 +67,24 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 
 
 
-4. const session = require('express-session');
+# express-session
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![Build Status][travis-image]][travis-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
 
-5.const cookieParser = require('cookie-parser');
+
+# cookie-parser
+
+
+```
+이 두 모듈의 주요 차이점은 쿠키 세션 데이터를 저장하는 방식입니다. express-session 미들웨어는 세션 데이터를 서버에 저장하며, 쿠키 자체에는 세션 데이터가 아니라 세션 ID만 저장됩니다. 기본적으로 express-session은 인메모리 스토리지를 이용하며, 프로덕션 환경용으로 설계되지 않았습니다. 프로덕션 환경에서는 확장 가능한 session-store를 설정해야 합니다. 호환 가능한 세션 스토어의 목록을 참조하십시오.
+
+이와 반대로 cookie-session 미들웨어는 쿠키 기반의 스토리지를 구현하며, 하나의 세션 키가 아니라 세션 전체를 쿠키에 직렬화합니다. cookie-session은 세션 데이터의 크기가 상대적으로 작으며 (오브젝트가 아닌) 원시 값으로 쉽게 인코딩 가능할 때에만 사용하십시오
+```
+
+
 ---
 
 
