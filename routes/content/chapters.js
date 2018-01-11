@@ -28,9 +28,8 @@ router.get('/', async(req, res, next) => {
             message : "Access Denied"
         });
     }
-
+    let result = {}; 
 	let chapterID = req.query.chapterID;
-	let result = [];
 	let selectChapterByChapterID =
 	`
 	SELECT * FROM chapter
@@ -39,8 +38,14 @@ router.get('/', async(req, res, next) => {
 
 	var data = await db.queryParamCnt_Arr(selectChapterByChapterID, chapterID);
 	// console.log(data);
+	result.id = data[0].id
+	result.course_id = data[0].course_id
+	result.info = data[0].info
+	result.title = data[0].title
+	result.priority = data[0].priority
+
 	if(data != undefined){
-		result = data;
+		result = result;
 	}
 
 	res.status(200).send({data : result});
