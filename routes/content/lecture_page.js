@@ -185,7 +185,7 @@ router.get('/nextLecture', async(req, res, next) => {
 
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
-                    dataOfCourse.purchaseFlag = true;
+                    dataOfCourse.purchaseFlag = 1;
                     if(chapterID == data[i].chapter_id){ //챕터단위로 배열에 push(챕터별 강의 단위로 파악하기 위함)
                         dataOfChapter.push(data[i].lecture_id);
                     }
@@ -197,7 +197,7 @@ router.get('/nextLecture', async(req, res, next) => {
 
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
-                    dataOfCourse.purchaseFlag = false;
+                    dataOfCourse.purchaseFlag = 0;
                     if(chapterID == data[i].chapter_id){
                         dataOfChapter.push(data[i].lecture_id);
                     }
@@ -208,7 +208,7 @@ router.get('/nextLecture', async(req, res, next) => {
             for(var i=0;i<data.length;i++){
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
-                dataOfCourse.purchaseFlag = true;
+                dataOfCourse.purchaseFlag = 1;
                 if(chapterID == data[i].chapter_id){
                     dataOfChapter.push(data[i].lecture_id);
                 }
@@ -236,7 +236,7 @@ router.get('/nextLecture', async(req, res, next) => {
             }
 
         } else{
-            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : false};
+            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : 0};
         }
 
     }
