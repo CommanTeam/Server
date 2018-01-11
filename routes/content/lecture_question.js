@@ -78,8 +78,8 @@ router.get('/:lectureID', async(req, res, next) => {
 
 //written by 형민
 //lectureID로 질문 DB에 INSERT
-//http://ip/content/lecturequestion/{lectureID}
-router.post('/insertanswer', async(req, res, next) => {
+//http://ip/content/lecturequestion/insertquestion/{lectureID}
+router.post('/insertquestion', async(req, res, next) => {
     console.log("===lecture_question.js ::: router('/')===");
 
     const chkToken = jwt.verify(req.headers.authorization);
@@ -88,10 +88,11 @@ router.post('/insertanswer', async(req, res, next) => {
             message : "Access Denied"
         });
     }
-
+    let result = {};
     let user_id = chkToken.email;     
     let lectureID = req.body.lectureID;
     let question_text = req.body.question_text;
+
 
     let qestion_year = moment().format('YYYY');
     let qestion_month = moment().format('MM');
@@ -111,15 +112,24 @@ router.post('/insertanswer', async(req, res, next) => {
     `
     SELECT * 
     FROM comman.lecture_question 
-    WHERE lecture_id = ? 
+    WHERE lecture_id = ?
     AND question_text = ?
+    order by id desc
 
     `;
 
     var InsertData = await db.queryParamCnt_Arr(SelectQusetion, [lectureID,question_text]);
 
+    result.questionID = InsertData[0].id;
+    result.user_id = InsertData[0].user_id; 
+    result.lecture_id = InsertData[0].lecture_id; 
+    result.question_text = InsertData[0].question_text; 
+    result.question_date = InsertData[0].question_date; 
+    result.flag = InsertData[0].flag; 
+
+
     res.status(200).send({
-        "result" : InsertData
+        result : result
     }
     );
 });
