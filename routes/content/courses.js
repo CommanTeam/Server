@@ -45,6 +45,7 @@ router.get('/', async(req, res, next) => {
 		result.image_path = data[0].image_path;
 		result.name = data[0].name;
 		result.supplier_thumbnail = data[0].supplier_thumbnail;
+		result.title = data[0].title;
 		result.info = data[0].info;
 		result.price = data[0].price;
 		result.category_id = data[0].category_id;
