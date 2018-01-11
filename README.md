@@ -65,13 +65,16 @@ Helmet is Middlewares to help secure your apps
 
 Helmet helps you secure your Express apps by setting various HTTP headers. *It's not a silver bullet*, but it can help!
 
-
+---
 
 4. express-session
 
 * 미들웨어는 세션 데이터를 서버에 저장하며, 쿠키 자체에는 세션 데이터가 아니라 세션 ID만 저장
 
 * 기본적으로 express-session은 인메모리 스토리지를 이용
+
+
+---
 
 
 5. cookie-parser
