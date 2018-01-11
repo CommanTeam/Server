@@ -155,13 +155,6 @@ router.get('/nextLecture', async(req, res, next) => {
         courseID = dataOfCourseID[0].course_id;
     }
 
-    console.log("chapterID : " + chapterID);
-    console.log("courseID : " + courseID);
-
-    // console.log("chapterID here " + chapterID[0].chapter_id);
-    // console.log(courseID[0].course_id);
-
-
     var selectCourseInfoByUserID=
     `SELECT ur.user_id, ur.purchase_flag, A.chapter_id, A.chapter_priority, A.lecture_id, A.lecture_type, A.opened_chapter 
     FROM user_register ur 
@@ -175,7 +168,6 @@ router.get('/nextLecture', async(req, res, next) => {
 
     if(data != undefined && data.length != 0){
         purchaseFlag = data[0].purchase_flag;
-        console.log(purchaseFlag);
         openedChapter = data[0].opened_chapter;
 
         if(openedChapter != -1){ // 무료강의가 아닐때
@@ -223,9 +215,7 @@ router.get('/nextLecture', async(req, res, next) => {
     if(dataOfCourse.length != 0){
         var dataOfCourseLectureIDArray = dataOfCourse.lectureID;
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
-
-
-        console.log('value : ' + dataOfCourse.lectureID);
+        
         if(currentIndexByCourse != -1){
             var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
             // console.log("here!!!" + nextLectureIDByCourse)  ;
