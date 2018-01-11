@@ -108,7 +108,7 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
 	let lectureID = req.params.lectureID;
-	let result = [];
+	let result = {};
 	let selectLectureByUserID = `SELECT  lp.lecture_id, l.title, lp.priority, lp.image_path 
 	FROM lecture_picture lp, lecture l
 	WHERE lp.lecture_id = l.id AND lecture_id = ?
@@ -122,7 +122,7 @@ router.get('/:lectureID', async(req, res, next) => {
 	}
 
 	res.status(200).send({
-		result : result
+		"result" : result
 	});
 });
 

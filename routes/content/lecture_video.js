@@ -23,7 +23,7 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
 	let lectureID = req.params.lectureID;
-	let result = [];
+	let result = {};
 	let selectVideoLecutreByLectureID =
 
 	`SELECT lv.lecture_id, l.title, l.info, l.profile_image as file_path, lv.video_id, l.priority 
@@ -33,12 +33,17 @@ router.get('/:lectureID', async(req, res, next) => {
 
 	let data = await db.queryParamCnt_Arr(selectVideoLecutreByLectureID, lectureID);
 
-	if(data != undefined){
-		result = data;
+	if( data.length > 0) {
+	result.lecture_id = data[0].lecture_id;
+	result.title = data[0].title;
+	result.info = data[0].info;
+	result.file_path = data[0].file_path;
+	result.video_id = data[0].video_id;
+	result.priority = data[0].priority;
 	}
 
     res.status(200).send({
-       result : result
+       "result" : result
     });
 });
 
