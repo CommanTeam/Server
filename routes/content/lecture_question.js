@@ -92,8 +92,13 @@ router.post('/insertanswer', async(req, res, next) => {
     let user_id = chkToken.email;     
     let lectureID = req.body.lectureID;
     let question_text = req.body.question_text;
-    let question_date  = moment().format('YYYY-MM-DD');
 
+    let qestion_year = moment().format('YYYY');
+    let qestion_month = moment().format('MM');
+    let qestion_day = moment().format('DD');
+
+    let question_date = qestion_year + "." + qestion_month + "." + qestion_day ;
+    
     let insertQusetion =
     `
     INSERT INTO lecture_question (user_id, lecture_id, question_text, question_date, flag)
