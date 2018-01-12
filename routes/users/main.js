@@ -101,7 +101,6 @@
     let chapterCnt = await sql.getTotalChapterCntInCourse(listOfCourse[i]);
 
     let progressCourse = {};
-
     progressCourse.courseID = courseTitle[0].course_id;
     progressCourse.imagePath = courseTitle[0].image_path;
     progressCourse.courseTitle = courseTitle[0].c_title;

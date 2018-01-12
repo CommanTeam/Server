@@ -84,7 +84,7 @@ router.get('/previewvideo/:courseID', async(req, res, next) => {
     }
     
     let courseID = req.params.courseID;
-    let result = [];
+    let result = {};
     let getVideoLecture =
 
     `
@@ -97,20 +97,23 @@ router.get('/previewvideo/:courseID', async(req, res, next) => {
     var lectureIdData = await db.queryParamCnt_Arr(getVideoLecture, courseID);
 
 
-if( lectureIdData.length > 0){
-    let lectureID = lectureIdData[0].lecture_id;
 
+    if( lectureIdData.length > 0){
+        let lectureID = lectureIdData[0].lecture_id;
 
-    let getVideoID = 
-    `
-    SELECT video_id FROM lecture as l, lecture_video lv WHERE l.id = lv.lecture_id AND lecture_id = ?
-    `
+        let getVideoID =`
+        SELECT l.title , l.priority, lv.video_id
+        FROM lecture as l, lecture_video lv 
+        WHERE l.id = lv.lecture_id 
+        AND lecture_id = ?
+        `
 
-    videoIDdata = await db.queryParamCnt_Arr(getVideoID, lectureID);
+        videoIDdata = await db.queryParamCnt_Arr(getVideoID, lectureID);
+        result.video_id = videoIDdata[0].video_id;
+        result.lecture_title = videoIDdata[0].title;
+        result.lecture_priority = videoIDdata[0].priority;
 
-    result = videoIDdata[0].video_id;
-
-}
+    }
 
     if(result != undefined) {
         res.status(200).send({
