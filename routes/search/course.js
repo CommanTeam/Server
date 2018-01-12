@@ -38,7 +38,7 @@ router.post('/', async(req, res, next) => {
     console.log("search this word" + searchWord);
     let searcher = new hangul.Searcher(searchWord);
     let result = [];
-    
+
     let selectAllCourse =
     `
     SELECT c.id, c.title, c.info, c.image_path, ur.hit
@@ -47,12 +47,7 @@ router.post('/', async(req, res, next) => {
     ORDER BY hit DESC
     `;
 
-
     var data = await db.queryParamCnt_None(selectAllCourse);
-
-
-    // console.log(data);
-
 
     if(data != undefined){
         for(var i=0;i<data.length;i++){
@@ -68,6 +63,7 @@ router.post('/', async(req, res, next) => {
             }
         }
     }
+ 
 
     res.status(200).send({
         "result" : result

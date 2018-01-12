@@ -174,7 +174,6 @@ router.get('/nextLecture', async(req, res, next) => {
             if(purchaseFlag == 1){ // 구매 했을 경우
                 for(var i=0; i<data.length; i++){
 
-
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
                     dataOfCourse.purchaseFlag = 1;
