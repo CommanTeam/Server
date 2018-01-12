@@ -79,17 +79,17 @@
 
             if(lectureQuery[i].lecture_type == 0){
                 var quizCount = await db.queryParamCnt_Arr(countQuizLecture, lectureQuery[i].lecture_id);
-                lectureList.size = quizCount[0].count;
+                lectureList.lectureCnt = quizCount[0].count;
             } 
             if(lectureQuery[i].lecture_type == 1){
                 var pictureCount = await db.queryParamCnt_Arr(countImageLecture, lectureQuery[i].lecture_id);
-                lectureList.size = pictureCount[0].count;
+                lectureList.lectureCnt = pictureCount[0].count;
             } 
             if(lectureQuery[i].lecture_type == 2){
                 var videoID = await db.queryParamCnt_Arr(videoLecture, lectureQuery[i].lecture_id);
                 lectureList.videoID = videoID[0].video_id;
                 lectureList.playTime = videoID[0].play_time;
-                lectureList.size = -1;
+                lectureList.lectureCnt = -1;
             }
             result.push(lectureList);
             // console.log('lectureList ID : ' + lectureList.lectureID);
