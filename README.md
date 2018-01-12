@@ -87,7 +87,7 @@ Helmet helps you secure your Express apps by setting various HTTP headers. *It's
 ---
 
 
-4. SSL
+6. SSL
 <img align="center" width="200" src="https://github.com/CommanTeam/Server/blob/master/public/images/SSL.png" />
 
 * 전송 계층 보안 (영어: Transport Layer Security, TLS, 과거 명칭: 보안 소켓 레이어/Secure Sockets Layer, SSL)는 암호 규약이다. 
