@@ -103,7 +103,7 @@ if( lectureIdData.length > 0){
 
     let getVideoID = 
     `
-    SELECT video_id FROM comman.lecture as l, lecture_video lv WHERE l.id = lv.lecture_id AND lecture_id = ?
+    SELECT video_id FROM lecture as l, lecture_video lv WHERE l.id = lv.lecture_id AND lecture_id = ?
     `
 
     videoIDdata = await db.queryParamCnt_Arr(getVideoID, lectureID);

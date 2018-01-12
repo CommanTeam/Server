@@ -41,13 +41,13 @@
     AND uh.user_id = ?
     ORDER BY priority`;
 
-    var videoLecture = `SELECT video_id, play_time FROM comman.lecture_video WHERE lecture_id = ?`; 
+    var videoLecture = `SELECT video_id, play_time FROM lecture_video WHERE lecture_id = ?`; 
 
     var countImageLecture = `SELECT count(*) as count
-    FROM comman.lecture_picture where lecture_id = ?`;
+    FROM lecture_picture where lecture_id = ?`;
 
     var countQuizLecture = `SELECT count(*) as count
-    FROM comman.lecture_quiz 
+    FROM lecture_quiz 
     WHERE lecture_id = ?`;
 
 
@@ -136,12 +136,12 @@ router.get('/nextLecture', async(req, res, next) => {
 
     var selectChapterID = 
     `
-    SELECT chapter_id FROM comman.all_course_info WHERE lecture_id = ?;
+    SELECT chapter_id FROM all_course_info WHERE lecture_id = ?;
     `
 
     var selectCourseID = 
     `
-    SELECT course_id FROM comman.all_course_info WHERE lecture_id = ?;
+    SELECT course_id FROM all_course_info WHERE lecture_id = ?;
     `
 
     let dataOfChapterID = await db.queryParamCnt_Arr(selectChapterID, lectureID);
