@@ -45,18 +45,20 @@ router.get('/', async(req, res, next) => {
 		`
 		var _data = await db.queryParamCnt_Arr(selectQuery,lectureID);
 		data[0].video_id = _data[0].video_id;
-		data[0].play_time = _data[0].play_time;
+		data[0].playTime = _data[0].play_time;
 
 	}else{
 		data[0].video_id = "";
-		data[0].play_time = -1;
+		data[0].playTime = -1;
 	}
 	
 	if(data!=undefined){
 		result = data;
 	}
 
-	res.status(200).send({data : result});
+	res.status(200).send({
+		"data" : data[0]
+	});
 
 });
 

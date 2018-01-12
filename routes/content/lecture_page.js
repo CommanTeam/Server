@@ -41,7 +41,7 @@
     AND uh.user_id = ?
     ORDER BY priority`;
 
-    var videoLecture = `SELECT video_id FROM comman.lecture_video WHERE lecture_id = ?`; 
+    var videoLecture = `SELECT video_id, play_time FROM comman.lecture_video WHERE lecture_id = ?`; 
 
     var countImageLecture = `SELECT count(*) as count
     FROM comman.lecture_picture where lecture_id = ?`;
@@ -62,10 +62,14 @@
             lectureList = {};
             lectureList.lectureID = lectureQuery[i].lecture_id;
             lectureList.lecturePriority = lectureQuery[i].priority;
-            lectureList.chapterID = lectureQuery[i].chapter_id;
             lectureList.lectureTitle = lectureQuery[i].title;
             lectureList.lectureType = lectureQuery[i].lecture_type;
+
+            lectureList.chapterID = lectureQuery[i].chapter_id;
+            
             lectureList.videoID = lectureQuery[i].video_id;
+            lectureList.playTime = -1;
+            
             lectureList.userID = lectureQuery[i].user_id;
             lectureList.watchedFlag = lectureQuery[i].watched_flag;
 
@@ -75,16 +79,17 @@
 
             if(lectureQuery[i].lecture_type == 0){
                 var quizCount = await db.queryParamCnt_Arr(countQuizLecture, lectureQuery[i].lecture_id);
-                lectureList.size = quizCount[0].count;
+                lectureList.lectureCnt = quizCount[0].count;
             } 
             if(lectureQuery[i].lecture_type == 1){
                 var pictureCount = await db.queryParamCnt_Arr(countImageLecture, lectureQuery[i].lecture_id);
-                lectureList.size = pictureCount[0].count;
+                lectureList.lectureCnt = pictureCount[0].count;
             } 
             if(lectureQuery[i].lecture_type == 2){
                 var videoID = await db.queryParamCnt_Arr(videoLecture, lectureQuery[i].lecture_id);
                 lectureList.videoID = videoID[0].video_id;
-                lectureList.size = -1;
+                lectureList.playTime = videoID[0].play_time;
+                lectureList.lectureCnt = -1;
             }
             result.push(lectureList);
             // console.log('lectureList ID : ' + lectureList.lectureID);
@@ -123,7 +128,6 @@ router.get('/nextLecture', async(req, res, next) => {
     var resultOfCourse = -1;
     var resultOfChapter = -1;
     let lectureID = req.query.lectureID;
-    // let lectureID = req.query.lectureID;
     let userID = chkToken.email;
     let purchaseFlag;
     let openedChapter;
@@ -151,13 +155,6 @@ router.get('/nextLecture', async(req, res, next) => {
         courseID = dataOfCourseID[0].course_id;
     }
 
-    console.log("chapterID : " + chapterID);
-    console.log("courseID : " + courseID);
-
-    // console.log("chapterID here " + chapterID[0].chapter_id);
-    // console.log(courseID[0].course_id);
-
-
     var selectCourseInfoByUserID=
     `SELECT ur.user_id, ur.purchase_flag, A.chapter_id, A.chapter_priority, A.lecture_id, A.lecture_type, A.opened_chapter 
     FROM user_register ur 
@@ -171,9 +168,7 @@ router.get('/nextLecture', async(req, res, next) => {
 
     if(data != undefined && data.length != 0){
         purchaseFlag = data[0].purchase_flag;
-        console.log(purchaseFlag);
         openedChapter = data[0].opened_chapter;
-
 
         if(openedChapter != -1){ // 무료강의가 아닐때
             if(purchaseFlag == 1){ // 구매 했을 경우
@@ -181,7 +176,7 @@ router.get('/nextLecture', async(req, res, next) => {
 
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
-                    dataOfCourse.purchaseFlag = true;
+                    dataOfCourse.purchaseFlag = 1;
                     if(chapterID == data[i].chapter_id){ //챕터단위로 배열에 push(챕터별 강의 단위로 파악하기 위함)
                         dataOfChapter.push(data[i].lecture_id);
                     }
@@ -193,7 +188,7 @@ router.get('/nextLecture', async(req, res, next) => {
 
                     dataOfCourse.lectureType.push(data[i].lecture_type);
                     dataOfCourse.lectureID.push(data[i].lecture_id);
-                    dataOfCourse.purchaseFlag = false;
+                    dataOfCourse.purchaseFlag = 0;
                     if(chapterID == data[i].chapter_id){
                         dataOfChapter.push(data[i].lecture_id);
                     }
@@ -204,7 +199,7 @@ router.get('/nextLecture', async(req, res, next) => {
             for(var i=0;i<data.length;i++){
                 dataOfCourse.lectureType.push(data[i].lecture_type);
                 dataOfCourse.lectureID.push(data[i].lecture_id);
-                dataOfCourse.purchaseFlag = true;
+                dataOfCourse.purchaseFlag = 1;
                 if(chapterID == data[i].chapter_id){
                     dataOfChapter.push(data[i].lecture_id);
                 }
@@ -219,23 +214,33 @@ router.get('/nextLecture', async(req, res, next) => {
     if(dataOfCourse.length != 0){
         var dataOfCourseLectureIDArray = dataOfCourse.lectureID;
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
+        
+
+        let nextChapterIDQuery =`
+        select l.chapter_id
+        from lecture as l
+        where l.id = ?;
+        `
+
+        let nextChapterID = await db.queryParamCnt_Arr(nextChapterIDQuery,dataOfCourse.lectureID[currentIndexByCourse+1]);
 
 
         if(currentIndexByCourse != -1){
             var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
             // console.log("here!!!" + nextLectureIDByCourse)  ;
             if(nextLectureIDByCourse != undefined){
-                resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag};
+                resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag, nextChapterID : nextChapterID[0].chapter_id};
             } else{
-                resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag};
+                resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag,  nextChapterID : -1};
             }
 
         } else{
-            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : false};
+            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : 0,  nextChapterID : -1};
         }
 
     }
 
+    
     if(dataOfChapter.length != 0){
         var currentIndexByChapter = dataOfChapter.indexOf(parseInt(lectureID));
 

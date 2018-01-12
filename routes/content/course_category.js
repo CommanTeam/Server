@@ -93,20 +93,17 @@ router.get('/course', async(req, res, next) => {
     
 
     var result = [];
-
     var object = {};
 
 
     let selectAllCategoryAndCourse =
-    `SELECT cate.id as category_id, cate.category_name, course.title
+    `SELECT cate.id as category_id, cate.category_name, course.title, cate.category_img
     FROM course course 
     JOIN course_category cate 
     ON course.category_id = cate.id 
     ORDER BY category_id`;
 
     var data = await db.queryParamCnt_None(selectAllCategoryAndCourse);
-
-    
 
     for(var i=0; i<data.length;i++){
 
@@ -115,7 +112,9 @@ router.get('/course', async(req, res, next) => {
             var object = {};
             object.categoryID = data[i].category_id;
             object.categoryName = data[i].category_name;
+            object.categoryImg = data[i].category_img;
             object.title = [];
+            
         }
 
         object.title.push(data[i].title)

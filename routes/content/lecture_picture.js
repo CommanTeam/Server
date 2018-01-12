@@ -34,13 +34,12 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	let getImageUrlbyLectureID =
 	`SELECT image_path
 	FROM comman.lecture as l,
-	comman.lecutre_image as li  
-	WHERE l.id = li.lecture_id 
+	lecture_picture as lp
+	WHERE l.id = lp.lecture_id 
 	AND l.id = ?
-	order by  li.priority;
+	order by  lp.priority;;
 	`;
 	let data = await db.queryParamCnt_Arr(getImageUrlbyLectureID, lectureID);
-
 
 	for(var i=0; i<data.length;i++){ 
 		lectureImageArr.push(data[i].image_path);
@@ -55,16 +54,13 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	ORDER BY ch.priority, l.priority;
 	`;
 
-
 	let orderedLectureID = await db.queryParamCnt_Arr(selectAllLectureIDInCourse, courseID);
 
-
-
 	for(var i=0;i<orderedLectureID.length;i++){
-		nextlecID.push(orderedLectureID[i].lecture_id.toString());
+		nextlecID.push(orderedLectureID[i].lecture_id);
 	}
 
-	var currentIndex = nextlecID.indexOf(lectureID.toString());
+	var currentIndex = nextlecID.indexOf(parseInt(lectureID));
 	var nextLectureID = nextlecID[currentIndex+1];
 	if(nextLectureID != undefined){
 		nextLectureID = nextlecID[currentIndex+1];
@@ -76,28 +72,9 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	result.lectureImageUrlArr = lectureImageArr;
 	result.nextLectureID = nextLectureID;
 
-	console.log(result);
 	res.status(200).send({
 		"result" : result
 	});
-
-
-
-
-
-
-
-// result.imageUrlbylectureID = imageUrlbylectureID;
-// result
-
-//     res.status(200).send({
-//         result ={                       //객체 문법 이거 가능? 
-//             imageUrlbylectureID;        
-//         },
-//         {
-//             nextChpaterID;
-//         }
-//     });
 });
 
 
@@ -113,7 +90,7 @@ router.get('/:lectureID', async(req, res, next) => {
         });
     }
 	let lectureID = req.params.lectureID;
-	let result = [];
+	let result = {};
 	let selectLectureByUserID = `SELECT  lp.lecture_id, l.title, lp.priority, lp.image_path 
 	FROM lecture_picture lp, lecture l
 	WHERE lp.lecture_id = l.id AND lecture_id = ?
@@ -127,7 +104,7 @@ router.get('/:lectureID', async(req, res, next) => {
 	}
 
 	res.status(200).send({
-		result : result
+		"result" : result
 	});
 });
 

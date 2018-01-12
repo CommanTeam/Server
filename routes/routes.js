@@ -4,6 +4,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Default
+router.use('/', require('./default/comman'));
+
 // Users
 router.use('/users', require('./users/users_routes'));
 
