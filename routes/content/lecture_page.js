@@ -215,17 +215,27 @@ router.get('/nextLecture', async(req, res, next) => {
         var dataOfCourseLectureIDArray = dataOfCourse.lectureID;
         var currentIndexByCourse = dataOfCourseLectureIDArray.indexOf(parseInt(lectureID));
         
+
+        let nextChapterIDQuery =`
+        select l.chapter_id
+        from lecture as l
+        where l.id = ?;
+        `
+
+        let nextChapterID = await db.queryParamCnt_Arr(nextChapterIDQuery,dataOfCourse.lectureID[currentIndexByCourse+1]);
+
+
         if(currentIndexByCourse != -1){
             var nextLectureIDByCourse = dataOfCourse.lectureID[currentIndexByCourse+1];
             // console.log("here!!!" + nextLectureIDByCourse)  ;
             if(nextLectureIDByCourse != undefined){
-                resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag};
+                resultOfCourse = {lectureID : dataOfCourse.lectureID[currentIndexByCourse+1], lectureType: dataOfCourse.lectureType[currentIndexByCourse+1],purchaseFlag : dataOfCourse.purchaseFlag, nextChapterID : nextChapterID[0].chapter_id};
             } else{
-                resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag};
+                resultOfCourse = {lectureID : -1, lectureType: -1, purchaseFlag : dataOfCourse.purchaseFlag,  nextChapterID : -1};
             }
 
         } else{
-            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : 0};
+            resultOfCourse = {lectureID : -1, lectureType : -1, purchaseFlag : 0,  nextChapterID : -1};
         }
 
     }
