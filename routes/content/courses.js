@@ -85,7 +85,7 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 	FROM lecture l 
 	LEFT JOIN chapter c 
 	ON l.chapter_id = c.id GROUP BY chapter_id)  ch 
-	WHERE c.id = ch.course_id AND course_id = 2
+	WHERE c.id = ch.course_id AND course_id = ?
     ORDER BY ch.chapter_priority;`
 
 	var data = await db.queryParamCnt_Arr(query, courseID);
