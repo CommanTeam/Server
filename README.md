@@ -20,9 +20,9 @@
 
 <img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/RDS_Environment.png" />
 
-3. Async & Await & Promise
+3. Promise, Async & Await
 
-<img align="center" src="https://github.com/CommanTeam/Server/blob/master/public/images/Async_Await.jpg" />
+<img align="center" width="400"src="https://github.com/CommanTeam/Server/blob/master/public/images/Async_Await.jpg" />
 
 --- 
 
