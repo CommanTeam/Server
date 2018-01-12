@@ -95,8 +95,7 @@ router.get('/:lectureID', async(req, res, next) => {
         object.quizTitle = data[i].quiz_title;
         object.quizPriority = data[i].quiz_priority;
 
-        
-        if(object.quizImage != undefined){
+        if(data[i].quiz_image != undefined){
           object.quizImage = data[i].quiz_image;
         } else{
           object.quizImage = "";

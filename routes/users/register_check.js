@@ -76,8 +76,8 @@ router.post('/', async(req, res, next) => {
     //insert regist query
     let insertQuery =
     `
-    insert into user_register (user_id, course_id)
-    values (?,?)
+    insert into user_register (user_id, course_id, purchase_flag)
+    values (?,?, 0)
     `;
     var data = await db.queryParamCnt_Arr(insertQuery, [userID, courseID]);
 
