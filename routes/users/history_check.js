@@ -31,41 +31,20 @@ router.get('/:lectureID', async(req, res, next) => {
     }
     var result;
     let userID = chkToken.email;
-
-    // let userID = req.query.userID;
     let lectureID = req.params.lectureID;
-    
-    // console.log(userID);
-    // console.log(userInfo.email);
-
-
-    let checkInsertedQuery = `
-    SELECT count(*) as cnt
-    FROM user_history as uh
-    where uh.user_id =  ?
-    and uh.lecture_id = ?;
-    `
-    let checkInsert = await db.queryParamCnt_Arr(checkInsertedQuery, [userID, lectureID]);
-
-    if (checkInsert.length > 0){
-        result = '중복으로 인한 삽입 불가';
-    }else{
     let checkHistoryByUserIDAndLectureID =
     `
     SELECT watched_flag 
     FROM user_history 
     WHERE user_id = ? 
     AND lecture_id = ? 
-    
     `;
 
     var data = await db.queryParamCnt_Arr(checkHistoryByUserIDAndLectureID, [userID, lectureID]);
-    // console.log(data[0]);
-
+    
     if(data != undefined){
-        result = data[0].watched_flag;
+        result = data[0].watched_flag ? true : false;
     }
-}
 
     res.status(200).send({
         result : result
@@ -93,23 +72,31 @@ router.post('/', async(req, res, next) => {
     }
     let userID = chkToken.email;
     let lectureID = req.body.lectureID;
-
-
     
-    let insertQuery =
+    let selectQuery = `
+    select count(*) as cnt
+	from user_history as uh
+	where uh.user_id =  ?
+	and uh.lecture_id = ?
+	;
     `
-    INSERT INTO user_history (user_id, lecture_id, watched_flag) VALUES (?, ?, 1);
-    `;
 
+    let _result = await db.queryParamCnt_Arr(selectQuery, [userID, lectureID]);
 
-    await db.queryParamCnt_Arr(insertQuery, [userID, lectureID]);
-
-
-    res.status(200).send({
-        message : "강의 history 생성"
-    });
-
-
+    if(  _result[0].cnt > 0) {
+        res.status(200).send({
+            message : "이미 등록된 정보"
+        });
+    } else {
+        let insertQuery =
+        `
+        INSERT INTO user_history (user_id, lecture_id, watched_flag) VALUES (?, ?, 1);
+        `;
+        await db.queryParamCnt_Arr(insertQuery, [userID, lectureID]);
+        res.status(200).send({
+            message : "강의 history 생성"
+        });
+    }
 });
 
 
