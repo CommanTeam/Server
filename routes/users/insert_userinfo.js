@@ -73,7 +73,21 @@ router.post('/', async(req, res, next) => {
         }
     }
 
-    let cacaoResult = await request(option);
+
+    console.log('good gid 1');
+    try {
+        let cacaoResult = await request(option);
+        console.log('good gid 12312312');
+      }
+      catch(err) {
+        console.log("err =>" + err);
+        next(err);
+      }
+      finally {
+          console.log('finally');
+      }
+
+    console.log('good gid 2');
     let result = {};
     result.nickname = cacaoResult.properties.nickname;
     result.thumbnail_image = cacaoResult.properties.thumbnail_image;

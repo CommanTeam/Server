@@ -45,6 +45,7 @@ router.get('/:lectureID', async(req, res, next) => {
     where u.id = lqa.user_id
     and lqa.lecture_id = ac.lecture_id
     and lqa.lecture_id = ?
+    order by lecture_question_id desc
     `;
 
     var data = await db.queryParamCnt_Arr(selectAllQnA, lectureID);
