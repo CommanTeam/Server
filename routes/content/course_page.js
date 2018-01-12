@@ -89,7 +89,7 @@ router.get('/previewvideo/:courseID', async(req, res, next) => {
 
     `
     SELECT  lecture_id 
-    FROM comman.all_course 
+    FROM all_course 
     WHERE course_id = ?
     AND lecture_type = 2 order by chapter_priority, lecture_priority;
     `

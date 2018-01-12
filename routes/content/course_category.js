@@ -66,7 +66,6 @@ var compare = function( a, b ){
     select id, category_name from course_category
     `;
 
-
     var result = await db.queryParamCnt_None(selectAllCategories);
 
     if(result != undefined) {
@@ -80,6 +79,7 @@ var compare = function( a, b ){
     }
 
 });
+
 
 //카테고리별 course title들 
 router.get('/course', async(req, res, next) => {
@@ -106,19 +106,15 @@ router.get('/course', async(req, res, next) => {
     var data = await db.queryParamCnt_None(selectAllCategoryAndCourse);
 
     for(var i=0; i<data.length;i++){
-
         if(object.categoryID != data[i].category_id){
-            
             var object = {};
             object.categoryID = data[i].category_id;
             object.categoryName = data[i].category_name;
             object.categoryImg = data[i].category_img;
             object.title = [];
-            
         }
 
         object.title.push(data[i].title)
-
         if(!compare(result[result.length - 1], object)){
             result.push(object);
         }
