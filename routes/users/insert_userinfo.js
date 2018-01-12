@@ -64,6 +64,8 @@ router.post('/', async(req, res, next) => {
 
     let accessToken = req.body.accessToken;
 
+    console.log('accessToken : ' + accessToken);
+
     let option = {
         method : 'GET',
         uri: 'https://kapi.kakao.com/v1/user/me ',
@@ -73,22 +75,12 @@ router.post('/', async(req, res, next) => {
         }
     }
 
-
     console.log('good gid 1');
     try {
         let cacaoResult = await request(option);
-        console.log('good gid 12312312');
-      }
-      catch(err) {
-        console.log("err =>" + err);
-        next(err);
-      }
-      finally {
-          console.log('finally');
-      }
+        console.log('good gid 2');
 
-    console.log('good gid 2');
-    let result = {};
+        let result = {};
     result.nickname = cacaoResult.properties.nickname;
     result.thumbnail_image = cacaoResult.properties.thumbnail_image;
 
@@ -171,6 +163,19 @@ router.post('/', async(req, res, next) => {
                 })
             }
         }
+      }
+      catch(err) {
+        console.log("Cacao Error => " + err);
+        next(err);
+      }
+      finally {
+          console.log('finally');
+      }
+
+
+      console.log('good gid 3');
+
+    
     });
 
 
