@@ -112,7 +112,7 @@ router.post('/insertquestion', async(req, res, next) => {
     let SelectQusetion =
     `
     SELECT * 
-    FROM comman.lecture_question 
+    FROM lecture_question 
     WHERE lecture_id = ?
     AND question_text = ?
     order by id desc
