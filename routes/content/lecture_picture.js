@@ -75,24 +75,6 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	res.status(200).send({
 		"result" : result
 	});
-
-
-
-
-
-
-
-// result.imageUrlbylectureID = imageUrlbylectureID;
-// result
-
-//     res.status(200).send({
-//         result ={                       //객체 문법 이거 가능? 
-//             imageUrlbylectureID;        
-//         },
-//         {
-//             nextChpaterID;
-//         }
-//     });
 });
 
 
