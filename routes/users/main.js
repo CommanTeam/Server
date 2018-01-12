@@ -108,7 +108,8 @@
     progressCourse.chapterCnt = chapterCnt;
     progressCourse.progressPercentage = progressInCourse;     
     result.push(progressCourse);
-}
+
+    }
 
 if(result != undefined) {
     res.status(200).send({
