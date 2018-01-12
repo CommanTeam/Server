@@ -22,7 +22,7 @@
 
 3. Promise, Async & Await
 
-<img align="center" width="400"src="https://github.com/CommanTeam/Server/blob/master/public/images/Async_Await.jpg" />
+<img align="center" width="400" src="https://github.com/CommanTeam/Server/blob/master/public/images/Async_Await.jpg" />
 
 --- 
 
