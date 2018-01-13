@@ -71,98 +71,12 @@ function array_diff(a, b) {
         });
     }
 
-    let userListenCourse = [];
-    let userListenLecture = [];
-    let allLecture = [];
-    let userUnListenedLecture = [];
+    
     let userID = chkToken.email;
     let listOfCourse = [];
     let result = [];
 
-    let query = 
-    `SELECT ac.course_id, ac.chapter_id, ac.lecture_id, uh.user_id 
-    FROM all_course ac, user_history uh 
-    WHERE ac.lecture_id = uh.lecture_id 
-    AND user_id = ? ORDER BY course_id
-    `;
-
-    let data = await db.queryParamCnt_Arr(query, userID);
-
-
-
-    if(data != undefined && data.length != 0){
-        for(var i = 0; i<data.length; i++){
-
-            if(userListenCourse.indexOf(data[i].course_id) == -1){
-                console.log("hsakjldfhalskdf");
-                userListenCourse.push(data[i].course_id); // 듣고있는 강좌목록 리스트
-            }
-
-            if(userListenLecture.indexOf(data[i].lecture_id) == -1){
-                userListenLecture.push(data[i].lecture_id); // 듣고있는 강의 리스트
-            }
-        }
-        console.log("userListene!!!!" + userListenCourse);
-        console.log("userLecture!!!!" + userListenLecture);
-    }
-
-    let selectLectureByCourseID =
-    `
-        SELECT lecture_id FROM all_course_info WHERE course_id = ?
-    `  
-    for(var i=0;i<userListenCourse.length;i++){
-        let allLectureDataByCourseID = await db.queryParamCnt_Arr(selectLectureByCourseID, userListenCourse[i]);
-
-        for(var j=0;j<allLectureDataByCourseID.length;j++){
-            allLecture.push(allLectureDataByCourseID[j].lecture_id);
-        }
-    }
-
-    for(var i=0;i<userListenLecture.length;i++){
-
-
-        userUnListenedLecture = array_diff(allLecture, userListenLecture);
-
-
-        // userUnListenedLecture.splice(userListenLecture.indexOf(userListenLecture[i]), 1);
-    }
-    console.log(userUnListenedLecture);
-
-
-    let insertHistoryLectureId =
-    `
-        INSERT INTO user_history (user_id, lecture_id, watched_flag) VALUES (?, ?, 0);
-    `;
-
-
-
-    let selectUserHistoryByLectureId = 
-    `
-        SELECT lecture_id FROM user_history WHERE lecture_id = ?
-    `
     
-    console.log(userUnListenedLecture);
-    console.log(userUnListenedLecture[i]);
-    for(var i=0;i<userUnListenedLecture.length;i++){
-        let checkDuplicate = await db.queryParamCnt_Arr(selectUserHistoryByLectureId, userUnListenedLecture[i]);
-        // if(checkDuplicate[i].lecture_id == 0){
-        //     await db.queryParamCnt_Arr(insertHistoryLectureId, userUnListenedLecture[i].lecture_id)
-        // }
-    }
-    // let confirm = await db.queryParamCnt_Arr(selectUserHistoryByLectureId, userListenCourse[i]);
-
-    // console.log("confirm value ==>  " + confirm[0].lecture_id);
-
-
-
-    // if(confirm[])
-
-    // console.log(userUnListenedLecture);
-    if(userUnListenedLecture.length != 0)
-    for(var i=0;i<userUnListenedLecture.length;i++){
-        await db.queryParamCnt_Arr(insertHistoryLectureId, [userID, userUnListenedLecture[i]]);
-    }
-
 
     // console.log(userUnListenedLecture);
 
