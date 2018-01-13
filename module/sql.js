@@ -162,7 +162,8 @@ module.exports = {
     and ur.course_id = aci.course_id
     and uh.lecture_id = aci.lecture_id
     and ur.user_id = ?
-    and ur.course_id = ? 
+    and ur.course_id = ?
+    and (uh.watched_flag = 1 OR uh.watched_flag = 2)
     `;
     let result = await db.queryParamCnt_Arr(selectQuery,data);
     return result[0].cnt;
