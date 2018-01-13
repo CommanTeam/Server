@@ -72,27 +72,6 @@ router.post('/', async(req, res, next) => {
     let userID = chkToken.email;
     let courseID = req.body.courseID;
     
-
-    let selectQuery = `
-    select count(*) as cnt 
-    from user_register as ur
-    where ur.user_id = ?
-    ;
-    `
-    let _result = await db.queryParamCnt_Arr(selectQuery,userID);
-
-    if( _result.length == 0){
-        // 강좌 등록 x 구매하려는 경우
-        var updateQuery = `
-        UPDATE user_register 
-        SET purchase_flag = 1 
-        WHERE user_id = ?
-        AND course_id = ?
-        `
-        await db.queryParamCnt_Arr(updateQuery,[userID,courseID]);
-        
-    }
-
     //insert regist query
     let insertQuery =
     `

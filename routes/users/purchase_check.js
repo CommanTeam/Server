@@ -73,6 +73,33 @@ router.put('/:courseID', async(req, res, next) => {
     let courseID = req.params.courseID;
     let result = 0;
 
+    let selectQuery = `
+    select count(*) as cnt 
+    from user_register as ur
+    where ur.user_id = ?
+    and ur.course_id = ?;
+    `
+
+    let _result = await db.queryParamCnt_Arr(selectQuery,[userID,courseID]);
+
+    if( _result[0].cnt == 0){
+        // 강좌 등록 x 구매하려는 경우
+        let insertQuery =
+        `
+        insert into user_register (user_id, course_id, purchase_flag)
+        values (?,?,1)
+        `;
+         await db.queryParamCnt_Arr(insertQuery,[userID,courseID]);
+    } else{
+        var updateQuery = `
+        UPDATE user_register 
+        SET purchase_flag = 1 
+        WHERE user_id = ?
+        AND course_id = ?
+        `
+        await db.queryParamCnt_Arr(updateQuery,[userID,courseID]);
+    }
+
     let updatePurchaseByUserIDAndCourseID =
     `
     UPDATE user_register 
