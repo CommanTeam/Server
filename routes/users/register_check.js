@@ -95,14 +95,17 @@ router.post('/', async(req, res, next) => {
 
     console.log("course register do ==>" + data);
 
+    let query = `SELECT lecture_id FROM all_course_info WHERE course_id = ?;`
 
 
-    let query = 
-    `SELECT ac.course_id, ac.chapter_id, ac.lecture_id, uh.user_id 
-    FROM all_course ac LEFT JOIN user_history uh 
-    ON ac.lecture_id = uh.lecture_id 
-    AND user_id = ? ORDER BY course_id
-    `;
+    // let query = 
+    // `SELECT ac.course_id, ac.chapter_id, ac.lecture_id, uh.user_id 
+    // FROM all_course ac LEFT JOIN user_history uh 
+    // ON ac.lecture_id = uh.lecture_id 
+    // AND user_id = ? ORDER BY course_id
+    // `;
+
+    let dataOfRegister = await db.queryParamCnt_Arr(query, courseID);
 
     let insertHistoryLectureId =
     `
@@ -110,14 +113,14 @@ router.post('/', async(req, res, next) => {
     `;
 
 
-    let dataOfRegister = await db.queryParamCnt_Arr(query, userID);
+
+    // let dataOfRegister = await db.queryParamCnt_Arr(query, userID);
 
 
     if(dataOfRegister != undefined && dataOfRegister.length != 0){
         for(var i=0; i<dataOfRegister.length ;i++){
-            if(dataOfRegister[i].user_id == undefined){
                 lectureHistoryArray.push(dataOfRegister[i].lecture_id)
-            }
+            
         }
     }
 
