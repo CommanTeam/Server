@@ -79,13 +79,14 @@ router.get('/:courseID/chapters', async(req, res, next) => {
 
 
 	let query = `
-	SELECT ch.chapter_id, ch.chapter_info, ch.chapter_title, ch.chapter_priority, ch.lecture_count, c.opened_chapter FROM
-	course c, 
+	SELECT ch.chapter_id, ch.chapter_info, ch.chapter_title, ch.chapter_priority, ch.lecture_count, c.opened_chapter 
+	FROM	course c, 
 	(SELECT c.id as chapter_id, c.course_id, c.info as chapter_info, c.title as chapter_title, c.priority as chapter_priority, count(*) as lecture_count 
 	FROM lecture l 
 	LEFT JOIN chapter c 
-	ON l.chapter_id = c.id GROUP BY chapter_id) ch 
-	WHERE c.id = ch.course_id AND course_id = ?`
+	ON l.chapter_id = c.id GROUP BY chapter_id)  ch 
+	WHERE c.id = ch.course_id AND course_id = ?
+    ORDER BY ch.chapter_priority;`
 
 	var data = await db.queryParamCnt_Arr(query, courseID);
 

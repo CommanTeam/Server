@@ -149,8 +149,6 @@ module.exports = {
     return result;
   },
 
- 
-  
   // Course에서 User가 수강했거나, 수강 중인 Lecture의 Count
   // writtend by 탁형민
   getCourseInProgressByUserIDandCourseID : async (...args) =>{

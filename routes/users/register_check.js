@@ -72,12 +72,11 @@ router.post('/', async(req, res, next) => {
     let userID = chkToken.email;
     let courseID = req.body.courseID;
     
-    // console.log(courseID, userID);
     //insert regist query
     let insertQuery =
     `
-    insert into user_register (user_id, course_id)
-    values (?,?)
+    insert into user_register (user_id, course_id, purchase_flag)
+    values (?,?, 0)
     `;
     var data = await db.queryParamCnt_Arr(insertQuery, [userID, courseID]);
 

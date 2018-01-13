@@ -210,14 +210,14 @@ function array_diff(a, b) {
     let chapterCnt = await sql.getTotalChapterCntInCourse(listOfCourse[i]);
 
     let progressCourse = {};
-
     progressCourse.courseID = courseTitle[0].course_id;
     progressCourse.imagePath = courseTitle[0].image_path;
     progressCourse.courseTitle = courseTitle[0].c_title;
     progressCourse.chapterCnt = chapterCnt;
     progressCourse.progressPercentage = progressInCourse;     
     result.push(progressCourse);
-}
+
+    }
 
 if(result != undefined) {
     res.status(200).send({
@@ -274,9 +274,9 @@ if(result != undefined) {
     let mentArr = [];
 
     if(userImg != undefined && userImg.length != 0){
-        let ment1 = '님 [Rhino] 반지 모델링하기 3강 질문에 대한 답변이 도착했습니다.'; 
+        let ment1 = '님 작성하신 질문에 대한 답변이 도착했습니다.'; 
         let ment2 = '님 3일 연속 출석이네요!';
-        let ment3 = '님 [Rhino] 반지 모델링하기 완강까지 진도율 70% 달성했습니다! ';
+        let ment3 = '님 [Rhino] 반지 모델링하기 진도율 70% 달성했습니다! ';
         let ment4 = '님 ' + intvalue_accessFromNow + '일만에 출석이네요! 조금 더 자주 뵀으면 좋겠어요 ^^';
         let ment5 = '님 토요일이네요~ 즐거운          주말의 시작 컴만과 함께해요!^^';
 

@@ -33,7 +33,7 @@ router.get('/lectureimgUrl', async(req, res, next) => {
 	var result = {};
 	let getImageUrlbyLectureID =
 	`SELECT image_path
-	FROM comman.lecture as l,
+	FROM lecture as l,
 	lecture_picture as lp
 	WHERE l.id = lp.lecture_id 
 	AND l.id = ?

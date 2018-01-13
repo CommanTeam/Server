@@ -37,12 +37,14 @@ router.get('/', async(req, res, next) => {
 	`;
 
 	var data = await db.queryParamCnt_Arr(selectChapterByChapterID, chapterID);
-	// console.log(data);
-	result.id = data[0].id
-	result.course_id = data[0].course_id
-	result.info = data[0].info
-	result.title = data[0].title
-	result.priority = data[0].priority
+
+	if( data.length > 0){
+		result.id = data[0].id
+		result.course_id = data[0].course_id
+		result.info = data[0].info
+		result.title = data[0].title
+		result.priority = data[0].priority
+	}
 
 	if(data != undefined){
 		result = result;
