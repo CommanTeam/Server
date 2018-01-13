@@ -79,7 +79,6 @@ router.put('/:courseID', async(req, res, next) => {
     SET purchase_flag = 1 
     WHERE user_id = ?
     AND course_id = ?
-
     `;
 
     var data = await db.queryParamCnt_Arr(updatePurchaseByUserIDAndCourseID, [userID, courseID]);
